@@ -34,7 +34,7 @@ export default function AuthLayout({
           </div>
         </div>
       </div>
-      <div className="w-full lg:w-1/2 h-screen flex items-center justify-center flex-col gap-10 px-[5%] md:px-[5.76%] py-8 bg-[#1B191C] relative">
+      <div className="w-full lg:w-1/2 overflow-y-auto min-h-screen space-y-10 px-[5%] md:px-[5.76%] py-8 bg-[#1B191C] relative">
         <div className="w-full flex items-start lg:hidden">
           <Image
             src="/streple-logo.png"
