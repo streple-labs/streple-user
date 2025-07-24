@@ -36,7 +36,7 @@ export const focusToPrevInput = (target: HTMLElement) => {
   if (previousElementSibling) previousElementSibling.focus();
 };
 
-export const formatFileSize = (bytes) => {
+export const formatFileSize = (bytes: number) => {
   if (bytes === 0) return "0 Bytes";
 
   const k = 1024;
