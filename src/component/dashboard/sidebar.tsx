@@ -4,9 +4,8 @@ import BulbIcon from "@/assets/svg/bulb";
 import GroupIcon from "@/assets/svg/group";
 import OverviewIcon from "@/assets/svg/overview";
 import SettingsIcon from "@/assets/svg/setting";
-import { deleteCookie } from "cookies-next";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Switch from "../switch";
 
 const nav_items = [
@@ -44,7 +43,6 @@ const nav_items = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const router = useRouter();
 
   return (
     <aside className="hide-scrollbar flex flex-col justify-between shrink-0 pt-8 w-full max-w-[248px] h-full overflow-y-auto rounded-[20px] bg-[#5A555C1A]">
