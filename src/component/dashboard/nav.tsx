@@ -6,7 +6,7 @@ import { FaChevronDown } from "react-icons/fa6";
 
 export default function Navbar() {
   return (
-    <header className="py-4 w-full h-[85px] flex items-center justify-center">
+    <header className="py-4 w-full h-16 md:h-[85px] flex items-center justify-center">
       <div className="flex items-center justify-between max-w-[1440px] w-full">
         <Link href="">
           <Image
@@ -14,10 +14,18 @@ export default function Navbar() {
             alt="streple logo"
             width={112}
             height={33}
+            className="hidden sm:block"
+          />
+          <Image
+            src="/streple-logo-small.png"
+            alt="streple logo"
+            width={60}
+            height={18}
+            className="sm:hidden"
           />
         </Link>
 
-        <div className="flex w-full max-w-[593px]">
+        <div className="hidden md:flex w-full max-w-sm lg:max-w-[593px]">
           <div className="w-full relative">
             <input
               name="search"
@@ -31,9 +39,10 @@ export default function Navbar() {
             </span>
           </div>
         </div>
-        <div className="flex gap-4 items-center">
-          <div className="rounded-[10px] flex items-center justify-center bg-[#242324] cursor-pointer h-[50px] w-[45px]">
-            <GoBell size={12} color="#FFFFFFB2" />
+
+        <div className="flex gap-4 items-center shrink-0">
+          <div className="rounded-[10px] flex items-center justify-center bg-[#242324] cursor-pointer h-[31px] w-[28px] md:h-[50px] md:w-[45px]">
+            <GoBell width={12} color="#FFFFFFB2" />
           </div>
 
           <div className="flex gap-2 items-center cursor-pointer">
@@ -42,7 +51,7 @@ export default function Navbar() {
               alt="test image"
               width={40}
               height={40}
-              className="rounded-full object-cover object-center"
+              className="size-6 md:size-10 rounded-full object-cover object-center"
             />
             <FaChevronDown color="#FFFFFF99" width={12} />
           </div>

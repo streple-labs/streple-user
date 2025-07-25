@@ -14,7 +14,7 @@ const COLORS = ["#A082F9", "#EBE8F4", "#F4EC43", "#2C292D"];
 export default function DoughnutChart() {
   return (
     <div className="relative w-full flex items-center justify-center -my-6 mx-auto">
-      <PieChart width={280} height={280}>
+      <PieChart width={260} height={260}>
         <Pie
           data={pie_data}
           cx="50%"
@@ -31,12 +31,12 @@ export default function DoughnutChart() {
 
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="space-y-1 flex flex-col items-center justify-center">
-          <span className="text-xs leading-[22px] tracking-[3px] text-white/60">
+          <span className="text-[10px] lg:text-xs leading-[22px] tracking-[3%] text-white/60">
             Total Wallet
           </span>
 
           <p
-            className={`text-[21px] md:text-[28px] leading-[100%] tracking-[3%] text-white/70`}
+            className={`text-[21px] lg:text-[28px] leading-[100%] tracking-[3%] text-white/70`}
           >
             50,000
           </p>

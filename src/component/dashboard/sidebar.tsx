@@ -45,7 +45,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hide-scrollbar flex flex-col justify-between shrink-0 pt-8 w-full max-w-[248px] h-full overflow-y-auto rounded-[20px] bg-[#5A555C1A]">
+    <aside className="hidden hide-scrollbar lg:flex flex-col justify-between shrink-0 pt-8 w-full max-w-[248px] h-full overflow-y-auto rounded-[20px] bg-[#5A555C1A]">
       <nav className="flex flex-col gap-4 w-full px-6">
         {nav_items.map((item) => (
           <Link
