@@ -1,16 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useLoadingLearn } from "@/providers/LoadingLearnProvider";
+import { useEffect, useState } from "react";
 
 export default function Switch() {
+  const { showLoading } = useLoadingLearn();
+
   const [isChecked, setChecked] = useState(false);
 
   const handleToggle = () => {
-    setChecked(!isChecked);
+    setChecked((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (isChecked) showLoading();
+  }, [isChecked, showLoading]);
+
   return (
-    <label className="relative inline-block w-12 h-[22px] bg-[#97959B] shadow-[1px_2px_0px_0px_#74727A] border border-[#BFB5DEB2] rounded-t-[5px] rounded-bl-[5px]">
+    <label
+      className={`relative inline-block w-12 h-[22px] ${
+        isChecked
+          ? "bg-[#97959B] shadow-[1px_2px_0px_0px_#74727A]"
+          : "bg-[#9279DC] shadow-[1px_2px_0px_0px_#504573]"
+      }  border border-[#BFB5DEB2] rounded-t-[5px] rounded-bl-[5px]`}
+    >
       <input
         type="checkbox"
         checked={isChecked}

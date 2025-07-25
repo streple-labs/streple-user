@@ -2,6 +2,7 @@ import Providers from "@/providers/providers";
 import type { Metadata, Viewport } from "next";
 import { openSans } from "./fonts";
 import "./globals.css";
+import LoadingLearn from "@/component/loading-learn";
 
 export const metadata: Metadata = {
   title: "Streple | Copy Top Traders and Earn Smarter",
@@ -61,6 +62,7 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body className={`${openSans.className} antialiased`}>{children}</body>
+        <LoadingLearn />
       </Providers>
     </html>
   );
