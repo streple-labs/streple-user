@@ -2,9 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { GoBell } from "react-icons/go";
 import { IoSearch } from "react-icons/io5";
-import { FaChevronDown } from "react-icons/fa6";
 
-export default function Navbar() {
+export function HomeNavbar() {
   return (
     <header className="py-4 w-full h-16 md:h-[85px] flex items-center justify-center">
       <div className="flex items-center justify-between max-w-[1440px] w-full">
@@ -53,8 +52,47 @@ export default function Navbar() {
               height={40}
               className="size-6 md:size-10 rounded-full object-cover object-center"
             />
-            <FaChevronDown color="#FFFFFF99" width={12} />
           </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export function LearnNavbar() {
+  return (
+    <header className="py-4 w-full h-16 md:h-[85px] flex items-center justify-center">
+      <div className="flex items-center justify-between max-w-[1440px] w-full">
+        <Link href="">
+          <Image
+            src="/streple-logo.png"
+            alt="streple logo"
+            width={112}
+            height={33}
+            className="hidden sm:block"
+          />
+          <Image
+            src="/streple-logo-small.png"
+            alt="streple logo"
+            width={60}
+            height={18}
+            className="sm:hidden"
+          />
+        </Link>
+
+        <div className="flex gap-4 items-center shrink-0">
+          <div className="flex items-center gap-2.5">
+            <Image src={"/coin.png"} alt="coin image" width={24} height={24} />
+            <p className="text-xl/5 font-semibold">10,000 STP</p>
+          </div>
+
+          <Image
+            src={"/default-avatar.jpg"}
+            alt="test image"
+            width={40}
+            height={40}
+            className="size-6 md:size-10 rounded-full object-cover object-center"
+          />
         </div>
       </div>
     </header>

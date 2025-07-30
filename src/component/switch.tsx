@@ -1,20 +1,21 @@
 "use client";
 
-import { useLoadingLearn } from "@/providers/LoadingLearnProvider";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Switch() {
-  const { showLoading } = useLoadingLearn();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const [isChecked, setChecked] = useState(false);
+  const [isChecked, setChecked] = useState(pathname.startsWith("/learn"));
 
   const handleToggle = () => {
-    setChecked((prev) => !prev);
-  };
+    const checked = !isChecked;
+    setChecked(checked);
 
-  useEffect(() => {
-    if (isChecked) showLoading();
-  }, [isChecked, showLoading]);
+    if (checked) router.push("/learn");
+    else router.push("/");
+  };
 
   return (
     <label

@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useLoadingLearn } from "@/providers/LoadingLearnProvider";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function LoadingLearn() {
   const [percentage, setPercentage] = useState(1);
-  const { loading, hideLoading } = useLoadingLearn();
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -19,22 +18,22 @@ export default function LoadingLearn() {
 
           return 100;
         });
-      }, 50);
+      }, 25);
       return () => clearInterval(interval);
     } else setPercentage(1);
-  }, [loading, router, hideLoading]);
+  }, [loading, router]);
 
   useEffect(() => {
     if (loading && percentage === 100) {
       router.push("/learn");
 
       const timeout = setTimeout(() => {
-        hideLoading();
+        setLoading(false);
       }, 300);
 
       return () => clearTimeout(timeout);
     }
-  }, [loading, percentage, router, hideLoading]);
+  }, [loading, percentage, router]);
 
   if (!loading) return null;
 

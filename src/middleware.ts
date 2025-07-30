@@ -12,7 +12,7 @@ export type UserType = {
 };
 
 const loginUrls = ["/login", "/signup", "/forgot-password"];
-const protectedRoutes = ["/"];
+const protectedRoutes = ["/", "/learn"];
 
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
