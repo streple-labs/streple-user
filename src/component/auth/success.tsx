@@ -1,5 +1,5 @@
 import { anton } from "@/app/fonts";
-import CheckmarkIcon from "../../../public/checkmark-icon";
+import CheckmarkIcon from "../icons/checkmark-icon";
 import Link from "next/link";
 
 export default function Success({

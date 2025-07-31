@@ -2,7 +2,7 @@ import { anton } from "@/app/fonts";
 import { passwordValidation } from "@/utils/utils";
 import React, { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import Loader from "../loader";
+import Loader from "../ui/loader";
 
 export default function ResetPasswordForm({
   formData,

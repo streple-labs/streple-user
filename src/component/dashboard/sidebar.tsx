@@ -15,7 +15,7 @@ import {
   PiMountains,
   PiTrophy,
 } from "react-icons/pi";
-import Switch from "../switch";
+import Switch from "../ui/switch";
 import { useEffect } from "react";
 
 const nav_items = [

@@ -1,14 +1,13 @@
+import Banner from "@/component/ui/banner";
 import Image from "next/image";
-import React from "react";
-import { anton } from "../fonts";
-import Eclipse from "../../../public/eclipse-learn-1";
-import Eclipse2 from "../../../public/eclipse-learn-2";
-import Banner from "@/component/banner";
 import { FaChevronRight } from "react-icons/fa6";
+import Eclipse from "../../component/icons/eclipse-learn-1";
+import Eclipse2 from "../../component/icons/eclipse-learn-2";
+import { anton } from "../fonts";
 
 export default function page() {
   return (
-    <div className="space-y-10 w-full overflow-y-auto hide-scrollbar">
+    <div className="space-y-10 w-full overflow-y-auto hide-scrollbar relative">
       <div className="min-h-[290px] rounded-3xl overflow-hidden relative flex justify-between pt-[38px] px-[52px]">
         <Image
           src="/learn-bg.jpg"

@@ -2,7 +2,7 @@
 import { anton } from "@/app/fonts";
 import { focusToNextInput, focusToPrevInput } from "@/utils/utils";
 import { useEffect, useMemo, useState } from "react";
-import Loader from "../loader";
+import Loader from "../ui/loader";
 import { RE_DIGIT } from "@/utils/constants";
 
 export default function OtpForm({

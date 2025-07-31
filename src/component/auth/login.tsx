@@ -10,8 +10,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { toast } from "sonner";
-import GoogleIcon from "../../../public/google-icon";
-import Loader from "../loader";
+import GoogleIcon from "../icons/google-icon";
+import Loader from "../ui/loader";
 import { useRouter } from "next/navigation";
 
 export default function Login() {

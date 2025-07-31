@@ -1,5 +1,5 @@
 import { anton } from "@/app/fonts";
-import Loader from "../loader";
+import Loader from "../ui/loader";
 
 export default function ForgotPasswordForm({
   loading,

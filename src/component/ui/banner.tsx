@@ -4,7 +4,7 @@ import {
   LeftSmall,
   RightBig,
   RightSmall,
-} from "../../public/banner-sides";
+} from "../icons/banner-sides";
 
 export default function Banner({
   size = "small",
@@ -15,16 +15,20 @@ export default function Banner({
 }) {
   if (size === "big")
     return (
-      <div className="flex drop-shadow-[#EFEDF6B2] drop-shadow-xs">
-        <LeftBig />
-        <div className="flex items-center justify-center h-[100px] w-[542px] bg-gradient-to-b from-[#CDBEF9] to-[#503C8B]">
+      <div className="flex drop-shadow-[#EFEDF6B2] drop-shadow-xs w-fit relative">
+        <span className="absolute left-0.5">
+          <LeftBig />
+        </span>
+        <div className="flex items-center justify-center h-[100px] w-[542px] bg-gradient-to-b from-[#CDBEF9] to-[#503C8B] mx-10">
           <p
             className={`${anton.className} text-[32px] leading-[150%] tracking-[2%] bg-gradient-to-b from-[#130C26] to-[#262233] bg-clip-text text-transparent drop-shadow-[#6246B4] drop-shadow-xs`}
           >
             {label}
           </p>
         </div>
-        <RightBig />
+        <span className="absolute right-0.5">
+          <RightBig />
+        </span>
       </div>
     );
 
