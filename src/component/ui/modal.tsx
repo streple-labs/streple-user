@@ -27,7 +27,10 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
         onClick={onClose}
       />
 
-      <div className="relative" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="overflow-y-auto hide-scrollbar"
+        onClick={(e) => e.stopPropagation()}
+      >
         {children}
       </div>
     </div>
