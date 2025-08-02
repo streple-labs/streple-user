@@ -31,7 +31,7 @@ export default function page() {
         </div>
 
         <div className="flex-1 flex justify-center relative">
-          <span className="absolute -top-9 -right-12">
+          <span className="absolute -top-9 -right-16">
             <Eclipse2 />
           </span>
           <span className="absolute top-[117px] left-16">
