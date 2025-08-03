@@ -5,6 +5,7 @@ import axios, {
 } from "axios";
 import { deleteCookie, getCookie } from "cookies-next";
 import { base_url } from "./constants";
+import { cookies } from "next/headers";
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   metadata?: {
@@ -21,21 +22,23 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(
-  (config: CustomAxiosRequestConfig) => {
-    const token = getCookie("streple_auth_token");
+  async (config: CustomAxiosRequestConfig) => {
+    const token =
+      getCookie("streple_auth_token") ||
+      (await cookies()).get("streple_auth_token")?.value;
+
     if (token && config.headers)
       config.headers["Authorization"] = `Bearer ${token}`;
 
     config.metadata = { startTime: new Date() };
 
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === "development")
       console.log("🚀 Request:", {
         method: config.method?.toUpperCase(),
         url: config.url,
         data: config.data,
         headers: config.headers,
       });
-    }
 
     return config;
   },
@@ -54,14 +57,13 @@ api.interceptors.response.use(
       ? endTime.getTime() - config.metadata.startTime.getTime()
       : 0;
 
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === "development")
       console.log("✅ Response:", {
         status: response.status,
         url: response.config.url,
         duration: `${duration}ms`,
         data: response.data,
       });
-    }
 
     return response;
   },
@@ -97,9 +99,7 @@ api.interceptors.response.use(
       });
       const networkError = createNetworkError(error, config, duration);
       return Promise.reject(networkError);
-    } else {
-      console.error("⚙️ Request Setup Error:", error.message);
-    }
+    } else console.error("⚙️ Request Setup Error:", error.message);
 
     return Promise.reject(error);
   }
@@ -120,8 +120,7 @@ function createNetworkError(
     duration: `${duration}ms`,
   };
 
-  // Determine specific network error type
-  if (error.code === "ECONNABORTED") {
+  if (error.code === "ECONNABORTED")
     return {
       ...baseError,
       subType: "TIMEOUT",
@@ -130,9 +129,8 @@ function createNetworkError(
       userMessage: "Request timed out. Please try again.",
       code: "TIMEOUT_ERROR",
     };
-  }
 
-  if (error.code === "ENOTFOUND" || error.code === "EAI_AGAIN") {
+  if (error.code === "ENOTFOUND" || error.code === "EAI_AGAIN")
     return {
       ...baseError,
       subType: "DNS_ERROR",
@@ -142,9 +140,8 @@ function createNetworkError(
         "Cannot connect to server. Please check your internet connection.",
       code: "DNS_RESOLUTION_ERROR",
     };
-  }
 
-  if (error.code === "ECONNREFUSED") {
+  if (error.code === "ECONNREFUSED")
     return {
       ...baseError,
       subType: "CONNECTION_REFUSED",
@@ -153,9 +150,8 @@ function createNetworkError(
       userMessage: "Service temporarily unavailable. Please try again later.",
       code: "CONNECTION_REFUSED_ERROR",
     };
-  }
 
-  if (error.code === "ECONNRESET") {
+  if (error.code === "ECONNRESET")
     return {
       ...baseError,
       subType: "CONNECTION_RESET",
@@ -164,9 +160,8 @@ function createNetworkError(
       userMessage: "Connection interrupted. Please try again.",
       code: "CONNECTION_RESET_ERROR",
     };
-  }
 
-  if (error.code === "EHOSTUNREACH") {
+  if (error.code === "EHOSTUNREACH")
     return {
       ...baseError,
       subType: "HOST_UNREACHABLE",
@@ -175,9 +170,8 @@ function createNetworkError(
       userMessage: "Cannot reach server. Please check your connection.",
       code: "HOST_UNREACHABLE_ERROR",
     };
-  }
 
-  if (error.code === "ENETUNREACH") {
+  if (error.code === "ENETUNREACH")
     return {
       ...baseError,
       subType: "NETWORK_UNREACHABLE",
@@ -185,9 +179,7 @@ function createNetworkError(
       userMessage: "No internet connection. Please check your network.",
       code: "NETWORK_UNREACHABLE_ERROR",
     };
-  }
 
-  // Generic network error for unknown cases
   return {
     ...baseError,
     subType: "UNKNOWN_NETWORK_ERROR",

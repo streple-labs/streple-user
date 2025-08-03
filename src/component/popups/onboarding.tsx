@@ -1,23 +1,41 @@
 "use client";
 
 import { anton } from "@/app/fonts";
+import { useAuth } from "@/context/auth-context";
+import { updateUser } from "@/utils/action";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Onboarding() {
+  const { user, setUser } = useAuth();
+
   const [onboardingData, setOnboardingData] = useState({
-    familiarity: "",
-    needs: "",
+    howFamiliarWithTrading: "",
+    expectationFromStreple: "",
   });
 
   const [step, setStep] = useState(1);
-  const nextStep = () => {
-    if (step < 2) setStep(step + 1);
-  };
-  const prevStep = () => {
-    if (step > 1) setStep(step - 1);
-  };
 
-  return null;
+  const { mutate: handleUpdateUser } = useMutation({
+    mutationKey: ["kyc"],
+    mutationFn: async () => await updateUser(onboardingData),
+    onSuccess: (res) => {
+      if (res.success) {
+        if (user) setUser({ ...user, ...onboardingData });
+        toast.success("Welcome to streple");
+      } else toast.error(res.message);
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
+    },
+  });
+
+  if (!user) return null;
+
+  if (user.expectationFromStreple && user.howFamiliarWithTrading) return null;
 
   return (
     <div className="fixed inset-0 z-[999]">
@@ -41,14 +59,14 @@ export default function Onboarding() {
             <>
               <button
                 className={`h-[60px] md:h-[82px] w-full text-base border-[#F4E90EB2] py-5 px-3 md:px-6 rounded-[10px] md:rounded-[20px] gap-4 leading-6 tracking-[1px] text-left outline-0 ring-0 ${
-                  onboardingData.familiarity === "Beginner"
+                  onboardingData.howFamiliarWithTrading === "Beginner"
                     ? "bg-[#F4E90E1A] border shadow-sm"
                     : "bg-[#242324]"
                 }`}
                 onClick={() => {
                   setOnboardingData({
                     ...onboardingData,
-                    familiarity: "Beginner",
+                    howFamiliarWithTrading: "Beginner",
                   });
                 }}
               >
@@ -56,14 +74,14 @@ export default function Onboarding() {
               </button>
               <button
                 className={`h-[60px] text-white/70 md:h-[82px] w-full text-base border-[#F4E90EB2] py-5 px-3 md:px-6 rounded-[10px] md:rounded-[20px] gap-4 leading-6 tracking-[1px] text-left outline-0 ring-0 ${
-                  onboardingData.familiarity === "Intermediate"
+                  onboardingData.howFamiliarWithTrading === "Intermediate"
                     ? "bg-[#F4E90E1A] border shadow-sm"
                     : "bg-[#242324]"
                 }`}
                 onClick={() => {
                   setOnboardingData({
                     ...onboardingData,
-                    familiarity: "Intermediate",
+                    howFamiliarWithTrading: "Intermediate",
                   });
                 }}
               >
@@ -71,14 +89,14 @@ export default function Onboarding() {
               </button>
               <button
                 className={`h-[60px] text-white/70 md:h-[82px] w-full text-base border-[#F4E90EB2] py-5 px-3 md:px-6 rounded-[10px] md:rounded-[20px] gap-4 leading-6 tracking-[1px] text-left outline-0 ring-0 ${
-                  onboardingData.familiarity === "Advanced"
+                  onboardingData.howFamiliarWithTrading === "Advanced"
                     ? "bg-[#F4E90E1A] border shadow-sm"
                     : "bg-[#242324]"
                 }`}
                 onClick={() => {
                   setOnboardingData({
                     ...onboardingData,
-                    familiarity: "Advanced",
+                    howFamiliarWithTrading: "Advanced",
                   });
                 }}
               >
@@ -89,14 +107,14 @@ export default function Onboarding() {
             <>
               <button
                 className={`h-[60px] md:h-[82px] text-white/70 w-full text-base border-[#F4E90EB2] py-5 px-3 md:px-6 rounded-[10px] md:rounded-[20px] gap-4 leading-6 tracking-[1px] text-left outline-0 ring-0 ${
-                  onboardingData.needs === "learn and trade"
+                  onboardingData.expectationFromStreple === "learn and trade"
                     ? "bg-[#F4E90E1A] border shadow-sm"
                     : "bg-[#242324]"
                 }`}
                 onClick={() => {
                   setOnboardingData({
                     ...onboardingData,
-                    needs: "learn and trade",
+                    expectationFromStreple: "learn and trade",
                   });
                 }}
               >
@@ -104,14 +122,14 @@ export default function Onboarding() {
               </button>
               <button
                 className={`h-[60px] text-white/70 md:h-[82px] w-full text-base border-[#F4E90EB2] py-5 px-3 md:px-6 rounded-[10px] md:rounded-[20px] gap-4 leading-6 tracking-[1px] text-left outline-0 ring-0 ${
-                  onboardingData.needs === "automated trades"
+                  onboardingData.expectationFromStreple === "automated trades"
                     ? "bg-[#F4E90E1A] border shadow-sm"
                     : "bg-[#242324]"
                 }`}
                 onClick={() => {
                   setOnboardingData({
                     ...onboardingData,
-                    needs: "automated trades",
+                    expectationFromStreple: "automated trades",
                   });
                 }}
               >
@@ -121,23 +139,24 @@ export default function Onboarding() {
           )}
 
           <div className="flex items-center justify-end gap-4 text-xs font-semibold leading-[150%] tracking-[2px]">
-            <button className="text-[#EBF0D5]" onClick={nextStep}>
+            {/* <button className="text-[#EBF0D5]" onClick={nextStep}>
               skip
-            </button>
+            </button> */}
             <button
               disabled={step === 1}
               className="rounded-[20px] px-4 py-3 text-[#FBFBEC] bg-[#252426] h-[42px]"
-              onClick={prevStep}
+              onClick={() => {
+                setStep(step - 1);
+              }}
             >
               Previous
             </button>
             <button
-              disabled={step === 1 && !onboardingData.familiarity}
+              disabled={step === 1 && !onboardingData.howFamiliarWithTrading}
               className="rounded-[20px] px-4 py-3 h-[42px] font-bold text-[#2C2C26] bg-[#B39FF0]"
               onClick={() => {
-                if (step === 1) nextStep();
-                else if (step === 2)
-                  console.log("Onboarding data:", onboardingData);
+                if (step === 1) setStep(step + 1);
+                else if (step === 2) handleUpdateUser();
               }}
             >
               {step === 2 ? "Finish" : "Continue"}

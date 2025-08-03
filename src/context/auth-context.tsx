@@ -1,19 +1,8 @@
 "use client";
 
-import { clearToken } from "@/utils/queries";
+import { clearToken, getSession } from "@/utils/queries";
+import { useQuery } from "@tanstack/react-query";
 import React, { createContext, ReactNode, useContext, useState } from "react";
-
-export interface User {
-  id: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  username?: string;
-  avatar?: string;
-  isEmailVerified?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-}
 
 interface AuthState {
   user: User | null;
@@ -58,26 +47,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }));
   };
 
-  // const { data: user } = useQuery({
-  //   queryKey: ["fetch-user"],
-  //   queryFn: async () => {
-  //     try {
-  //       const res = await getLoggedInUser();
+  const {} = useQuery({
+    queryKey: ["fetch-user"],
+    queryFn: async () => {
+      try {
+        const res = await getSession();
 
-  //       console.log(res);
+        if (res.success) {
+          setState((prev) => ({
+            ...prev,
+            isLoading: false,
+            isAuthenticated: true,
+            user: res.user_data,
+          }));
+        } else setState((prev) => ({ ...prev, isLoading: false }));
 
-  //       if (res.success) {
-  //         console.log(res.user_data);
-  //       } else setState((prev) => ({ ...prev, isLoading: false }));
-
-  //       return res.user_data;
-  //     } catch (error) {
-  //       console.error("Auth initialization error:", error);
-  //       await logout();
-  //       return null;
-  //     }
-  //   },
-  // });
+        return res.user_data;
+      } catch (error) {
+        console.error("Auth initialization error:", error);
+        await logout();
+        return null;
+      }
+    },
+  });
 
   return (
     <AuthContext.Provider value={{ ...state, setUser, logout }}>

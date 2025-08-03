@@ -1,15 +1,20 @@
+"use client";
+
 import { GoArrowUp, GoArrowUpRight } from "react-icons/go";
 import { IoWifi } from "react-icons/io5";
 import { LuArrowRightLeft, LuEyeClosed } from "react-icons/lu";
 import { RiLightbulbFlashLine } from "react-icons/ri";
 import { anton } from "../fonts";
 import DoughnutChart from "@/component/dashboard/dougnut-chart";
+import { useAuth } from "@/context/auth-context";
 
-export default function page() {
+export default function Home() {
+  const { user } = useAuth();
+
   return (
     <div className="flex flex-col gap-6 md:gap-10 w-full hide-scrollbar lg:overflow-y-auto">
       <h5 className="text-base font-semibold md:text-xl leading-5">
-        Hello Benita,
+        Hello {user?.fullName},
       </h5>
 
       <div className="hidden lg:flex gap-6">
@@ -293,7 +298,7 @@ export default function page() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 lg:hidden">
+      <div className="flex flex-col gap-4 lg:hidden pb-24 lg:pb-0">
         <div className="min-h-[191px] bg-[url('../../public/balance-bg.png')] bg-center bg-fill bg-no-repeat rounded-[20px] py-6 px-4 flex flex-col justify-between w-full">
           <div className="space-y-2 md:space-y-4">
             <div className="flex items-center gap-2 cursor-pointer">

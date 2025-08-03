@@ -9,7 +9,7 @@ export const login = async (formData: { email: string; password: string }) => {
     const res = await api.post("/auth/login", formData);
 
     (await cookies()).set("streple_auth_token", res.data.streple_auth_token, {
-      httpOnly: true,
+      // httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       expires: new Date(Date.now() + 60 * 60 * 1000),
@@ -154,6 +154,28 @@ export const resendOtp = async (formData: {
     };
   } catch (error: any) {
     let errorMessage = "Resend OTP failed. Please try again later.";
+
+    if (error?.response?.data?.message) {
+      if (Array.isArray(error.response.data.message))
+        errorMessage = error.response.data.message.join(", ");
+      else errorMessage = error.response.data.message;
+    } else if (error?.userMessage) errorMessage = error.userMessage;
+    else if (error?.message) errorMessage = error.message;
+
+    return { success: false, message: errorMessage };
+  }
+};
+
+export const updateUser = async (userData: Partial<User>) => {
+  try {
+    const res = await api.post("/users/update-profile", userData);
+
+    return {
+      success: true,
+      message: res.data.message,
+    };
+  } catch (error: any) {
+    let errorMessage = "Error updating your profile, Please try again later.";
 
     if (error?.response?.data?.message) {
       if (Array.isArray(error.response.data.message))
