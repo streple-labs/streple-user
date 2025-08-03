@@ -12,9 +12,7 @@ export default function SignupForm({
   formData,
   handleChange,
   handleSignup,
-}: // handleGoogleLogin,
-// isGoogleLoginLoading,
-{
+}: {
   formData: {
     fullName: string;
     email: string;
@@ -23,8 +21,6 @@ export default function SignupForm({
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSignup: () => void;
   loading: boolean;
-  // handleGoogleLogin: () => void;
-  // isGoogleLoginLoading: boolean;
 }) {
   const [showPassword, setShowPassword] = useState(false);
 

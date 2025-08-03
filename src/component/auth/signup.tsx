@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import api from "@/utils/axios";
+import { resendOtp, signup, verifyOtp } from "@/utils/action";
+import { RE_DIGIT } from "@/utils/constants";
+import { focusToNextInput } from "@/utils/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import OtpForm from "./otp-form";
 import SignupForm from "./signup-form";
 import Success from "./success";
-import { focusToNextInput } from "@/utils/utils";
-import { RE_DIGIT } from "@/utils/constants";
 
 export default function Signup() {
   const [stage, setStage] = useState<"form" | "otp" | "success">("form");
@@ -59,40 +59,39 @@ export default function Signup() {
   } = useMutation({
     mutationKey: ["verify-otp"],
     mutationFn: async () =>
-      await api.post("/auth/verify-email", {
-        otp,
-        email: formData.email,
-      }),
+      await verifyOtp(
+        {
+          otp,
+          email: formData.email,
+        },
+        "verify"
+      ),
     onSuccess: (res) => {
-      toast.success(res.data.message || "OTP verification successful.");
-      setStage("success");
+      if (res.success) {
+        toast.success(res.message || "OTP verification successful.");
+        setStage("success");
+      } else toast.error(res.message);
     },
     onError: (error: any) => {
-      toast.error(
-        error?.response?.data?.message ||
-          error?.userMessage ||
-          error?.message ||
-          "otp request failed. Please try again later."
-      );
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
     },
   });
 
   const { mutate: handleResendOtp, isPending: isResendLoading } = useMutation({
     mutationKey: ["resend-otp"],
     mutationFn: async () =>
-      await api.post("/auth/resend-otp", { email: formData.email }),
+      await resendOtp({ email: formData.email, purpose: "verify" }),
     onSuccess: (res) => {
-      toast.success(
-        res.data.message || "OTP sent successfully. Please check your email."
-      );
+      if (res.success) {
+        toast.success(
+          res.message || "OTP sent successfully. Please check your email."
+        );
+      } else toast.error(res.message);
     },
     onError: (error: any) => {
-      toast.error(
-        error?.response?.data?.message ||
-          error?.userMessage ||
-          error?.message ||
-          "otp request failed. Please try again later."
-      );
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
     },
   });
 
@@ -108,22 +107,19 @@ export default function Signup() {
 
   const { mutate: handleSignUp, isPending: signupLoading } = useMutation({
     mutationKey: ["signup"],
-    mutationFn: async () => await api.post("/auth/register", formData),
+    mutationFn: async () => await signup(formData),
     onSuccess: (res) => {
-      console.log("response", res);
-      toast.success(
-        res.data.message ||
-          "Signup successful! Please check your email for the OTP."
-      );
-      setStage("otp");
+      if (res.success) {
+        toast.success(
+          res.message ||
+            "Signup successful! Please check your email for the OTP."
+        );
+        setStage("otp");
+      } else toast.error(res.message);
     },
     onError: (error: any) => {
-      toast.error(
-        error?.response?.data?.message ||
-          error?.userMessage ||
-          error?.message ||
-          "Signup failed. Please try again later."
-      );
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
     },
   });
 

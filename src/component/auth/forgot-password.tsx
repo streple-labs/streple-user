@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import api from "@/utils/axios";
+import {
+  forgotPassword,
+  resendOtp,
+  resetPassword,
+  verifyOtp,
+} from "@/utils/action";
 import { focusToNextInput } from "@/utils/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
@@ -29,22 +34,16 @@ export default function ForgotPassword() {
   const { mutate: handleForgotPassword, isPending: forgotPasswordLoading } =
     useMutation({
       mutationKey: ["email-verification"],
-      mutationFn: async () =>
-        await api.post("/auth/forgot-password", { email: formData.email }),
+      mutationFn: async () => await forgotPassword(formData.email),
       onSuccess: (res) => {
-        console.log("response", res);
-        toast.success(
-          res.data.message || "OTP sent to your email. Please check your inbox."
-        );
-        setStage("otp");
+        if (res.success) {
+          toast.success(res.message || "OTP sent to your email.");
+          setStage("otp");
+        } else toast.error(res.message);
       },
       onError: (error: any) => {
-        toast.error(
-          error?.response?.data?.message ||
-            error?.userMessage ||
-            error?.message ||
-            "Signup failed. Please try again later."
-        );
+        console.error(error);
+        toast.error("An unexpected error occurred. Please try again.");
       },
     });
 
@@ -84,18 +83,22 @@ export default function ForgotPassword() {
   } = useMutation({
     mutationKey: ["verify-otp"],
     mutationFn: async () =>
-      await api.post("/auth/verify-otp", { email: formData.email, otp }),
+      await verifyOtp(
+        {
+          otp,
+          email: formData.email,
+        },
+        "reset"
+      ),
     onSuccess: (res) => {
-      toast.success(res.data.message || "OTP verification successful.");
-      setStage("reset-password");
+      if (res.success) {
+        toast.success(res.message || "OTP verification successful.");
+        setStage("reset-password");
+      } else toast.error(res.message);
     },
     onError: (error: any) => {
-      toast.error(
-        error?.response?.data?.message ||
-          error?.userMessage ||
-          error?.message ||
-          "Signup failed. Please try again later."
-      );
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
     },
   });
 
@@ -103,13 +106,15 @@ export default function ForgotPassword() {
     useMutation({
       mutationKey: ["reset-password"],
       mutationFn: async () =>
-        await api.post("/auth/reset-password", {
-          newPassword: formData.password,
+        await resetPassword({
+          password: formData.password,
           email: formData.email,
         }),
       onSuccess: (res) => {
-        toast.success(res.data.message || "password reset successful.");
-        setStage("success");
+        if (res.success) {
+          toast.success(res.message || "password reset successful.");
+          setStage("success");
+        } else toast.error(res.message);
       },
       onError: (error: any) => {
         toast.error(
@@ -124,19 +129,15 @@ export default function ForgotPassword() {
   const { mutate: handleResendOtp, isPending: isResendLoading } = useMutation({
     mutationKey: ["resend-otp"],
     mutationFn: async () =>
-      await api.post("/auth/resend-otp", { email: formData.email }),
+      await resendOtp({ email: formData.email, purpose: "reset" }),
     onSuccess: (res) => {
-      toast.success(
-        res.data.message || "OTP sent successfully. Please check your email."
-      );
+      if (res.success) {
+        toast.success(res.message || "OTP sent successfully.");
+      } else toast.error(res.message);
     },
     onError: (error: any) => {
-      toast.error(
-        error?.response?.data?.message ||
-          error?.userMessage ||
-          error?.message ||
-          "otp request failed. Please try again later."
-      );
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
     },
   });
 
