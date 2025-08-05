@@ -1,16 +1,23 @@
 "use client";
 
+import { useAuth } from "@/context/auth-context";
+import { handleCryptoOnboarding } from "@/utils/action";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { PiThumbsDown, PiThumbsUp } from "react-icons/pi";
+import { toast } from "sonner";
 import Banner from "../ui/banner";
 import Modal from "../ui/modal";
 
 type Stages = "welcome" | "onboarding" | "lesson" | "awards";
 
 export default function CryptoOnboarding() {
+  const { setUser, user } = useAuth();
   const [start, setStart] = useState(false);
   const [stage, setStage] = useState<Stages>("welcome");
+
+  // const [courseSTartTime, setCourseStartTime] = useState<Date | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,18 +26,50 @@ export default function CryptoOnboarding() {
     return () => clearTimeout(timer);
   }, []);
 
+  const [formData, setFormData] = useState({
+    firstQuestion: "",
+    secondQuestion: "",
+    thirdQuestion: "",
+  });
+
+  const { mutate: handleCompleteCryptoOnboarding } = useMutation({
+    mutationKey: ["crypto-onboarding"],
+    mutationFn: async () =>
+      await handleCryptoOnboarding({ ...formData, hasAnswer: true }),
+    onSuccess: (res) => {
+      if (res.success) {
+        toast.success(res.message);
+        if (user) setUser({ ...user, ...formData, hasAnswer: true });
+        setStart(false);
+      } else toast.error(res.message);
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
+    },
+  });
+
   const returnStageComponent = () => {
     if (stage === "welcome") return <Welcome setStage={setStage} />;
-    if (stage === "onboarding") return <Onboarding setStage={setStage} />;
-    if (stage === "lesson") return <CryptoLesson setStage={setStage} />;
-    if (stage === "awards")
+    if (stage === "onboarding")
       return (
-        <Completed
-          close={() => {
-            setStart(false);
-          }}
+        <Onboarding
+          setStage={setStage}
+          formData={formData}
+          setFormData={setFormData}
         />
       );
+    if (stage === "lesson")
+      return (
+        <CryptoLesson
+          // startTime={courseStartTime}
+          // setCourseStartTime={setCourseStartTime}
+          setStage={setStage}
+        />
+      );
+    if (stage === "awards")
+      return <Completed close={handleCompleteCryptoOnboarding} />;
   };
 
   return (
@@ -85,13 +124,25 @@ function Welcome({ setStage }: { setStage: (stage: Stages) => void }) {
   );
 }
 
-function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
-  const [formData, setFormData] = useState({
-    familiarity_with_crypto: "",
-    reason_for_learning: "",
-    dedicated_time_to_learn: "",
-  });
-
+function Onboarding({
+  setStage,
+  formData,
+  setFormData,
+}: {
+  setStage: (stage: Stages) => void;
+  formData: {
+    firstQuestion: string;
+    secondQuestion: string;
+    thirdQuestion: string;
+  };
+  setFormData: React.Dispatch<
+    React.SetStateAction<{
+      firstQuestion: string;
+      secondQuestion: string;
+      thirdQuestion: string;
+    }>
+  >;
+}) {
   const [step, setStep] = useState(1);
   const Next = () => {
     if (step === 3) setStage("lesson");
@@ -124,14 +175,14 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
               <div className="space-y-8 w-full">
                 <button
                   className={`w-full rounded-3xl border-[5px] ${
-                    formData.familiarity_with_crypto === "new"
+                    formData.firstQuestion === "new"
                       ? "border-[#A082F9B2] shadow-[0px_5px_0px_0px_#957CE099] bg-[#A082F91A]"
                       : "border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40]"
                   } text-white/50 font-base leading-[150%] tracking-[2px] h-[81px] py-4 px-6 flex items-center gap-4`}
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      familiarity_with_crypto: "new",
+                      firstQuestion: "new",
                     }));
                   }}
                 >
@@ -145,14 +196,14 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
                 </button>
                 <button
                   className={`w-full rounded-3xl border-[5px] ${
-                    formData.familiarity_with_crypto === "beginner"
+                    formData.firstQuestion === "beginner"
                       ? "border-[#A082F9B2] shadow-[0px_5px_0px_0px_#957CE099] bg-[#A082F91A]"
                       : "border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40]"
                   } text-white/50 font-base leading-[150%] tracking-[2px] h-[81px] py-4 px-6 flex items-center gap-4`}
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      familiarity_with_crypto: "beginner",
+                      firstQuestion: "beginner",
                     }));
                   }}
                 >
@@ -166,14 +217,14 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
                 </button>
                 <button
                   className={`w-full rounded-3xl border-[5px] ${
-                    formData.familiarity_with_crypto === "intermediate"
+                    formData.firstQuestion === "intermediate"
                       ? "border-[#A082F9B2] shadow-[0px_5px_0px_0px_#957CE099] bg-[#A082F91A]"
                       : "border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40]"
                   } text-white/50 font-base leading-[150%] tracking-[2px] h-[81px] py-4 px-6 flex items-center gap-4`}
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      familiarity_with_crypto: "intermediate",
+                      firstQuestion: "intermediate",
                     }));
                   }}
                 >
@@ -196,14 +247,14 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
               <div className="space-y-8 w-full">
                 <button
                   className={`w-full rounded-3xl border-[5px] ${
-                    formData.reason_for_learning === "build_wealth"
+                    formData.secondQuestion === "build_wealth"
                       ? "border-[#A082F9B2] shadow-[0px_5px_0px_0px_#957CE099] bg-[#A082F91A]"
                       : "border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40]"
                   } text-white/50 font-base leading-[150%] tracking-[2px] h-[81px] py-4 px-6 flex items-center gap-4`}
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      reason_for_learning: "build_wealth",
+                      secondQuestion: "build_wealth",
                     }));
                   }}
                 >
@@ -217,14 +268,14 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
                 </button>
                 <button
                   className={`w-full rounded-3xl border-[5px] ${
-                    formData.reason_for_learning === "understand_crypto"
+                    formData.secondQuestion === "understand_crypto"
                       ? "border-[#A082F9B2] shadow-[0px_5px_0px_0px_#957CE099] bg-[#A082F91A]"
                       : "border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40]"
                   } text-white/50 font-base leading-[150%] tracking-[2px] h-[81px] py-4 px-6 flex items-center gap-4`}
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      reason_for_learning: "understand_crypto",
+                      secondQuestion: "understand_crypto",
                     }));
                   }}
                 >
@@ -238,14 +289,14 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
                 </button>
                 <button
                   className={`w-full rounded-3xl border-[5px] ${
-                    formData.reason_for_learning === "explore_and_learn"
+                    formData.secondQuestion === "explore_and_learn"
                       ? "border-[#A082F9B2] shadow-[0px_5px_0px_0px_#957CE099] bg-[#A082F91A]"
                       : "border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40]"
                   } text-white/50 font-base leading-[150%] tracking-[2px] h-[81px] py-4 px-6 flex items-center gap-4`}
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      reason_for_learning: "explore_and_learn",
+                      secondQuestion: "explore_and_learn",
                     }));
                   }}
                 >
@@ -268,14 +319,14 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
               <div className="space-y-8 w-full">
                 <button
                   className={`w-full rounded-3xl border-[5px] ${
-                    formData.dedicated_time_to_learn === "10mins"
+                    formData.thirdQuestion === "10mins"
                       ? "border-[#A082F9B2] shadow-[0px_5px_0px_0px_#957CE099] bg-[#A082F91A]"
                       : "border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40]"
                   } text-white/50 font-base leading-[150%] tracking-[2px] h-[81px] py-4 px-6 flex items-center gap-4`}
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      dedicated_time_to_learn: "10mins",
+                      thirdQuestion: "10mins",
                     }));
                   }}
                 >
@@ -283,14 +334,14 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
                 </button>
                 <button
                   className={`w-full rounded-3xl border-[5px] ${
-                    formData.dedicated_time_to_learn === "30mins"
+                    formData.thirdQuestion === "30mins"
                       ? "border-[#A082F9B2] shadow-[0px_5px_0px_0px_#957CE099] bg-[#A082F91A]"
                       : "border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40]"
                   } text-white/50 font-base leading-[150%] tracking-[2px] h-[81px] py-4 px-6 flex items-center gap-4`}
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      dedicated_time_to_learn: "30mins",
+                      thirdQuestion: "30mins",
                     }));
                   }}
                 >
@@ -298,14 +349,14 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
                 </button>
                 <button
                   className={`w-full rounded-3xl border-[5px] ${
-                    formData.dedicated_time_to_learn === "1hr"
+                    formData.thirdQuestion === "1hr"
                       ? "border-[#A082F9B2] shadow-[0px_5px_0px_0px_#957CE099] bg-[#A082F91A]"
                       : "border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40]"
                   } text-white/50 font-base leading-[150%] tracking-[2px] h-[81px] py-4 px-6 flex items-center gap-4`}
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      dedicated_time_to_learn: "1hr",
+                      thirdQuestion: "1hr",
                     }));
                   }}
                 >
@@ -321,9 +372,9 @@ function Onboarding({ setStage }: { setStage: (stage: Stages) => void }) {
           </button>
           <button
             disabled={
-              (step === 1 && !formData.familiarity_with_crypto) ||
-              (step === 2 && !formData.reason_for_learning) ||
-              (step === 3 && !formData.dedicated_time_to_learn)
+              (step === 1 && !formData.firstQuestion) ||
+              (step === 2 && !formData.secondQuestion) ||
+              (step === 3 && !formData.thirdQuestion)
             }
             onClick={Next}
             className="text-[#181812B2] text-base font-bold flex items-center justify-center shadow-[inset_4px_3px_2px_0px_#EDEBB680] border border-[#ACA40F80] bg-[#BDB510] rounded-[10px] h-[60px] w-[191px] disabled:opacity-50"
@@ -692,15 +743,7 @@ function CryptoTest({
                 </button>
               </div>
               {quizResults[courseStage] !== null && (
-                <p
-                  className={`${
-                    quizResults[courseStage] === true
-                      ? "text-[#009632]"
-                      : "text-[#F98282]"
-                  }`}
-                >
-                  {quizFormAnswersDescription[courseStage]}
-                </p>
+                <p>{quizFormAnswersDescription[courseStage]}</p>
               )}
             </div>
           </div>

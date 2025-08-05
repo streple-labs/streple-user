@@ -9,9 +9,11 @@ import {
 export default function Banner({
   size = "small",
   label,
+  disabled = false,
 }: {
   size?: "small" | "big";
   label: string;
+  disabled?: boolean;
 }) {
   if (size === "big")
     return (
@@ -34,15 +36,19 @@ export default function Banner({
 
   return (
     <div className="flex drop-shadow-[#EFEDF6B2] drop-shadow-xs">
-      <LeftSmall />
-      <div className="flex items-center justify-center px-2.5 py-3 h-[48px] bg-gradient-to-b from-[#CDBEF9] to-[#503C8B]">
+      <LeftSmall className={disabled ? "grayscale-100" : ""} />
+      <div
+        className={`flex items-center justify-center px-2.5 py-3 h-[48px] bg-gradient-to-b from-[#CDBEF9] to-[#503C8B] ${
+          disabled && "grayscale-100"
+        }`}
+      >
         <p
           className={`${anton.className} text-base tracking-[3%] bg-gradient-to-b from-[#130C26] to-[#262233] bg-clip-text text-transparent drop-shadow-[#6246B4] drop-shadow-xs`}
         >
           {label}
         </p>
       </div>
-      <RightSmall />
+      <RightSmall className={disabled ? "grayscale-100" : ""} />
     </div>
   );
 }

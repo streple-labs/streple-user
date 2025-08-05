@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-6 md:gap-10 w-full hide-scrollbar lg:overflow-y-auto">
       <h5 className="text-base font-semibold md:text-xl leading-5">
-        Hello {user?.fullName},
+        Hello {user?.fullName.split(" ")[0]},
       </h5>
 
       <div className="hidden lg:flex gap-6">

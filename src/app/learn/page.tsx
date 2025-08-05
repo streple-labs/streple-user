@@ -1,14 +1,11 @@
-import Banner from "@/component/ui/banner";
 import Image from "next/image";
-import { FaChevronRight } from "react-icons/fa6";
-import Eclipse from "../../component/icons/eclipse-learn-1";
-import Eclipse2 from "../../component/icons/eclipse-learn-2";
 import { anton } from "../fonts";
+import Gamification from "./gamification";
 
 export default function page() {
   return (
     <div className="space-y-10 w-full overflow-y-auto hide-scrollbar relative">
-      <div className="min-h-[290px] rounded-3xl overflow-hidden relative flex justify-between pt-[38px] px-[52px]">
+      <div className="h-[290px] rounded-3xl overflow-hidden relative flex justify-between pt-[38px] px-[52px]">
         <Image
           src="/learn-bg.jpg"
           alt=""
@@ -16,7 +13,7 @@ export default function page() {
           className="absolute size-full inset-0 opacity-10 bg-cover bg-center bg-no-repeat"
         />
 
-        <div className="space-y-6 flex-1 relative">
+        <div className="space-y-6 flex-1 relative max-w-[455px]">
           <h2 className={`${anton.className} text-4xl`}>
             Your <span className="text-[#BDB510]">Crypto Hero&apos;s</span>{" "}
             Journey Begins here
@@ -30,142 +27,18 @@ export default function page() {
           </button>
         </div>
 
-        <div className="flex-1 flex justify-center relative">
-          <span className="absolute -top-9 -right-16">
-            <Eclipse2 />
-          </span>
-          <span className="absolute top-[117px] left-16">
-            <Eclipse />
-          </span>
+        <div className="flex flex-1 items-center justify-end">
           <Image
-            src={"/mascot-2.png"}
+            src={"/mascot-learn-page-banner.png"}
             alt=""
             width={411}
-            height={382}
-            className="relative bg-cover"
+            height={290}
+            className="bg-center"
           />
         </div>
       </div>
 
-      <div className="space-y-8 w-full">
-        <Banner label="PHASE 1 : CALL TO DISCOVERY" />
-
-        <div className="grid grid-cols-3 gap-6">
-          <div className="bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 cursor-pointer">
-            <div className="flex items-center gap-3">
-              <Image
-                src={"/wallet.png"}
-                alt="wallet image"
-                width={40}
-                height={40}
-              />
-
-              <span className="inline-block text-base/8 tracking-[1px] drop-shadow-xs drop-shadow-[#F4E90E80]">
-                What is crypto?
-              </span>
-            </div>
-            <span>
-              <FaChevronRight width={9} color="#958F16CC" />
-            </span>
-          </div>
-
-          <div className="bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 cursor-pointer">
-            <div className="flex items-center gap-3">
-              <Image
-                src={"/wallet.png"}
-                alt="wallet image"
-                width={40}
-                height={40}
-              />
-
-              <span className="inline-block text-base/8 tracking-[1px] drop-shadow-xs drop-shadow-[#A082F980]">
-                Understanding wallets
-              </span>
-            </div>
-            <span>
-              <FaChevronRight width={9} color="#B59EF9" />
-            </span>
-          </div>
-
-          <div className="bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 grayscale-100">
-            <div className="flex items-center gap-3">
-              <Image
-                src={"/bitcoin-wallet.png"}
-                alt="wallet image"
-                width={40}
-                height={40}
-              />
-
-              <span className="inline-block text-base/8 tracking-[1px] drop-shadow-xs drop-shadow-[#F4E90E80]">
-                Understanding wallets
-              </span>
-            </div>
-            <span>
-              <FaChevronRight width={9} color="#B59EF9" />
-            </span>
-          </div>
-        </div>
-
-        <div className="space-y-8 w-full">
-          <Banner label="PHASE 1 : CALL TO DISCOVERY" />
-
-          <div className="grid grid-cols-3 gap-6 [&>div]:cursor-not-allowed">
-            <div className="bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 grayscale-100">
-              <div className="flex items-center gap-3">
-                <Image
-                  src={"/bitcoin-wallet.png"}
-                  alt="wallet image"
-                  width={40}
-                  height={40}
-                />
-
-                <span className="inline-block text-base/8 tracking-[1px] drop-shadow-xs drop-shadow-[#F4E90E80]">
-                  Understanding wallets
-                </span>
-              </div>
-              <span>
-                <FaChevronRight width={9} color="#B59EF9" />
-              </span>
-            </div>
-
-            <div className="bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 grayscale-100">
-              <div className="flex items-center gap-3">
-                <Image
-                  src={"/bitcoin-wallet.png"}
-                  alt="wallet image"
-                  width={40}
-                  height={40}
-                />
-
-                <span className="inline-block text-base/8 tracking-[1px] drop-shadow-xs drop-shadow-[#F4E90E80]">
-                  Understanding wallets
-                </span>
-              </div>
-              <span>
-                <FaChevronRight width={9} color="#B59EF9" />
-              </span>
-            </div>
-
-            <div className="bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 grayscale-100">
-              <div className="flex items-center gap-3">
-                <Image
-                  src={"/bitcoin-wallet.png"}
-                  alt="wallet image"
-                  width={40}
-                  height={40}
-                />
-
-                <span className="inline-block text-base/8 tracking-[1px] drop-shadow-xs drop-shadow-[#F4E90E80]">
-                  Understanding wallets
-                </span>
-              </div>
-              <span>
-                <FaChevronRight width={9} color="#B59EF9" />
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Gamification />
     </div>
   );
 }

@@ -187,3 +187,32 @@ export const updateUser = async (userData: Partial<User>) => {
     return { success: false, message: errorMessage };
   }
 };
+
+export const handleCryptoOnboarding = async (payload: {
+  firstQuestion: string;
+  secondQuestion: string;
+  thirdQuestion: string;
+  hasAnswer: boolean;
+}) => {
+  try {
+    const res = await api.post("/gamified/onboarding", payload);
+
+    console.log(res.data);
+
+    return {
+      success: true,
+      message: "Course completed",
+    };
+  } catch (error: any) {
+    let errorMessage = "Error updating your profile, Please try again later.";
+
+    if (error?.response?.data?.message) {
+      if (Array.isArray(error.response.data.message))
+        errorMessage = error.response.data.message.join(", ");
+      else errorMessage = error.response.data.message;
+    } else if (error?.userMessage) errorMessage = error.userMessage;
+    else if (error?.message) errorMessage = error.message;
+
+    return { success: false, message: errorMessage };
+  }
+};

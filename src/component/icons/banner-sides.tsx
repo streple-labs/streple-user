@@ -1,6 +1,7 @@
-export function LeftSmall() {
+export function LeftSmall(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      {...props}
       width="21"
       height="48"
       viewBox="0 0 21 48"
@@ -88,9 +89,10 @@ export function RightBig() {
   );
 }
 
-export function RightSmall() {
+export function RightSmall(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      {...props}
       width="21"
       height="48"
       viewBox="0 0 21 48"
