@@ -21,10 +21,10 @@ export default function CryptoOnboarding() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setStart(true);
+      setStart(!user.user_data?.hasAnswer);
     }, 5000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [user]);
 
   const [formData, setFormData] = useState({
     firstQuestion: "",
@@ -39,7 +39,11 @@ export default function CryptoOnboarding() {
     onSuccess: (res) => {
       if (res.success) {
         toast.success(res.message);
-        if (user) setUser({ ...user, ...formData, hasAnswer: true });
+        if (user.user_data)
+          setUser({
+            ...user,
+            user_data: { ...user.user_data, ...formData, hasAnswer: true },
+          });
         setStart(false);
       } else toast.error(res.message);
     },

@@ -2,11 +2,31 @@
 
 import Banner from "@/component/ui/banner";
 import { useAuth } from "@/context/auth-context";
+import api from "@/utils/client-axios";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { FaChevronRight } from "react-icons/fa6";
 
 export default function Gamification() {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
+
+  const {} = useQuery({
+    queryKey: ["gamification-progress"],
+    queryFn: async () => {
+      const res = await api.get("/gamified/user-progress");
+
+      setUser({
+        ...user,
+        game_data: {
+          phase: res.data.phase,
+          level: res.data.level,
+          score: res.data.score,
+        },
+      });
+
+      return res.data;
+    },
+  });
 
   return (
     <div className="space-y-8 w-full">
@@ -15,7 +35,8 @@ export default function Gamification() {
       <div className="grid grid-cols-3 gap-6">
         <div
           className={`bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 ${
-            user?.phase === "Phase 1" && user.level === "Level 1"
+            user.game_data?.phase === "Phase 1" &&
+            user.game_data.level === "Level 1"
               ? "cursor-pointer"
               : "grayscale-100 && cursor-not-allowed"
           }`}
@@ -39,7 +60,8 @@ export default function Gamification() {
 
         <div
           className={`bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 ${
-            user?.phase === "Phase 1" && user.level === "Level 2"
+            user.game_data?.phase === "Phase 1" &&
+            user.game_data.level === "Level 2"
               ? "cursor-pointer"
               : "grayscale-100 && cursor-not-allowed"
           }`}
@@ -63,7 +85,8 @@ export default function Gamification() {
 
         <div
           className={`bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 ${
-            user?.phase === "Phase 1" && user.level === "Level 3"
+            user.game_data?.phase === "Phase 1" &&
+            user.game_data.level === "Level 3"
               ? "cursor-pointer"
               : "grayscale-100 && cursor-not-allowed"
           }`}
@@ -89,13 +112,14 @@ export default function Gamification() {
       <div className="space-y-8 w-full">
         <Banner
           label="PHASE 2 : CALL TO DISCOVERY"
-          disabled={user?.phase === "Phase 2"}
+          disabled={user.game_data?.phase === "Phase 2"}
         />
 
         <div className="grid grid-cols-3 gap-6 [&>div]:cursor-not-allowed">
           <div
             className={`bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 ${
-              user?.phase === "Phase 2" && user.level === "Level 1"
+              user.game_data?.phase === "Phase 2" &&
+              user.game_data.level === "Level 1"
                 ? "cursor-pointer"
                 : "grayscale-100 && cursor-not-allowed"
             }`}
@@ -119,7 +143,8 @@ export default function Gamification() {
 
           <div
             className={`bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 ${
-              user?.phase === "Phase 2" && user.level === "Level 2"
+              user.game_data?.phase === "Phase 2" &&
+              user.game_data.level === "Level 2"
                 ? "cursor-pointer"
                 : "grayscale-100 && cursor-not-allowed"
             }`}
@@ -143,7 +168,8 @@ export default function Gamification() {
 
           <div
             className={`bg-[#24222A99] h-[85px] rounded-[10px] py-[22px] px-6 min-w-xs flex items-center justify-between gap-4 ${
-              user?.phase === "Phase 2" && user.level === "Level 3"
+              user.game_data?.phase === "Phase 2" &&
+              user.game_data.level === "Level 3"
                 ? "cursor-pointer"
                 : "grayscale-100 && cursor-not-allowed"
             }`}

@@ -1,4 +1,4 @@
-interface User {
+interface UserData {
   id: string;
   email: string;
   fullName: string;
@@ -14,11 +14,13 @@ interface User {
   performanceHistory: Record<string, unknown> | null;
   followerCount: number;
   demoFundingBalance: string;
-  phase?: "Phase 1" | "Phase 2";
-  level?: "Level 1" | "Level 2" | "Level 3";
-  score?: number;
-  firstQuestion: string;
-  secondQuestion: string;
-  thirdQuestion: string;
+  phase: string;
+  level: string;
   hasAnswer: boolean;
+}
+
+interface GamificationData {
+  phase: "Phase 1" | "Phase 2" | "Phase 3" | null;
+  level: "Level 1" | "Level 2" | "Level 3" | null;
+  score: string | null;
 }

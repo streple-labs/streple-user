@@ -2,10 +2,16 @@
 
 import { clearToken, getSession } from "@/utils/queries";
 import { useQuery } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
+interface User {
+  user_data: UserData | null;
+  game_data: GamificationData | null;
+}
+
 interface AuthState {
-  user: User | null;
+  user: User;
   isAuthenticated: boolean;
   isLoading: boolean;
 }
@@ -23,7 +29,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, setState] = useState<AuthState>({
-    user: null,
+    user: { user_data: null, game_data: null },
     isAuthenticated: false,
     isLoading: true,
   });
@@ -32,7 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     await clearToken();
 
     setState({
-      user: null,
+      user: { user_data: null, game_data: null },
       isAuthenticated: false,
       isLoading: false,
     });
@@ -50,6 +56,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const {} = useQuery({
     queryKey: ["fetch-user"],
     queryFn: async () => {
+      const token = getCookie("streple_auth_token");
+      if (!token) return;
       try {
         const res = await getSession();
 
@@ -58,7 +66,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             ...prev,
             isLoading: false,
             isAuthenticated: true,
-            user: res.user_data,
+            user: { ...state.user, user_data: res.user_data },
           }));
         } else setState((prev) => ({ ...prev, isLoading: false }));
 

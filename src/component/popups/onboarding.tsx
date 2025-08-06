@@ -22,7 +22,11 @@ export default function Onboarding() {
     mutationFn: async () => await updateUser(onboardingData),
     onSuccess: (res) => {
       if (res.success) {
-        if (user) setUser({ ...user, ...onboardingData });
+        if (user.user_data)
+          setUser({
+            ...user,
+            user_data: { ...user.user_data, ...onboardingData },
+          });
         toast.success("Welcome to streple");
       } else toast.error(res.message);
     },
@@ -33,9 +37,13 @@ export default function Onboarding() {
     },
   });
 
-  if (!user) return null;
+  if (!user.user_data) return null;
 
-  if (user.expectationFromStreple && user.howFamiliarWithTrading) return null;
+  if (
+    user.user_data.expectationFromStreple &&
+    user.user_data.howFamiliarWithTrading
+  )
+    return null;
 
   return (
     <div className="fixed inset-0 z-[999]">

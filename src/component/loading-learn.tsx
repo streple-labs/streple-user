@@ -38,7 +38,7 @@ export default function LoadingLearn() {
   if (!loading) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black bg-opacity-60 bg-[url('../../public/loading-learn-page-bg.png')] bg-cover bg-center bg-no-repeat">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-[#141314]">
       <div className="flex flex-col items-center justify-center w-full max-w-[488px]">
         <Image
           src={"/mascot-1.png"}

@@ -17,7 +17,7 @@ import { useAuth } from "@/context/auth-context";
 export default function Login() {
   const router = useRouter();
 
-  const { setUser } = useAuth();
+  const { setUser, user } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -37,7 +37,7 @@ export default function Login() {
       if (res.success) {
         router.push("/");
         toast.success(res.message);
-        setUser(res.user_data);
+        setUser({ ...user, user_data: res.user_data });
       } else toast.error(res.message);
     },
     onError: (error: any) => {

@@ -3,9 +3,9 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import { deleteCookie, getCookie } from "cookies-next";
-import { base_url } from "./constants";
+import { deleteCookie } from "cookies-next";
 import { cookies } from "next/headers";
+import { base_url } from "./constants";
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   metadata?: {
@@ -23,9 +23,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config: CustomAxiosRequestConfig) => {
-    const token =
-      getCookie("streple_auth_token") ||
-      (await cookies()).get("streple_auth_token")?.value;
+    const token = (await cookies()).get("streple_auth_token")?.value;
 
     if (token && config.headers)
       config.headers["Authorization"] = `Bearer ${token}`;
@@ -87,10 +85,7 @@ api.interceptors.response.use(
       console.error("🔥 Response Error:", errorInfo);
 
       if (response.status === 401)
-        if (typeof window !== "undefined") {
-          deleteCookie("streple_auth_token");
-          // window.location.href = "/login"; // Uncomment to redirect
-        }
+        if (typeof window !== "undefined") deleteCookie("streple_auth_token");
     } else if (request) {
       console.error("🌐 Network Error:", {
         message: "No response received",
