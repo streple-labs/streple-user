@@ -23,7 +23,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center">
       <div
-        className="absolute inset-0 bg-black/10 cursor-pointer"
+        className="absolute inset-0 bg-black/50 cursor-pointer"
         onClick={onClose}
       />
 

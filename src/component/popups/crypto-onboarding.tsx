@@ -9,6 +9,9 @@ import { PiThumbsDown, PiThumbsUp } from "react-icons/pi";
 import { toast } from "sonner";
 import Banner from "../ui/banner";
 import Modal from "../ui/modal";
+import { anton } from "@/app/fonts";
+import BadgeIcon from "../icons/badge";
+import VideoWrapper from "../icons/video-wrapper";
 
 type Stages = "welcome" | "onboarding" | "lesson" | "awards";
 
@@ -16,6 +19,10 @@ export default function CryptoOnboarding() {
   const { setUser, user } = useAuth();
   const [start, setStart] = useState(false);
   const [stage, setStage] = useState<Stages>("welcome");
+
+  const close = () => {
+    setStart(false);
+  };
 
   // const [courseSTartTime, setCourseStartTime] = useState<Date | null>(null);
 
@@ -69,6 +76,7 @@ export default function CryptoOnboarding() {
         <CryptoLesson
           // startTime={courseStartTime}
           // setCourseStartTime={setCourseStartTime}
+          close={close}
           setStage={setStage}
         />
       );
@@ -134,6 +142,7 @@ function Onboarding({
   setFormData,
 }: {
   setStage: (stage: Stages) => void;
+
   formData: {
     firstQuestion: string;
     secondQuestion: string;
@@ -391,13 +400,17 @@ function Onboarding({
   );
 }
 
-function CryptoLesson({ setStage }: { setStage: (stage: Stages) => void }) {
+function CryptoLesson({
+  setStage,
+  close,
+}: {
+  setStage: (stage: Stages) => void;
+  close: () => void;
+}) {
   const [step, setStep] = useState<"intro" | "course" | "test">("intro");
 
   return (
-    <div className="w-screen h-screen relative bg-[url('/learn-bg.jpg')] bg-cover bg-center bg-no-repeat overflow-y-auto hide-scrollbar">
-      <div className="absolute size-full bg-[#141314] opacity-95" />
-
+    <div className="w-screen h-screen relative bg-[#141314] overflow-y-auto hide-scrollbar">
       {step === "intro" && (
         <div className="size-full flex flex-col justify-center items-center gap-6 relative">
           <div className="flex items-center">
@@ -423,6 +436,7 @@ function CryptoLesson({ setStage }: { setStage: (stage: Stages) => void }) {
           next={() => {
             setStep("test");
           }}
+          close={close}
         />
       )}
 
@@ -440,109 +454,197 @@ function CryptoLesson({ setStage }: { setStage: (stage: Stages) => void }) {
   );
 }
 
-function CryptoCourse({ next }: { next: () => void }) {
-  const [courseStage, setCourseStage] = useState(1);
+function CryptoCourse({
+  next,
+  close,
+}: {
+  next: () => void;
+  close: () => void;
+}) {
+  const [courseStage, setCourseStage] = useState<"welcome" | "course">(
+    "welcome"
+  );
 
   return (
-    <div className="size-full flex flex-col gap-16 relative pt-20 max-w-5xl mx-auto">
-      <div className="w-full h-[36px] bg-[#F9F8F9] rounded-[46px]">
-        <div
-          className="h-[38px] bg-[#38373A] rounded-full flex items-center -my-px"
-          style={{
-            width: `${(courseStage / 9) * 100}%`,
-          }}
-        />
-      </div>
+    <div className="size-full flex flex-col relative pt-20">
+      {courseStage === "welcome" && (
+        <span
+          className="absolute top-30 left-40 cursor-pointer"
+          onClick={close}
+        >
+          <svg
+            width="26"
+            height="25"
+            viewBox="0 0 26 25"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M25.037 22.865C25.1532 22.9812 25.2453 23.119 25.3081 23.2708C25.371 23.4225 25.4033 23.5851 25.4033 23.7494C25.4033 23.9136 25.371 24.0762 25.3081 24.228C25.2453 24.3797 25.1532 24.5176 25.037 24.6337C24.9209 24.7498 24.783 24.8419 24.6313 24.9048C24.4796 24.9676 24.3169 25 24.1527 25C23.9885 25 23.8258 24.9676 23.6741 24.9048C23.5224 24.8419 23.3845 24.7498 23.2684 24.6337L12.9033 14.2671L2.53827 24.6337C2.30373 24.8682 1.98563 25 1.65395 25C1.32226 25 1.00416 24.8682 0.76962 24.6337C0.535082 24.3992 0.40332 24.0811 0.40332 23.7494C0.40332 23.4177 0.535082 23.0996 0.76962 22.865L11.1362 12.5L0.76962 2.13495C0.535082 1.90041 0.40332 1.58231 0.40332 1.25063C0.40332 0.918939 0.535082 0.600837 0.76962 0.3663C1.00416 0.131762 1.32226 0 1.65395 0C1.98563 0 2.30373 0.131762 2.53827 0.3663L12.9033 10.7329L23.2684 0.3663C23.5029 0.131762 23.821 -6.53833e-09 24.1527 0C24.4844 6.53833e-09 24.8025 0.131762 25.037 0.3663C25.2716 0.600837 25.4033 0.918939 25.4033 1.25063C25.4033 1.58231 25.2716 1.90041 25.037 2.13495L14.6704 12.5L25.037 22.865Z"
+              fill="white"
+              fill-opacity="0.7"
+            />
+          </svg>
+        </span>
+      )}
 
-      <div className="flex gap-3">
-        <Image
-          src={"/mascot-4.png"}
-          alt=""
-          width={100}
-          height={83}
-          className="w-[100px] h-[83px]"
-        />
-        <div className="flex flex-col gap-16 w-full">
-          <div className="w-full border-[5px] border-[#5E5C6680] shadow-[0px_5px_0px_0px_#473E3E40] py-6 px-10 rounded-[20px] flex flex-col gap-6 font-semibold text-2xl leading-10 text-white/70">
-            {courseStage === 1 && (
-              <p>
-                Cryptocurrency is a digital form of money. You can&apos;t touch
-                it or put it in your wallet like naira or dollars, but it lives
-                online and can be used to buy things, send money, or invest.
-                Unlike traditional money, no one person or government controls
-                crypto. It&apos;s built on blockchain, a public, secure system
-                that records every transaction.
-              </p>
-            )}
-            {courseStage === 2 && (
-              <>
-                <p>Examples</p>
-                <div className="mt-4 flex gap-12">
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <div key={i} className="flex flex-col items-center gap-6">
-                      <Image
-                        src={`/bitcoin-${i + 1}.png`}
-                        alt="example image"
-                        width={40}
-                        height={40}
-                      />
-                      <p>Bitcoin</p>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-            {courseStage === 3 && (
-              <p>
-                Why Do People Care About Crypto? <br />
-                Global access: Anyone with internet can use it. <br />
-                Privacy: No need to give all your info to banks. <br />
-                Fast & cheap transfers: You can send money across borders in
-                seconds. <br />
-                Investment opportunity: Many people buy and hold crypto like
-                assets.
-              </p>
-            )}
-            {courseStage === 4 && (
-              <>
-                <p>
-                  A blockchain is like a digital notebook that stores every
-                  crypto transaction ever made. Once something is written, it
-                  can&apos;t be erased or changed.
-                </p>
-                <p>
-                  Each &quot;block&quot; contains: <br />
-                  A list of transactions
-                  <br />
-                  A timestamp <br />A security key
-                </p>
-              </>
-            )}
-          </div>
-          <div className="w-full flex items-center justify-between">
-            <button
-              onClick={() => {
-                setCourseStage((prev) => prev - 1);
-              }}
-              className={`${
-                courseStage <= 1 && "invisible"
-              } text-[#B7B7AF] text-base font-bold flex items-center justify-center border-[2px] border-[#B7B7AF80] rounded-[10px] h-[60px] w-[191px]`}
+      {courseStage === "welcome" && (
+        <div className="flex flex-col w-full items-center gap-10">
+          <div className="flex flex-col items-center gap-5">
+            <Banner label="PHASE 1 : CALL TO DISCOVERY" />
+            <h1
+              className={`${anton.className} text-2xl text-[#efe73c] drop-shadow-sm drop-shadow-[#49460D]`}
             >
-              Previous
-            </button>
+              WHAT IS CRYPTO?
+            </h1>
+          </div>
+
+          <div className="space-y-6">
+            <p className="text-base/8 tracking-[1px] font-semibold drop-shadow-sm drop-shadow-[#A082F966]">
+              Many have heard of Bitcoin, few understand it. Your journey starts
+              here, from the dusty roads to digital gold
+            </p>
+
+            <div className="flex">
+              <Image
+                src={"/mascot-6.png"}
+                alt=""
+                width={259}
+                height={195}
+                className="-ml-30"
+              />
+              <div className="space-y-4 mt-6">
+                <p className="text-base/8 tracking-[1px] font-semibold drop-shadow-sm drop-shadow-[#A082F966]">
+                  In this lesson, you will:
+                </p>
+                <div className="flex items-center gap-4">
+                  <svg
+                    width="19"
+                    height="11"
+                    viewBox="0 0 19 11"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1.18359 10.2642V1.58252L16.9854 6.45459L1.18359 10.2642Z"
+                      fill="#F4E90E"
+                      stroke="#605F44"
+                    />
+                  </svg>
+
+                  <p className="text-[14px]/8 tracking-[1px] font-semibold text-white/80">
+                    Learn the basics of crypto
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <svg
+                    width="19"
+                    height="11"
+                    viewBox="0 0 19 11"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1.18359 10.2642V1.58252L16.9854 6.45459L1.18359 10.2642Z"
+                      fill="#F4E90E"
+                      stroke="#605F44"
+                    />
+                  </svg>
+
+                  <p className="text-[14px]/8 tracking-[1px] font-semibold text-white/80">
+                    Take a question and answer quiz
+                  </p>
+                </div>
+                <div className="pt-6 flex items-center gap-[52px] text-white/80">
+                  <div className="flex items-center gap-6">
+                    <Image
+                      src={"/coin-learn.png"}
+                      alt="coin"
+                      width={50}
+                      height={50}
+                    />
+                    <p className="text-base/8 tracking-[1px] font-semibold">
+                      250 STP
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <BadgeIcon />
+
+                    <p className="text-base/8 tracking-[1px] font-semibold">
+                      Crypto Initiate Badge
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              setCourseStage("course");
+            }}
+            className="text-[#181812B2] text-base font-bold flex items-center justify-center shadow-[inset_4px_3px_2px_0px_#EDEBB680] border border-[#ACA40F80] bg-[#BDB510] rounded-[10px] h-[60px] w-[191px]"
+          >
+            Begin
+          </button>
+        </div>
+      )}
+
+      {courseStage === "course" && (
+        <>
+          <div className="flex items-center justify-center gap-10 w-full max-w-5xl mx-auto">
+            <span onClick={close}>
+              <svg
+                width="26"
+                height="25"
+                viewBox="0 0 26 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M25.037 22.865C25.1532 22.9812 25.2453 23.119 25.3081 23.2708C25.371 23.4225 25.4033 23.5851 25.4033 23.7494C25.4033 23.9136 25.371 24.0762 25.3081 24.228C25.2453 24.3797 25.1532 24.5176 25.037 24.6337C24.9209 24.7498 24.783 24.8419 24.6313 24.9048C24.4796 24.9676 24.3169 25 24.1527 25C23.9885 25 23.8258 24.9676 23.6741 24.9048C23.5224 24.8419 23.3845 24.7498 23.2684 24.6337L12.9033 14.2671L2.53827 24.6337C2.30373 24.8682 1.98563 25 1.65395 25C1.32226 25 1.00416 24.8682 0.76962 24.6337C0.535082 24.3992 0.40332 24.0811 0.40332 23.7494C0.40332 23.4177 0.535082 23.0996 0.76962 22.865L11.1362 12.5L0.76962 2.13495C0.535082 1.90041 0.40332 1.58231 0.40332 1.25063C0.40332 0.918939 0.535082 0.600837 0.76962 0.3663C1.00416 0.131762 1.32226 0 1.65395 0C1.98563 0 2.30373 0.131762 2.53827 0.3663L12.9033 10.7329L23.2684 0.3663C23.5029 0.131762 23.821 -6.53833e-09 24.1527 0C24.4844 6.53833e-09 24.8025 0.131762 25.037 0.3663C25.2716 0.600837 25.4033 0.918939 25.4033 1.25063C25.4033 1.58231 25.2716 1.90041 25.037 2.13495L14.6704 12.5L25.037 22.865Z"
+                  fill="white"
+                  fill-opacity="0.7"
+                />
+              </svg>
+            </span>
+
+            <div className="w-full h-[36px] bg-[#F9F8F9] rounded-[46px]">
+              <div
+                className="h-[38px] bg-[#503C8B] rounded-full flex items-center -my-px"
+                style={{
+                  width: `40%`,
+                }}
+              >
+                <div className="h-2.5 w-full mx-7 rounded-full bg-blend-overlay bg-gradient-to-br from-white/45 from-[30.58%] to-[#fbfafd22] to-[70.32%]" />
+              </div>
+            </div>
+
+            <div className="flex items-center shrink-0 gap-3">
+              <Image
+                src={"/coin-learn.png"}
+                alt="coin"
+                width={35}
+                height={35}
+              />
+              <p className="text-2xl/6 font-semibold text-white/80">+25 STP</p>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-end gap-10 w-full max-w-5xl mx-auto">
+            <div className="relative flex w-full aspect-video">
+              <VideoWrapper className="absolute size-full -my-10" />
+            </div>
 
             <button
-              onClick={() => {
-                if (courseStage === 4) next();
-                else setCourseStage((prev) => prev + 1);
-              }}
-              className="text-[#181812B2] text-base font-bold flex items-center justify-center shadow-[inset_4px_3px_2px_0px_#EDEBB680] border border-[#ACA40F80] bg-[#BDB510] rounded-[10px] h-[60px] w-[191px]"
+              onClick={next}
+              className="text-[#181812B2] relative -mt-30 text-base font-bold flex items-center justify-center shadow-[inset_4px_3px_2px_0px_#EDEBB680] border border-[#ACA40F80] bg-[#BDB510] rounded-[10px] h-[60px] w-[191px]"
             >
               Next
             </button>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }
@@ -622,13 +724,38 @@ function CryptoTest({
 
   return (
     <div className="size-full flex flex-col gap-16 relative pt-20">
-      <div className="w-full h-[36px] bg-[#F9F8F9] rounded-[46px] max-w-5xl mx-auto">
-        <div
-          className="h-[38px] bg-[#38373A] rounded-full flex items-center -my-px"
-          style={{
-            width: `${(courseStage / 9) * 100}%`,
-          }}
-        />
+      <div className="flex items-center justify-center gap-10 w-full max-w-5xl mx-auto">
+        <span onClick={close}>
+          <svg
+            width="26"
+            height="25"
+            viewBox="0 0 26 25"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M25.037 22.865C25.1532 22.9812 25.2453 23.119 25.3081 23.2708C25.371 23.4225 25.4033 23.5851 25.4033 23.7494C25.4033 23.9136 25.371 24.0762 25.3081 24.228C25.2453 24.3797 25.1532 24.5176 25.037 24.6337C24.9209 24.7498 24.783 24.8419 24.6313 24.9048C24.4796 24.9676 24.3169 25 24.1527 25C23.9885 25 23.8258 24.9676 23.6741 24.9048C23.5224 24.8419 23.3845 24.7498 23.2684 24.6337L12.9033 14.2671L2.53827 24.6337C2.30373 24.8682 1.98563 25 1.65395 25C1.32226 25 1.00416 24.8682 0.76962 24.6337C0.535082 24.3992 0.40332 24.0811 0.40332 23.7494C0.40332 23.4177 0.535082 23.0996 0.76962 22.865L11.1362 12.5L0.76962 2.13495C0.535082 1.90041 0.40332 1.58231 0.40332 1.25063C0.40332 0.918939 0.535082 0.600837 0.76962 0.3663C1.00416 0.131762 1.32226 0 1.65395 0C1.98563 0 2.30373 0.131762 2.53827 0.3663L12.9033 10.7329L23.2684 0.3663C23.5029 0.131762 23.821 -6.53833e-09 24.1527 0C24.4844 6.53833e-09 24.8025 0.131762 25.037 0.3663C25.2716 0.600837 25.4033 0.918939 25.4033 1.25063C25.4033 1.58231 25.2716 1.90041 25.037 2.13495L14.6704 12.5L25.037 22.865Z"
+              fill="white"
+              fill-opacity="0.7"
+            />
+          </svg>
+        </span>
+
+        <div className="w-full h-[36px] bg-[#F9F8F9] rounded-[46px]">
+          <div
+            className="h-[38px] bg-[#503C8B] rounded-full flex items-center -my-px"
+            style={{
+              width: `${(courseStage / 9) * 100}%`,
+            }}
+          >
+            <div className="h-2.5 w-full mx-7 rounded-full bg-blend-overlay bg-gradient-to-br from-white/45 from-[30.58%] to-[#fbfafd22] to-[70.32%]" />
+          </div>
+        </div>
+
+        <div className="flex items-center shrink-0 gap-3">
+          <Image src={"/coin-learn.png"} alt="coin" width={35} height={35} />
+          <p className="text-2xl/6 font-semibold text-white/80">+25 STP</p>
+        </div>
       </div>
 
       {courseStage === 5 && (
@@ -765,10 +892,16 @@ function Completed({ close }: { close: () => void }) {
   };
 
   return (
-    <div className="w-screen h-screen relative bg-[url('/learn-bg.jpg')] bg-cover bg-center bg-no-repeat overflow-y-auto hide-scrollbar">
-      <div className="absolute size-full bg-[#141314] opacity-95" />
+    <div className="w-screen h-screen relative bg-[#141314] overflow-y-auto hide-scrollbar">
+      <Image
+        src={"/spotlight.png"}
+        alt="spotlight"
+        width={640}
+        height={385.13}
+        className="absolute left-1/2 -translate-x-1/2 size-auto"
+      />
 
-      <div className="size-full flex flex-col items-center justify-center gap-40 relative">
+      <div className="size-full flex flex-col items-center justify-center gap-20 relative">
         {step === 1 && (
           <div className="flex flex-col items-center">
             <Image src={"/mascot-5.png"} alt="" width={351} height={271} />
@@ -815,7 +948,7 @@ function Completed({ close }: { close: () => void }) {
         )}
 
         {step === 2 && (
-          <div className="flex items-center justify-center flex-col gap-10">
+          <div className="flex items-center justify-center flex-col gap-20">
             <h2 className="text-4xl font-bold text-[#EEE311]">
               2 daily quests completed
             </h2>
