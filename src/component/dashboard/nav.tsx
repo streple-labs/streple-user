@@ -7,7 +7,9 @@ import { GoBell } from "react-icons/go";
 import { IoSearch } from "react-icons/io5";
 
 export function HomeNavbar() {
-  const { user } = useAuth();
+  const {
+    user: { user_data },
+  } = useAuth();
 
   return (
     <header className="py-4 w-full h-16 md:h-[85px] flex items-center justify-center">
@@ -51,7 +53,7 @@ export function HomeNavbar() {
 
           <div className="flex gap-2 items-center cursor-pointer">
             <Image
-              src={user?.avatarUrl || "/test-png.jpg"}
+              src={user_data?.avatarUrl || "/test-png.jpg"}
               alt="test image"
               width={40}
               height={40}
@@ -65,7 +67,9 @@ export function HomeNavbar() {
 }
 
 export function LearnNavbar() {
-  const { user } = useAuth();
+  const {
+    user: { user_data },
+  } = useAuth();
   return (
     <header className="py-4 w-full h-16 md:h-[85px] flex items-center justify-center">
       <div className="flex items-center justify-between max-w-[1440px] w-full">
@@ -93,7 +97,7 @@ export function LearnNavbar() {
           </div>
 
           <Image
-            src={user?.avatarUrl || "/default-avatar.jpg"}
+            src={user_data?.avatarUrl || "/default-avatar.jpg"}
             alt="test image"
             width={40}
             height={40}

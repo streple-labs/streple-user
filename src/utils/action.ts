@@ -166,7 +166,7 @@ export const resendOtp = async (formData: {
   }
 };
 
-export const updateUser = async (userData: Partial<User>) => {
+export const updateUser = async (userData: Partial<UserData>) => {
   try {
     const res = await api.post("/users/update-profile", userData);
 

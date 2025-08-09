@@ -8,7 +8,7 @@ import api from "./axios";
 export const getSession = async (): Promise<{
   success: boolean;
   message: string;
-  user_data: User | null;
+  user_data: UserData | null;
 }> => {
   try {
     const res = await api.get("/users/me");
