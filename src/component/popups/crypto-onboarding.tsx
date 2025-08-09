@@ -4,12 +4,12 @@ import { useAuth } from "@/context/auth-context";
 import { handleCryptoOnboarding } from "@/utils/action";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PiThumbsDown, PiThumbsUp } from "react-icons/pi";
 import { toast } from "sonner";
 import Banner from "../ui/banner";
 import Modal from "../ui/modal";
-import { anton } from "@/app/fonts";
+import { anton, baloo } from "@/app/fonts";
 import BadgeIcon from "../icons/badge";
 import VideoWrapper from "../icons/video-wrapper";
 
@@ -664,7 +664,7 @@ function CryptoTest({
     const interval = setInterval(() => {
       setTimer((prev) => {
         if (prev > 0) return prev - 1;
-        else setQuizResults((prev) => ({ ...prev, courseStage: false }));
+        else setQuizResults((prev) => ({ ...prev, [courseStage]: false }));
         clearInterval(interval);
         return 0;
       });
@@ -686,6 +686,7 @@ function CryptoTest({
     8: null,
     9: null,
   });
+
   const quizFormQuestions: Record<
     number,
     { question: string; options: string[]; answer: number }
@@ -805,7 +806,6 @@ function CryptoTest({
                 {quizFormQuestions[courseStage].options.map((option, i) => (
                   <button
                     key={i}
-                    disabled={quizForm[courseStage] !== null}
                     className={`w-full rounded-3xl border-[5px] ${
                       quizForm[courseStage] === i &&
                       quizResults[courseStage] === true
@@ -862,6 +862,7 @@ function CryptoTest({
                     if (courseStage === 9) next();
                     else setCourseStage((prev) => prev + 1);
                   }}
+                  disabled={quizResults[courseStage] !== true}
                   className={`${
                     quizResults[courseStage] === true
                       ? "text-[#181812B2] bg-[#009632]"
@@ -891,6 +892,37 @@ function Completed({ close }: { close: () => void }) {
     else setStep((prev) => prev + 1);
   };
 
+  const lists = useMemo(
+    () => [
+      "Brilliant work, Crypto Hero!",
+      "You’re a village guardian, Crypto Hero!",
+      "You’re a market star, Crypto Hero!",
+      "You’re a quick learner, Crypto Hero!",
+      "Your crypto journey is becoming real, Keep going!",
+      "You are getting closer to becoming a Copy commander",
+    ],
+    []
+  );
+  const [word, setWord] = useState("Brilliant work, Crypto Hero!");
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWord((prevWord) => {
+        const currentIndex = lists.indexOf(prevWord);
+        const nextIndex = (currentIndex + 1) % lists.length;
+        return lists[nextIndex];
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [lists]);
+
+  const [showBadge, setShowBadge] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowBadge(true);
+    }, 6000);
+  }, []);
+
   return (
     <div className="w-screen h-screen relative bg-[#141314] overflow-y-auto hide-scrollbar">
       <Image
@@ -901,16 +933,51 @@ function Completed({ close }: { close: () => void }) {
         className="absolute left-1/2 -translate-x-1/2 size-auto"
       />
 
+      {showBadge && (
+        <div className="fixed z-20 inset-0 flex items-center justify-center size-full">
+          <div
+            className="absolute inset-0 backdrop-blur-xl"
+            onClick={() => setShowBadge(false)}
+          />
+
+          <div className="flex relative flex-col items-center gap-10">
+            <h2 className={`${baloo.className} text-[42px]/[50px]`}>
+              NEW BADGE UNLOCKED
+            </h2>
+            <div className="border border-[#c0bb4f] bg-[#19171d] backdrop-blur-3xl relative flex flex-col items-center justify-center rounded-[31px] w-[281px] h-[313px]">
+              <p className={`${baloo.className} text-2xl/[35px]`}>
+                CRYPTO INITIATE
+              </p>
+              <Image
+                src={"/wooden-staff.png"}
+                alt="wooden staff badge illustration"
+                width={111}
+                height={111}
+                className="relative"
+              />
+
+              <Image
+                src={"/eclipse-28.png"}
+                alt=""
+                width={100}
+                height={100}
+                className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="size-full flex flex-col items-center justify-center gap-20 relative">
         {step === 1 && (
           <div className="flex flex-col items-center">
             <Image src={"/mascot-5.png"} alt="" width={351} height={271} />
             <div className="gap-6 flex items-center justify-center flex-col">
-              <h2 className="text-4xl font-bold text-[#EEE311]">
-                Brilliant work, Crypto Hero!
+              <h2 className="text-4xl font-bold text-[#EEE311] max-w-[550px] h-20 text-center">
+                {word}
               </h2>
               <p className="-mt-4 text-base text-[#939389]">
-                You are 80% closer to unlocking your Crypto Initiate badge
+                You are 30% closer to unlocking your Crypto Initiate badge
               </p>
 
               <div className="flex gap-9">
@@ -922,13 +989,13 @@ function Completed({ close }: { close: () => void }) {
                     height={50}
                   />
                   <p className="text-base leading-8 tracking-[1px] text-white/80">
-                    250 STP
+                    50 STP
                   </p>
                 </div>
                 <div className="bg-[#24222A99] rounded-[10px] py-5 px-7 flex items-center flex-col justify-center gap-2">
                   <Image src={"/target.png"} alt="" width={50} height={50} />
                   <p className="text-base leading-8 tracking-[1px] text-white/80">
-                    80 %
+                    30 %
                   </p>
                 </div>
                 <div className="bg-[#24222A99] rounded-[10px] py-5 px-7 flex items-center flex-col justify-center gap-2">

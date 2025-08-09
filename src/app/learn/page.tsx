@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { anton } from "../fonts";
+import { baloo } from "../fonts";
 import Gamification from "./gamification";
 
 export default function page() {
@@ -14,7 +14,9 @@ export default function page() {
         />
 
         <div className="space-y-6 flex-1 relative max-w-[455px]">
-          <h2 className={`${anton.className} text-4xl`}>
+          <h2
+            className={`${baloo.className} text-4xl drop-shadow-[#25251A80] drop-shadow-[0px_4px_4px]`}
+          >
             Your <span className="text-[#BDB510]">Crypto Hero&apos;s</span>{" "}
             Journey Begins here
           </h2>
