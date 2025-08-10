@@ -27,27 +27,27 @@ const nav_items = [
   {
     name: "Wallet",
     icon: GroupIcon,
-    href: "/wallet",
+    href: "#",
   },
   {
     name: "Community",
     icon: BulbIcon,
-    href: "/community",
+    href: "#",
   },
   {
     name: "Watchlist",
     icon: BulbIcon,
-    href: "/watchlist",
+    href: "#",
   },
   {
     name: "Market",
     icon: BulbIcon,
-    href: "/market",
+    href: "#",
   },
   {
     name: "Settings",
     icon: SettingsIcon,
-    href: "/settings",
+    href: "#",
   },
 ];
 
