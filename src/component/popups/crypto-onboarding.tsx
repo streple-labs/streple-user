@@ -1,5 +1,6 @@
 "use client";
 
+import { anton, baloo } from "@/app/fonts";
 import { useAuth } from "@/context/auth-context";
 import { handleCryptoOnboarding } from "@/utils/action";
 import { useMutation } from "@tanstack/react-query";
@@ -7,11 +8,10 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { PiThumbsDown, PiThumbsUp } from "react-icons/pi";
 import { toast } from "sonner";
-import Banner from "../ui/banner";
-import Modal from "../ui/modal";
-import { anton, baloo } from "@/app/fonts";
 import BadgeIcon from "../icons/badge";
 import VideoWrapper from "../icons/video-wrapper";
+import Banner from "../ui/banner";
+import Modal from "../ui/modal";
 
 type Stages = "welcome" | "onboarding" | "lesson" | "awards";
 
