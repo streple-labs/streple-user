@@ -13,7 +13,7 @@ export default function Switch() {
     const checked = !isChecked;
     setChecked(checked);
 
-    if (checked) router.push("/learn");
+    if (checked) router.push("https://mission.streple.com");
     else router.push("/");
   };
 
