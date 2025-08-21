@@ -14,6 +14,8 @@ export const login = async (formData: { email: string; password: string }) => {
       sameSite: "lax",
       expires: new Date(Date.now() + 60 * 60 * 1000),
       path: "/",
+      domain:
+        process.env.NODE_ENV === "production" ? ".streple.com" : "localhost",
     });
 
     return {
