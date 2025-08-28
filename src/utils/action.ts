@@ -8,20 +8,32 @@ export const login = async (formData: { email: string; password: string }) => {
   try {
     const res = await api.post("/auth/login/user", formData);
 
-    (await cookies()).set("streple_auth_token", res.data.streple_auth_token, {
+    const {
+      streple_auth_token,
+      streple_refresh_token,
+      data: user_data,
+    } = res.data;
+
+    (await cookies()).set("streple_auth_token", streple_auth_token, {
       // httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       expires: new Date(Date.now() + 60 * 60 * 1000),
       path: "/",
-      domain:
-        process.env.NODE_ENV === "production" ? ".streple.com" : "localhost",
+    });
+
+    (await cookies()).set("streple_refresh_token", streple_refresh_token, {
+      // httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
+      path: "/",
     });
 
     return {
       success: true,
       message: "Login successful.",
-      user_data: res.data.data,
+      user_data,
     };
   } catch (error: any) {
     let errorMessage = "login failed. Please try again later.";

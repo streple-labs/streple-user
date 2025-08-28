@@ -3,14 +3,16 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import { deleteCookie } from "cookies-next";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { base_url } from "./constants";
+import { createNetworkError } from "./utils";
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   metadata?: {
     startTime: Date;
   };
+  _retry?: boolean;
 }
 
 const api = axios.create({
@@ -20,6 +22,9 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+let isRefreshing = false;
+let failedRequestsQueue: ((token: string) => void)[] = [];
 
 api.interceptors.request.use(
   async (config: CustomAxiosRequestConfig) => {
@@ -65,12 +70,12 @@ api.interceptors.response.use(
 
     return response;
   },
-  (error: AxiosError) => {
-    const { response, request } = error;
+  async (error: AxiosError) => {
+    const { response, request, config } = error;
 
-    const config = error.config as CustomAxiosRequestConfig;
-    const duration = config?.metadata
-      ? new Date().getTime() - config.metadata.startTime.getTime()
+    const originalRequest = config as CustomAxiosRequestConfig;
+    const duration = originalRequest.metadata
+      ? new Date().getTime() - originalRequest.metadata.startTime.getTime()
       : 0;
 
     if (response) {
@@ -84,15 +89,84 @@ api.interceptors.response.use(
 
       console.error("🔥 Response Error:", errorInfo);
 
-      if (response.status === 401)
-        if (typeof window !== "undefined") deleteCookie("streple_auth_token");
+      if (response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+
+        if (!isRefreshing) {
+          isRefreshing = true;
+          if (process.env.NODE_ENV === "development")
+            console.log("Attempting to refresh access token...");
+          try {
+            const refreshToken = (await cookies()).get(
+              "streple_refresh_token"
+            )?.value;
+
+            if (!refreshToken) {
+              (await cookies()).delete("streple_auth_token");
+              (await cookies()).delete("streple_refresh_token");
+              return redirect("/login");
+            }
+
+            const refreshResponse = await axios.post(
+              `${base_url}/auth/refresh`,
+              {
+                token: refreshToken,
+              }
+            );
+
+            const { streple_auth_token: newAccessToken } = refreshResponse.data;
+
+            (await cookies()).set("streple_auth_token", newAccessToken, {
+              // httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "lax",
+              expires: new Date(Date.now() + 60 * 60 * 1000),
+              path: "/",
+            });
+
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${newAccessToken}`;
+
+            // Re-run all the requests that were queued up
+            failedRequestsQueue.forEach((callback) => callback(newAccessToken));
+            failedRequestsQueue = []; // Clear the queue
+
+            isRefreshing = false;
+
+            // Re-try the original failed request with the new token
+            originalRequest.headers[
+              "Authorization"
+            ] = `Bearer ${newAccessToken}`;
+            return api(originalRequest);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } catch (refreshError: any) {
+            console.error("❌ Token refresh failed:", refreshError);
+
+            failedRequestsQueue = [];
+            isRefreshing = false;
+
+            (await cookies()).delete("streple_auth_token");
+            (await cookies()).delete("streple_refresh_token");
+            return redirect("/login");
+          }
+        }
+
+        // If a refresh is already in progress, add the failed request to a queue
+        return new Promise((resolve) => {
+          failedRequestsQueue.push((token) => {
+            originalRequest.headers["Authorization"] = `Bearer ${token}`;
+            resolve(api(originalRequest));
+          });
+        });
+      }
     } else if (request) {
       console.error("🌐 Network Error:", {
         message: "No response received",
         url: config?.url,
         duration: `${duration}ms`,
       });
-      const networkError = createNetworkError(error, config, duration);
+      const networkError = createNetworkError(error, originalRequest, duration);
       return Promise.reject(networkError);
     } else console.error("⚙️ Request Setup Error:", error.message);
 
@@ -101,87 +175,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-
-function createNetworkError(
-  error: AxiosError,
-  config: CustomAxiosRequestConfig,
-  duration: number
-) {
-  const baseError = {
-    type: "NETWORK_ERROR",
-    timestamp: new Date().toISOString(),
-    url: config?.url,
-    method: config?.method?.toUpperCase(),
-    duration: `${duration}ms`,
-  };
-
-  if (error.code === "ECONNABORTED")
-    return {
-      ...baseError,
-      subType: "TIMEOUT",
-      message:
-        "The request timed out. Please check your internet connection and try again.",
-      userMessage: "Request timed out. Please try again.",
-      code: "TIMEOUT_ERROR",
-    };
-
-  if (error.code === "ENOTFOUND" || error.code === "EAI_AGAIN")
-    return {
-      ...baseError,
-      subType: "DNS_ERROR",
-      message:
-        "Unable to resolve the server address. Please check your internet connection.",
-      userMessage:
-        "Cannot connect to server. Please check your internet connection.",
-      code: "DNS_RESOLUTION_ERROR",
-    };
-
-  if (error.code === "ECONNREFUSED")
-    return {
-      ...baseError,
-      subType: "CONNECTION_REFUSED",
-      message:
-        "The server refused the connection. The service might be temporarily unavailable.",
-      userMessage: "Service temporarily unavailable. Please try again later.",
-      code: "CONNECTION_REFUSED_ERROR",
-    };
-
-  if (error.code === "ECONNRESET")
-    return {
-      ...baseError,
-      subType: "CONNECTION_RESET",
-      message:
-        "The connection was reset by the server. This might be a temporary issue.",
-      userMessage: "Connection interrupted. Please try again.",
-      code: "CONNECTION_RESET_ERROR",
-    };
-
-  if (error.code === "EHOSTUNREACH")
-    return {
-      ...baseError,
-      subType: "HOST_UNREACHABLE",
-      message:
-        "The server is unreachable. Please check your network connection.",
-      userMessage: "Cannot reach server. Please check your connection.",
-      code: "HOST_UNREACHABLE_ERROR",
-    };
-
-  if (error.code === "ENETUNREACH")
-    return {
-      ...baseError,
-      subType: "NETWORK_UNREACHABLE",
-      message: "Network is unreachable. Please check your internet connection.",
-      userMessage: "No internet connection. Please check your network.",
-      code: "NETWORK_UNREACHABLE_ERROR",
-    };
-
-  return {
-    ...baseError,
-    subType: "UNKNOWN_NETWORK_ERROR",
-    message:
-      "A network error occurred. Please check your internet connection and try again.",
-    userMessage: "Connection failed. Please try again.",
-    code: "UNKNOWN_NETWORK_ERROR",
-    originalError: error.message,
-  };
-}
