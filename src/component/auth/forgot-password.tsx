@@ -6,7 +6,7 @@ import {
   resendOtp,
   resetPassword,
   verifyOtp,
-} from "@/utils/action";
+} from "@/utils/api/action";
 import { focusToNextInput } from "@/utils/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";

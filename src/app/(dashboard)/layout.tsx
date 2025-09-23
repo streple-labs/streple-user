@@ -1,6 +1,6 @@
-import MobileNav from "@/component/dashboard/mobile-nav";
-import { HomeNavbar } from "@/component/dashboard/nav";
-import { HomeSidebar } from "@/component/dashboard/sidebar";
+import MobileNav from "@/component/layout/mobile-nav-main";
+import HomeNavbar from "@/component/layout/nav-main";
+import HomeSidebar from "@/component/layout/sidebar-main";
 import Onboarding from "@/component/popups/onboarding";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

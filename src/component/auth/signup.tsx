@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { resendOtp, signup, verifyOtp } from "@/utils/action";
+import { resendOtp, signup, verifyOtp } from "@/utils/api/action";
 import { RE_DIGIT } from "@/utils/constants";
 import { focusToNextInput } from "@/utils/utils";
 import { useMutation } from "@tanstack/react-query";
@@ -10,8 +10,11 @@ import { toast } from "sonner";
 import OtpForm from "./otp-form";
 import SignupForm from "./signup-form";
 import Success from "./success";
+import { useSearchParams } from "next/navigation";
 
 export default function Signup() {
+  const searchParams = useSearchParams();
+
   const [stage, setStage] = useState<"form" | "otp" | "success">("form");
 
   const [otp, setOtp] = useState("");
@@ -107,7 +110,12 @@ export default function Signup() {
 
   const { mutate: handleSignUp, isPending: signupLoading } = useMutation({
     mutationKey: ["signup"],
-    mutationFn: async () => await signup(formData),
+    mutationFn: async () =>
+      await signup({
+        ...formData,
+        email: formData.email.trim().toLowerCase(),
+        referral: searchParams.get("ref") || "",
+      }),
     onSuccess: (res) => {
       if (res.success) {
         toast.success(

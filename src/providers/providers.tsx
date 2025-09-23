@@ -1,16 +1,25 @@
 "use client";
 
+import { Next13ProgressBar } from "next13-progressbar";
 import { Toaster } from "sonner";
 import QueryProvider from "./query-provider";
 import { AuthProvider } from "../context/auth-context";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <QueryProvider>
-      <AuthProvider>
-        <Toaster position="bottom-right" />
-        {children}
-      </AuthProvider>
-    </QueryProvider>
+    <>
+      <Next13ProgressBar
+        height="4px"
+        color="#B39FF0"
+        options={{ showSpinner: false }}
+        showOnShallow={true}
+      />
+      <QueryProvider>
+        <AuthProvider>
+          <Toaster position="bottom-right" />
+          {children}
+        </AuthProvider>
+      </QueryProvider>
+    </>
   );
 }

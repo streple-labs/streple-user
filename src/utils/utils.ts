@@ -1,9 +1,11 @@
-import { AxiosError, InternalAxiosRequestConfig } from "axios";
+import { CustomAxiosRequestConfig } from "@/types/auth";
+import { AxiosError } from "axios";
 
-interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
-  metadata?: {
-    startTime: Date;
-  };
+export class AuthenticationError extends Error {
+  constructor(message: string = "Authentication failed") {
+    super(message);
+    this.name = "AuthenticationError";
+  }
 }
 
 export function createNetworkError(
@@ -136,4 +138,11 @@ export const formatFileSize = (bytes: number) => {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+};
+
+export const formatChartDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${month}/${day}`;
 };

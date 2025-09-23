@@ -27,11 +27,8 @@ export function middleware(request: NextRequest) {
       const data = jwtDecode(authTokens) as UserType;
       const isExpired = dayjs.unix(data.exp).diff(dayjs()) < 1;
 
-      if (!isExpired) {
-        isAuthenticated = true;
-      } else {
-        deleteCookie("streple_auth_token", { req: request, res: response });
-      }
+      if (!isExpired) isAuthenticated = true;
+      else deleteCookie("streple_auth_token", { req: request, res: response });
     } catch (error) {
       console.error("Failed to decode JWT:", error);
     }

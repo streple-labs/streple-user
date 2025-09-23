@@ -2,8 +2,8 @@
 "use client";
 
 import { anton } from "@/app/fonts";
-import { login } from "@/utils/action";
-import { base_url } from "@/utils/constants";
+import { login, resendOtp, verifyOtp } from "@/utils/api/action";
+import { base_url, RE_DIGIT } from "@/utils/constants";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,11 +13,15 @@ import { toast } from "sonner";
 import GoogleIcon from "../icons/google-icon";
 import Loader from "../ui/loader";
 import { useAuth } from "@/context/auth-context";
+import { focusToNextInput } from "@/utils/utils";
+import OtpForm from "./otp-form";
 
 export default function Login() {
   const router = useRouter();
 
   const { setUser, user } = useAuth();
+
+  const [showOtpForm, setShowOtpForm] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -32,12 +36,87 @@ export default function Login() {
 
   const { mutate: handleLogin, isPending: loading } = useMutation({
     mutationKey: ["login"],
-    mutationFn: async () => await login(formData),
+    mutationFn: async () =>
+      await login({
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
+      }),
     onSuccess: (res) => {
       if (res.success) {
         router.push("/");
         toast.success(res.message);
         setUser({ ...user, user_data: res.user_data });
+      } else {
+        if (res.status === 403 && res.message === "Email not verified") {
+          handleResendOtp();
+          setShowOtpForm(true);
+        }
+        toast.error(res.message);
+      }
+    },
+    onError: (error: any) => {
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
+    },
+  });
+
+  const [otp, setOtp] = useState("");
+
+  const handleOTPChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    idx: number
+  ) => {
+    const target = e.target;
+    let targetValue = target.value.trim();
+    const isTargetValueDigit = RE_DIGIT.test(targetValue);
+
+    if (!isTargetValueDigit && targetValue !== "") return;
+
+    const nextInputEl = target.nextElementSibling as HTMLInputElement | null;
+
+    // only delete digit if next input element has no value
+    if (!isTargetValueDigit && nextInputEl && nextInputEl.value !== "") return;
+
+    targetValue = isTargetValueDigit ? targetValue : " ";
+
+    const targetValueLength = targetValue.length;
+
+    if (targetValueLength === 1) {
+      const newValue =
+        otp.substring(0, idx) + targetValue + otp.substring(idx + 1);
+
+      setOtp(newValue);
+
+      if (!isTargetValueDigit) return;
+
+      focusToNextInput(target);
+    } else if (targetValueLength === 6) {
+      setOtp(targetValue);
+
+      target.blur();
+    }
+  };
+
+  const {
+    mutate: handleVerifyToken,
+    isPending: otpLoading,
+    isError: isOtpError,
+    error: otpError,
+  } = useMutation({
+    mutationKey: ["verify-otp"],
+    mutationFn: async () =>
+      await verifyOtp(
+        {
+          otp,
+          email: formData.email.trim().toLowerCase(),
+        },
+        "verify"
+      ),
+    onSuccess: (res) => {
+      if (res.success) {
+        toast.success(res.message || "OTP verification successful.");
+        setShowOtpForm(false);
+        handleLogin();
       } else toast.error(res.message);
     },
     onError: (error: any) => {
@@ -45,6 +124,44 @@ export default function Login() {
       toast.error("An unexpected error occurred. Please try again.");
     },
   });
+
+  const { mutate: handleResendOtp, isPending: isResendLoading } = useMutation({
+    mutationKey: ["resend-otp"],
+    mutationFn: async () =>
+      await resendOtp({
+        email: formData.email.trim().toLowerCase(),
+        purpose: "verify",
+      }),
+    onSuccess: (res) => {
+      if (res.success) {
+        toast.success(
+          res.message || "OTP sent successfully. Please check your email."
+        );
+      } else toast.error(res.message);
+    },
+    onError: (error: any) => {
+      console.error(error);
+      toast.error("An unexpected error occurred. Please try again.");
+    },
+  });
+
+  if (showOtpForm)
+    return (
+      <OtpForm
+        title="Verify OTP"
+        description={`We sent a code to ${formData.email}. Enter code to verify your email address`}
+        action={{
+          handleVerifyToken,
+          loading: otpLoading,
+          isError: isOtpError,
+          error: otpError,
+        }}
+        handleChange={handleOTPChange}
+        value={otp}
+        handleResend={handleResendOtp}
+        isResendLoading={isResendLoading}
+      />
+    );
 
   return (
     <form
@@ -82,6 +199,7 @@ export default function Login() {
               Email address
             </p>
             <input
+              disabled={loading || otpLoading}
               value={formData.email}
               name="email"
               onChange={handleChange}
@@ -104,7 +222,7 @@ export default function Login() {
             <div className="flex flex-col gap-2 w-full">
               <span className="relative">
                 <input
-                  // pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!.%*?&])[A-Za-z\d@$!.%*?&]{8,}$"
+                  disabled={loading || otpLoading}
                   title="Password must be at least 8 characters long and include uppercase, lowercase, number, and special character"
                   value={formData.password}
                   name="password"
@@ -141,7 +259,7 @@ export default function Login() {
       </div>
       <div className="flex items-center justify-center flex-col gap-6 w-full">
         <button
-          disabled={loading}
+          disabled={loading || otpLoading}
           className="w-full py-3 px-4 rounded-[10px] md:rounded-[20px] h-[61px] md:h-[84px] bg-[#B39FF0] hover:bg-[#B39FF0]/90 text-[#2C2C26] text-base md:text-xl font-bold leading-[150%] tracking-[2px] flex items-center justify-center"
           title="login"
           type="submit"

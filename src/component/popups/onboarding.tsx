@@ -2,7 +2,7 @@
 
 import { anton } from "@/app/fonts";
 import { useAuth } from "@/context/auth-context";
-import { updateUser } from "@/utils/action";
+import { updateUser } from "@/utils/api/action";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";

@@ -5,7 +5,7 @@ import { IoWifi } from "react-icons/io5";
 import { LuArrowRightLeft, LuEyeClosed } from "react-icons/lu";
 import { RiLightbulbFlashLine } from "react-icons/ri";
 import { anton } from "../fonts";
-import DoughnutChart from "@/component/dashboard/dougnut-chart";
+import DoughnutChart from "@/component/layout/dougnut-chart";
 import { useAuth } from "@/context/auth-context";
 
 export default function Home() {

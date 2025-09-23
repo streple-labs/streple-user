@@ -21,14 +21,14 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center">
+    <div className="fixed inset-0 size-full z-[999] flex items-center justify-center">
       <div
         className="absolute inset-0 bg-black/50 cursor-pointer"
         onClick={onClose}
       />
 
       <div
-        className="overflow-y-auto hide-scrollbar"
+        className="w-full h-screen overflow-y-auto hide-scrollbar flex items-center justify-center"
         onClick={(e) => e.stopPropagation()}
       >
         {children}

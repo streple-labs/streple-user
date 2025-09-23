@@ -1,4 +1,4 @@
-import { Open_Sans, Anton, Roboto, DM_Sans } from "next/font/google";
+import { Anton, DM_Sans, Open_Sans, Roboto } from "next/font/google";
 import localFont from "next/font/local";
 
 export const openSans = Open_Sans({
@@ -35,6 +35,27 @@ export const baloo = localFont({
     },
     {
       path: "../assets/fonts/Baloo-Regular.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-baloo",
+});
+
+export const bazinga = localFont({
+  src: [
+    {
+      path: "../assets/fonts/Bazinga-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Bazinga-Regular.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Bazinga-Regular.otf",
       weight: "700",
       style: "normal",
     },

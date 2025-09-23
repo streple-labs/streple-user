@@ -1,13 +1,17 @@
 "use client";
 
-import { clearToken, getSession } from "@/utils/queries";
+import {
+  clearToken,
+  getSession,
+  getUserGameProgress,
+} from "@/utils/api/queries";
 import { useQuery } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
 interface User {
   user_data: UserData | null;
-  game_data: GamificationData | null;
+  game_data: GamificationData;
 }
 
 interface AuthState {
@@ -29,7 +33,15 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, setState] = useState<AuthState>({
-    user: { user_data: null, game_data: null },
+    user: {
+      user_data: null,
+      game_data: {
+        phase: 1,
+        level: 0,
+        totalScore: 0,
+        hasAnswer: true,
+      },
+    },
     isAuthenticated: false,
     isLoading: true,
   });
@@ -38,7 +50,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     await clearToken();
 
     setState({
-      user: { user_data: null, game_data: null },
+      user: {
+        user_data: null,
+        game_data: {
+          phase: 0,
+          level: 0,
+          totalScore: 0,
+          hasAnswer: true,
+        },
+      },
       isAuthenticated: false,
       isLoading: false,
     });
@@ -57,20 +77,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     queryKey: ["fetch-user"],
     queryFn: async () => {
       const token = getCookie("streple_auth_token");
-      if (!token) return;
+      if (!token) return null;
       try {
-        const res = await getSession();
+        const [user, game] = await Promise.all([
+          getSession(),
+          getUserGameProgress(),
+        ]);
 
-        if (res.success) {
+        if (user && game)
           setState((prev) => ({
             ...prev,
             isLoading: false,
             isAuthenticated: true,
-            user: { ...state.user, user_data: res.user_data },
+            user: {
+              user_data: user.user_data,
+              game_data: {
+                phase: Number(game.game_data?.phase.split(" ")[1]) || 1,
+                level: Number(game.game_data?.level.split(" ")[1]) || 0,
+                totalScore: game.game_data?.totalScore || 0,
+                hasAnswer: game.game_data?.hasAnswer || false,
+              },
+            },
           }));
-        } else setState((prev) => ({ ...prev, isLoading: false }));
+        else setState((prev) => ({ ...prev, isLoading: false }));
 
-        return res.user_data;
+        return null;
       } catch (error) {
         console.error("Auth initialization error:", error);
         await logout();
