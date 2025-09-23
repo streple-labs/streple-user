@@ -2,6 +2,7 @@ import Providers from "@/providers/providers";
 import type { Metadata, Viewport } from "next";
 import { openSans } from "./fonts";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Streple | Copy Top Traders and Earn Smarter",
@@ -59,6 +60,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Analytics />
       <Providers>
         <body className={`${openSans.className} antialiased`}>{children}</body>
       </Providers>
