@@ -534,7 +534,7 @@ function CryptoTest({
                       : `00:${timer}`}
                   </button>
 
-                  <p className="text-base md:hidden font-semibold">
+                  <p className="text-base md:hidden w-full text-center font-semibold">
                     {quizFormQuestions[courseStage - 6].info}
                   </p>
 
@@ -555,7 +555,7 @@ function CryptoTest({
                   </button>
                 </div>
 
-                <p className="max-md:hidden text-xl font-semibold">
+                <p className="max-md:hidden text-xl w-full text-center font-semibold">
                   {quizFormQuestions[courseStage - 6].info}
                 </p>
               </div>

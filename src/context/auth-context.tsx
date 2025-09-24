@@ -74,7 +74,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const {} = useQuery({
-    queryKey: ["fetch-user"],
+    queryKey: ["fetch-user", getCookie("streple_auth_token")],
+    enabled: !!getCookie("streple_auth_token"),
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       const token = getCookie("streple_auth_token");
       if (!token) return null;

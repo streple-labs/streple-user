@@ -326,7 +326,7 @@ function CryptoTest({
   }, [courseStage, quizResults]);
 
   return (
-    <div className="size-full bg-[#141314] flex flex-col gap-4 sm:gap-8 md:gap-16 relative pt-20">
+    <div className="w-full min-h-screen bg-[#141314] flex flex-col gap-4 sm:gap-8 md:gap-16 relative pt-20">
       <span className="md:hidden w-full px-4">
         <GoX onClick={close} width={12} color="#FFFFFFCC" />
       </span>
@@ -534,7 +534,7 @@ function CryptoTest({
                       : `00:${timer}`}
                   </button>
 
-                  <p className="text-base md:hidden font-semibold">
+                  <p className="text-base md:hidden text-center w-full font-semibold">
                     {quizFormQuestions[courseStage - 6].info}
                   </p>
 
@@ -555,7 +555,7 @@ function CryptoTest({
                   </button>
                 </div>
 
-                <p className="max-md:hidden text-xl font-semibold">
+                <p className="max-md:hidden text-xl text-center w-full font-semibold">
                   {quizFormQuestions[courseStage - 6].info}
                 </p>
               </div>
