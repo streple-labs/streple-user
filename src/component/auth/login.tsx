@@ -2,18 +2,17 @@
 "use client";
 
 import { anton } from "@/app/fonts";
+import { useAuth } from "@/context/auth-context";
 import { login, resendOtp, verifyOtp } from "@/utils/api/action";
-import { base_url, RE_DIGIT } from "@/utils/constants";
+import { RE_DIGIT } from "@/utils/constants";
+import { focusToNextInput } from "@/utils/utils";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { toast } from "sonner";
-import GoogleIcon from "../icons/google-icon";
 import Loader from "../ui/loader";
-import { useAuth } from "@/context/auth-context";
-import { focusToNextInput } from "@/utils/utils";
 import OtpForm from "./otp-form";
 
 export default function Login() {
@@ -178,7 +177,7 @@ export default function Login() {
           Welcome back
         </h4>
         <div className="w-full flex flex-col gap-4 md:gap-6">
-          <div
+          {/* <div
             onClick={() => (window.location.href = `${base_url}/auth/google`)}
             className="h-[55px] md:h-[82px] cursor-pointer w-full text-base px-6 py-5 rounded-[10px] md:rounded-[20px] gap-4 bg-[#242324] flex items-center justify-center"
           >
@@ -192,7 +191,7 @@ export default function Login() {
             <span className="h-[1px] bg-[#FFFFFF33] rounded-full w-full" />
             Or
             <span className="h-[1px] bg-[#FFFFFF33] rounded-full w-full" />
-          </span>
+          </span> */}
 
           <label className="space-y-1.5 md:space-y-3">
             <p className="font-normal text-sm md:text-base leading-6 tracking-[1px]">
@@ -266,7 +265,7 @@ export default function Login() {
         >
           {loading ? <Loader /> : "Continue"}
         </button>
-        <p className="text-sm leading-[25px] tracking-[1px]">
+        {/* <p className="text-sm leading-[25px] tracking-[1px]">
           Don&apos;t have an account?{" "}
           <Link
             href={"/signup"}
@@ -274,7 +273,7 @@ export default function Login() {
           >
             Create account
           </Link>
-        </p>
+        </p> */}
       </div>
     </form>
   );
