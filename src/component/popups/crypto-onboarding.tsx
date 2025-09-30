@@ -568,7 +568,7 @@ function CryptoCourse({
   );
 
   return (
-    <div className="size-full flex flex-col relative pt-20 px-4">
+    <div className="size-full flex flex-col relative pt-10 px-4">
       {courseStage === "welcome" && (
         <span
           className="absolute top-4 left-4 md:top-20 md:left-20 lg:top-30 lg:left-40 cursor-pointer"
@@ -728,12 +728,12 @@ function CryptoCourse({
             </div>
           </div>
 
-          <div className="flex flex-col items-end gap-10 w-full max-w-5xl mx-auto">
+          <div className="flex flex-col items-end gap-8 w-full max-w-5xl mx-auto">
             <div className="relative flex items-center justify-center w-full aspect-video">
               <VideoWrapper className="absolute size-full" />
 
               <video
-                className="size-full max-md:mt-6 md:size-[80%] object-cover relative rounded-2xl"
+                className="size-full max-md:mt-6 md:size-[75%] object-cover relative rounded-2xl"
                 controls
                 autoPlay
                 playsInline
@@ -809,7 +809,7 @@ function CryptoTest({
   }, [courseStage, quizResults]);
 
   return (
-    <div className="size-full min-h-screen flex flex-col gap-4 sm:gap-8 md:gap-16 relative pt-20">
+    <div className="w-full min-h-screen flex flex-col gap-4 sm:gap-8 md:gap-16 relative pt-20">
       <span className="md:hidden w-full px-4">
         <GoX onClick={close} width={12} color="#FFFFFFCC" />
       </span>
