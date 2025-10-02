@@ -38,7 +38,7 @@ export default function OtpForm({
     return items;
   }, [value]);
 
-  const [timer, setTimer] = useState(120);
+  const [timer, setTimer] = useState(90);
 
   useEffect(() => {
     if (timer === 0) return;
@@ -146,7 +146,7 @@ export default function OtpForm({
               className="text-[#B39FF0] underline disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => {
                 handleResend();
-                setTimer(120);
+                setTimer(90);
               }}
               disabled={isResendLoading}
             >

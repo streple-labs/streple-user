@@ -15,6 +15,11 @@ const nav_items = [
     href: "/",
   },
   {
+    name: "Learn to Earn",
+    icon: BulbIcon,
+    href: "/learn-to-earn",
+  },
+  {
     name: "Wallet",
     icon: GroupIcon,
     href: "#",
