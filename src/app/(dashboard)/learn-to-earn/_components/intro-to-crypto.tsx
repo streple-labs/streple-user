@@ -114,22 +114,32 @@ export default function IntroToCrypto() {
                 } py-4 px-2 rounded-[15px] flex items-center justify-between cursor-pointer`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="size-6 border border-white/20 flex items-center justify-center rounded-full text-sm/[22px] tracking-[3%] text-white/80">
+                  <span
+                    className={`size-6 border border-white/20 flex items-center justify-center rounded-full text-sm/[22px] tracking-[3%] ${
+                      game_data.level < i + 1
+                        ? "text-white/30"
+                        : "text-white/80"
+                    }`}
+                  >
                     {i * 2 + 1}
                   </span>
 
                   <p
-                    className={`${
-                      game_data.level > i + 1 && "line-through"
-                    } text-sm/[22px] text-white/80 max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap`}
+                    className={`${game_data.level > i + 1 && "line-through"}
+                    ${
+                      game_data.level < i + 1
+                        ? "text-white/30"
+                        : "text-white/80"
+                    }
+                     text-sm/[22px] max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap`}
                   >
                     {course_data[phase][i].title}
                   </p>
                 </div>
                 <p
-                  className={`${
-                    game_data.level > i + 1 && "line-through"
-                  } text-xs/[22px] tracking-[3%] text-white/40`}
+                  className={`${game_data.level > i + 1 && "line-through"}
+                  ${game_data.level < i + 1 ? "text-white/30" : "text-white/40"}
+                   text-xs/[22px] tracking-[3%]`}
                 >
                   2 mins
                 </p>
@@ -153,22 +163,32 @@ export default function IntroToCrypto() {
                 } py-4 px-2 rounded-[15px] flex items-center justify-between cursor-pointer`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="size-6 border border-white/20 flex items-center justify-center rounded-full text-sm/[22px] tracking-[3%] text-white/80">
+                  <span
+                    className={`size-6 border border-white/20 flex items-center justify-center rounded-full text-sm/[22px] tracking-[3%] ${
+                      game_data.level < i + 1
+                        ? "text-white/30"
+                        : "text-white/80"
+                    }`}
+                  >
                     {i * 2 + 2}
                   </span>
 
                   <p
-                    className={`${
-                      game_data.level > i + 1 && "line-through"
-                    } text-sm/[22px] text-white/80 max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap`}
+                    className={`${game_data.level > i + 1 && "line-through"}
+                    ${
+                      game_data.level < i + 1
+                        ? "text-white/30"
+                        : "text-white/80"
+                    }
+                     text-sm/[22px] max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap`}
                   >
                     Quiz
                   </p>
                 </div>
                 <p
-                  className={`${
-                    game_data.level > i + 1 && "line-through"
-                  } text-xs/[22px] tracking-[3%] text-white/40`}
+                  className={`${game_data.level > i + 1 && "line-through"}
+                  ${game_data.level < i + 1 ? "text-white/30" : "text-white/40"}
+                   text-xs/[22px] tracking-[3%]`}
                 >
                   5 mins
                 </p>
@@ -191,7 +211,8 @@ export default function IntroToCrypto() {
               className="size-6"
             />
             <p className="font-bold text-xl/10 tracking-[3%] text-white/60">
-              100 STRP
+              {10 * (game_data.level - 1) + 5 * (game_data.level - 1)} / 100
+              STRP
             </p>
           </div>
         </div>
