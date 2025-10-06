@@ -23,7 +23,7 @@ export default function Quiz({
   });
 
   const [quizFormQuestions] = useState(() =>
-    getRandomQuestions(test_data[phase][level], 1)
+    getRandomQuestions(test_data[phase][level - 1], 1)
   );
 
   return (

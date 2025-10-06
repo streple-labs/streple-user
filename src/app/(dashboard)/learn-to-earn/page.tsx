@@ -19,7 +19,14 @@ export default function Page() {
   );
 
   const UserCourses = useMemo(() => {
-    if (showSelectedCourse === 1) return <IntroToCrypto />;
+    if (showSelectedCourse === 1)
+      return (
+        <IntroToCrypto
+          close={() => {
+            setShowSelectedCourse(null);
+          }}
+        />
+      );
 
     return null;
   }, [showSelectedCourse]);
