@@ -8,6 +8,7 @@ import { anton } from "../fonts";
 import DoughnutChart from "@/component/layout/dougnut-chart";
 import { useAuth } from "@/context/auth-context";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const {
@@ -54,10 +55,13 @@ export default function Home() {
               <button className="h-[41px] w-[137px] flex items-center justify-center gap-2.5 py-2 px-4 bg-[#A082F9] text-[#1A1A1C] rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px]">
                 <GoArrowUp width={12} color="#1A1A1C" /> Deposit
               </button>
-              <button className="h-[41px] w-[137px] flex items-center justify-center gap-2.5 py-2 px-4 rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px] text-[#2C2C26] bg-[#EAE4FD] border border-black">
+              <Link
+                href="/send"
+                className="h-[41px] w-[137px] flex items-center justify-center gap-2.5 py-2 px-4 rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px] text-[#2C2C26] bg-[#EAE4FD] border border-black"
+              >
                 <GoArrowUpRight width={12} color="#2C2C26" />
                 Send
-              </button>
+              </Link>
             </div>
           </div>
           <div className="space-y-6">
