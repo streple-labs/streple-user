@@ -1,60 +1,46 @@
 import { anton } from "@/app/fonts";
 import { useAuth } from "@/context/auth-context";
 import { signs } from "@/utils/constants";
-import { SetStateAction, Dispatch, useState } from "react";
+import { Children, Dispatch, ReactNode, SetStateAction } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
-import SetOtp from "./set-otp";
-import Otp from "./otp";
 
 export default function CompleteTransactionModal({
+  children,
   closeModal,
   sendingAsset,
   receivingAsset,
   amount,
   recipient,
-  loading,
-  handleMakeTransaction,
+  transactionStage,
+  setTransactionStage,
+  saveAsBeneficiary,
+  setSaveAsBeneficiary,
 }: {
+  children: ReactNode;
   closeModal: () => void;
-  sendingAsset: "ngn" | "usdc" | "strp";
-  receivingAsset: "ngn" | "usdc" | "strp";
+  sendingAsset: Currency;
+  receivingAsset: Currency;
   amount: string;
   recipient: { name: string; username: string };
-  setSuccess: Dispatch<SetStateAction<boolean>>;
-  loading: boolean;
-  handleMakeTransaction: () => void;
+  transactionStage: "review" | "set-otp" | "otp";
+  setTransactionStage: Dispatch<SetStateAction<"review" | "set-otp" | "otp">>;
+  saveAsBeneficiary: boolean;
+  setSaveAsBeneficiary: Dispatch<SetStateAction<boolean>>;
 }) {
+  const allChildren = Children.toArray(children);
+
   const {
     user: { user_data },
   } = useAuth();
-
-  const [isChecked, setIsChecked] = useState(false);
-
-  const [stage, setStage] = useState<"review" | "set-otp" | "otp">("review");
-
-  const [otp, setOtp] = useState("");
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center size-full">
       <div className="absolute inset-0 bg-[#FFFFFF0D]" onClick={closeModal} />
 
-      {stage === "set-otp" ? (
-        <SetOtp
-          back={() => {
-            setStage("review");
-          }}
-          setOtp={setOtp}
-        />
-      ) : stage === "otp" ? (
-        <Otp
-          back={() => {
-            setStage("review");
-          }}
-          setOtp={setOtp}
-          otp={otp}
-          loading={loading}
-          handleMakeTransaction={handleMakeTransaction}
-        />
+      {transactionStage === "set-otp" ? (
+        allChildren[0]
+      ) : transactionStage === "otp" ? (
+        allChildren[1]
       ) : (
         <div className="relative flex flex-col items-center gap-8 rounded-[20px] p-8 bg-[#232324] w-full max-w-[564px]">
           <div className="flex items-center justify-between gap-4 w-full">
@@ -134,9 +120,9 @@ export default function CompleteTransactionModal({
               <label className="relative inline-block rounded-full w-[34px] h-[18px] bg-[#D2C808]">
                 <input
                   type="checkbox"
-                  checked={isChecked}
+                  checked={saveAsBeneficiary}
                   onChange={(e) => {
-                    setIsChecked(e.target.checked);
+                    setSaveAsBeneficiary(e.target.checked);
                   }}
                   className="hidden peer"
                 />
@@ -147,8 +133,8 @@ export default function CompleteTransactionModal({
 
           <button
             onClick={() => {
-              if (user_data?.hasTransactionPin) setStage("otp");
-              else setStage("set-otp");
+              if (user_data?.hasTransactionPin) setTransactionStage("otp");
+              else setTransactionStage("set-otp");
             }}
             className="h-[50px] max-w-[367px] w-full py-3 px-4 rounded-[20px] bg-[#B39FF0] bg-blend-luminosity text-base/[150%] font-bold tracking-[2px] text-[#2C2C26]"
           >

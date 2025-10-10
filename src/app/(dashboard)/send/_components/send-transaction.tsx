@@ -1,23 +1,22 @@
 import { anton, dmSans } from "@/app/fonts";
 import { signs } from "@/utils/constants";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Children, Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { FaChevronDown } from "react-icons/fa6";
-import SelectRecipient from "./select-recipient";
-import CompleteTransactionModal from "./complete-transaction-modal";
 
 export default function SendTransaction({
+  children,
   recipient,
   setRecipient,
   setReceivingAsset,
   receivingAsset,
   sendingAsset,
   setSendingAsset,
-  setSuccess,
   amount,
   setAmount,
-  loading,
-  handleMakeTransaction,
+  showCompleteTransactionModal,
+  setShowCompleteTransactionModal,
 }: {
+  children: ReactNode;
   recipient: { name: string; username: string; id: string } | undefined;
   setRecipient: Dispatch<
     SetStateAction<
@@ -29,44 +28,26 @@ export default function SendTransaction({
       | undefined
     >
   >;
-  sendingAsset: "ngn" | "usdc" | "strp";
-  setSendingAsset: Dispatch<SetStateAction<"strp" | "usdc" | "ngn">>;
-  receivingAsset: "ngn" | "usdc" | "strp";
-  setReceivingAsset: Dispatch<SetStateAction<"strp" | "usdc" | "ngn">>;
-  setSuccess: Dispatch<SetStateAction<boolean>>;
+  sendingAsset: Currency;
+  setSendingAsset: Dispatch<SetStateAction<Currency>>;
+  receivingAsset: Currency;
+  setReceivingAsset: Dispatch<SetStateAction<Currency>>;
   amount: string;
   setAmount: Dispatch<SetStateAction<string>>;
-  loading: boolean;
-  handleMakeTransaction: () => void;
+  showCompleteTransactionModal: boolean;
+  setShowCompleteTransactionModal: Dispatch<SetStateAction<boolean>>;
 }) {
+  const allChildren = Children.toArray(children);
+
   const [showSendingAssetOptions, setShowSendingAssetOptions] = useState(false);
   const [showReceivingAssetOptions, setShowReceivingAssetOptions] =
     useState(false);
 
-  const [showCompleteTransactionModal, setShowCompleteTransactionModal] =
-    useState(false);
-
-  if (!recipient)
-    return (
-      <SelectRecipient recipient={recipient} setRecipient={setRecipient} />
-    );
+  if (!recipient) return allChildren[0];
 
   return (
     <>
-      {showCompleteTransactionModal && (
-        <CompleteTransactionModal
-          amount={amount}
-          closeModal={() => {
-            setShowCompleteTransactionModal(false);
-          }}
-          receivingAsset={receivingAsset}
-          sendingAsset={sendingAsset}
-          recipient={recipient}
-          setSuccess={setSuccess}
-          loading={loading}
-          handleMakeTransaction={handleMakeTransaction}
-        />
-      )}
+      {showCompleteTransactionModal && allChildren[1]}
 
       <div className="p-8 rounded-[20px] bg-[#211F22] flex flex-col gap-8">
         <h2
@@ -148,7 +129,7 @@ export default function SendTransaction({
                         <p
                           className="py-2 px-3 text-base text-white/60 cursor-pointer rounded-[10px] hover:#FFFFFF0D"
                           onClick={() => {
-                            setSendingAsset("ngn");
+                            setSendingAsset("NGN");
                             setShowSendingAssetOptions(false);
                           }}
                         >
@@ -157,7 +138,7 @@ export default function SendTransaction({
                         <p
                           className="py-2 px-3 text-base text-white/60 cursor-pointer rounded-[10px] hover:#FFFFFF0D"
                           onClick={() => {
-                            setSendingAsset("usdc");
+                            setSendingAsset("USDC");
                             setShowSendingAssetOptions(false);
                           }}
                         >
@@ -166,7 +147,7 @@ export default function SendTransaction({
                         <p
                           className="py-2 px-3 text-base text-white/60 cursor-pointer rounded-[10px] hover:#FFFFFF0D"
                           onClick={() => {
-                            setSendingAsset("strp");
+                            setSendingAsset("STP");
                             setShowSendingAssetOptions(false);
                           }}
                         >
@@ -286,7 +267,7 @@ export default function SendTransaction({
                         <p
                           className="py-2 px-3 text-base text-white/60 cursor-pointer rounded-[10px] hover:#FFFFFF0D"
                           onClick={() => {
-                            setReceivingAsset("ngn");
+                            setReceivingAsset("NGN");
                             setShowReceivingAssetOptions(false);
                           }}
                         >
@@ -295,7 +276,7 @@ export default function SendTransaction({
                         <p
                           className="py-2 px-3 text-base text-white/60 cursor-pointer rounded-[10px] hover:#FFFFFF0D"
                           onClick={() => {
-                            setReceivingAsset("usdc");
+                            setReceivingAsset("USDC");
                             setShowReceivingAssetOptions(false);
                           }}
                         >
@@ -304,7 +285,7 @@ export default function SendTransaction({
                         <p
                           className="py-2 px-3 text-base text-white/60 cursor-pointer rounded-[10px] hover:#FFFFFF0D"
                           onClick={() => {
-                            setReceivingAsset("strp");
+                            setReceivingAsset("STP");
                             setShowReceivingAssetOptions(false);
                           }}
                         >

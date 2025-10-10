@@ -10,7 +10,7 @@ export const live_url =
 export const RE_DIGIT = new RegExp(/^\d+$/);
 
 export const signs = {
-  ngn: "₦",
-  usdc: "$",
-  strp: "S",
+  NGN: "₦",
+  USDC: "$",
+  STP: "S",
 };

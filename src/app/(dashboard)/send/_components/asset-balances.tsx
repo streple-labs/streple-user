@@ -8,8 +8,8 @@ export default function AssetBalances({
   setSendingAsset,
 }: {
   sendTo: null | "streple-user" | "bank" | "wallet" | "scan-code";
-  sendingAsset: "ngn" | "usdc" | "strp";
-  setSendingAsset: Dispatch<SetStateAction<"strp" | "usdc" | "ngn">>;
+  sendingAsset: Currency;
+  setSendingAsset: Dispatch<SetStateAction<Currency>>;
 }) {
   const {
     user: { assets },
@@ -23,10 +23,10 @@ export default function AssetBalances({
       <div className="space-y-4 w-full">
         <div
           onClick={() => {
-            setSendingAsset("strp");
+            setSendingAsset("STP");
           }}
           className={`rounded-[15px] p-px cursor-pointer ${
-            sendTo && sendingAsset === "strp"
+            sendTo && sendingAsset === "STP"
               ? "bg-[#B39FF0]"
               : "[background:linear-gradient(90deg,_rgba(255,255,255,0.28)_0%,_rgba(0,0,0,0.21)_100%)]"
           }`}
@@ -49,10 +49,10 @@ export default function AssetBalances({
         </div>
         <div
           onClick={() => {
-            setSendingAsset("usdc");
+            setSendingAsset("USDC");
           }}
           className={`rounded-[15px] p-px cursor-pointer ${
-            sendTo && sendingAsset === "usdc"
+            sendTo && sendingAsset === "USDC"
               ? "bg-[#B39FF0]"
               : "[background:linear-gradient(90deg,_rgba(255,255,255,0.28)_0%,_rgba(0,0,0,0.21)_100%)]"
           }`}
@@ -96,10 +96,10 @@ export default function AssetBalances({
         </div>
         <div
           onClick={() => {
-            setSendingAsset("ngn");
+            setSendingAsset("NGN");
           }}
           className={`rounded-[15px] p-px cursor-pointer ${
-            sendTo && sendingAsset === "ngn"
+            sendTo && sendingAsset === "NGN"
               ? "bg-[#B39FF0]"
               : "[background:linear-gradient(90deg,_rgba(255,255,255,0.28)_0%,_rgba(0,0,0,0.21)_100%)]"
           }`}
