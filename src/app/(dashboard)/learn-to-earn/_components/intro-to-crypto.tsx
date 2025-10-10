@@ -13,7 +13,7 @@ const phase = 1;
 
 export default function IntroToCrypto({ close }: { close: () => void }) {
   const {
-    user: { game_data, user_data },
+    user: { game_data, user_data, assets },
     setUser,
   } = useAuth();
 
@@ -58,6 +58,7 @@ export default function IntroToCrypto({ close }: { close: () => void }) {
               totalScore: game_data.totalScore + stpCollected,
               hasAnswer: true,
             },
+            assets: { ...assets },
           });
         if (level === 3) setShowSuccessScreen(true);
       } else toast.error(res.message);

@@ -61,9 +61,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Analytics />
-      <Providers>
-        <body className={`${openSans.className} antialiased`}>{children}</body>
-      </Providers>
+      <body className={`${openSans.className} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

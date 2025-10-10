@@ -3,6 +3,7 @@
 import {
   clearToken,
   getSession,
+  getUserAssetBalances,
   getUserGameProgress,
 } from "@/utils/api/queries";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +13,7 @@ import React, { createContext, ReactNode, useContext, useState } from "react";
 interface User {
   user_data: UserData | null;
   game_data: GamificationData;
+  assets: Wallets;
 }
 
 interface AuthState {
@@ -41,6 +43,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         totalScore: 0,
         hasAnswer: true,
       },
+      assets: {
+        totalUsd: 0,
+        wallets: {
+          NGN: { balance: 0, usdValue: 0 },
+          STP: { balance: 0, usdValue: 0 },
+          USDC: { balance: 0, usdValue: 0 },
+        },
+      },
     },
     isAuthenticated: false,
     isLoading: true,
@@ -57,6 +67,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           level: 0,
           totalScore: 0,
           hasAnswer: true,
+        },
+        assets: {
+          totalUsd: 0,
+          wallets: {
+            NGN: { balance: 0, usdValue: 0 },
+            STP: { balance: 0, usdValue: 0 },
+            USDC: { balance: 0, usdValue: 0 },
+          },
         },
       },
       isAuthenticated: false,
@@ -81,12 +99,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const token = getCookie("streple_auth_token");
       if (!token) return null;
       try {
-        const [user, game] = await Promise.all([
+        const [user, game, assets] = await Promise.all([
           getSession(),
           getUserGameProgress(),
+          getUserAssetBalances(),
         ]);
 
-        if (user && game)
+        if (user && game && assets)
           setState((prev) => ({
             ...prev,
             isLoading: false,
@@ -98,6 +117,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 level: Number(game.game_data?.level.split(" ")[1]) || 0,
                 totalScore: game.game_data?.totalScore || 0,
                 hasAnswer: game.game_data?.hasAnswer || false,
+              },
+              assets: {
+                totalUsd: Number(assets.assets?.totalUsd) || 0,
+                wallets: {
+                  NGN: {
+                    balance: Number(assets.assets?.wallets.NGN.balance) || 0,
+                    usdValue: Number(assets.assets?.wallets.NGN.usdValue) || 0,
+                  },
+                  STP: {
+                    balance: Number(assets.assets?.wallets.STP.balance) || 0,
+                    usdValue: Number(assets.assets?.wallets.STP.usdValue) || 0,
+                  },
+                  USDC: {
+                    balance: Number(assets.assets?.wallets.USDC.balance) || 0,
+                    usdValue: Number(assets.assets?.wallets.USDC.usdValue) || 0,
+                  },
+                },
               },
             },
           }));

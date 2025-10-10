@@ -1,5 +1,5 @@
-import { CustomAxiosRequestConfig } from "@/types/auth";
 import { AxiosError } from "axios";
+import { CustomAxiosRequestConfig } from "./api/axios";
 
 export class AuthenticationError extends Error {
   constructor(message: string = "Authentication failed") {

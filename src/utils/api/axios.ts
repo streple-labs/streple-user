@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 import { base_url } from "../constants";
 import { AuthenticationError, createNetworkError } from "../utils";
 
-interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+export interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   metadata?: {
     startTime: Date;
   };

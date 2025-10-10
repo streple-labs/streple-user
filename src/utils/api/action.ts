@@ -209,6 +209,29 @@ export const updateUser = async (userData: Partial<UserData>) => {
   }
 };
 
+export const updateTransactionPin = async (pin: string) => {
+  try {
+    const res = await api.post("/users/transaction-pin", { pin });
+
+    return {
+      success: true,
+      message: res.data.message,
+    };
+  } catch (error: any) {
+    let errorMessage =
+      "Error updating your transaction pin, Please try again later.";
+
+    if (error?.response?.data?.message) {
+      if (Array.isArray(error.response.data.message))
+        errorMessage = error.response.data.message.join(", ");
+      else errorMessage = error.response.data.message;
+    } else if (error?.userMessage) errorMessage = error.userMessage;
+    else if (error?.message) errorMessage = error.message;
+
+    return { success: false, message: errorMessage };
+  }
+};
+
 export const handleCryptoOnboarding = async (payload: {
   firstQuestion: string;
   secondQuestion: string;
@@ -283,5 +306,29 @@ export const followTrader = async (formData: FollowTraderPayload) => {
     else if (error?.message) errorMessage = error.message;
 
     return { success: false, message: errorMessage };
+  }
+};
+
+export const performTransaction = async (payload: TransactionPayload) => {
+  try {
+    const res = await api.post("/internal-transfer", payload);
+
+    return {
+      success: true,
+      message: "Transfer successful",
+      receipt: res.data,
+    };
+  } catch (error: any) {
+    let errorMessage =
+      "Error following making transaction, Please try again later.";
+
+    if (error?.response?.data?.message) {
+      if (Array.isArray(error.response.data.message))
+        errorMessage = error.response.data.message.join(", ");
+      else errorMessage = error.response.data.message;
+    } else if (error?.userMessage) errorMessage = error.userMessage;
+    else if (error?.message) errorMessage = error.message;
+
+    return { success: false, message: errorMessage, receipt: null };
   }
 };

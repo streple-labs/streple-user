@@ -1,5 +1,8 @@
 import { anton } from "@/app/fonts";
-import React, { Dispatch, SetStateAction } from "react";
+import Loader from "@/component/ui/loader";
+import { getRecentTransactions } from "@/utils/api/queries";
+import { useQuery } from "@tanstack/react-query";
+import { Dispatch, SetStateAction, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 
 export default function SendTo({
@@ -14,11 +17,20 @@ export default function SendTo({
       | {
           name: string;
           username: string;
+          id: string;
         }
       | undefined
     >
   >;
 }) {
+  const [searchTransactions, setSearchTransactions] = useState("");
+
+  const { data: recentTransactions, isPending: isRecentTransactionPending } =
+    useQuery({
+      queryKey: ["recent-transactions"],
+      queryFn: async () => await getRecentTransactions(),
+    });
+
   return (
     <div className="p-8 rounded-[20px] bg-[#211F22] flex flex-col gap-8">
       <div className="space-y-6 w-full">
@@ -137,10 +149,12 @@ export default function SendTo({
           </h6>
           <div className="w-full relative max-w-[593px]">
             <input
+              value={searchTransactions}
+              onChange={(e) => setSearchTransactions(e.target.value)}
               name="search"
-              title="search for traders"
+              title="search for recipients"
               type="text"
-              placeholder="search for traders"
+              placeholder="search for recipients"
               className={`h-[50px] w-full text-base font-normal py-5 px-4 rounded-3xl border border-white/10 gap-4 leading-6 tracking-[1px] placeholder:text-xs placeholder:text-white/50 placeholder:font-bold outline-0 ring-0 caret-[#B39FF0] bg-transparent`}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer">
@@ -149,25 +163,55 @@ export default function SendTo({
           </div>
         </div>
         <div className="space-y-6 w-full">
-          {[
-            { name: "Obasi Anthony", username: "ObasiAnthony" },
-            { name: "Simon Fubara", username: "SimonFubara" },
-            { name: "Joshua Adebayo", username: "JoshuaAdebayo" },
-            { name: "Grace Olaniyan", username: "GraceOlaniyan" },
-          ].map((user, i) => (
+          {recentTransactions?.error && (
+            <p className="text-base text-center text-red-400 font-semibold mx-auto p-4">
+              {recentTransactions.error}
+            </p>
+          )}
+
+          {!searchTransactions && isRecentTransactionPending && (
+            <div className="p-8 flex items-center justify-center">
+              <Loader />
+            </div>
+          )}
+
+          {!searchTransactions &&
+            recentTransactions?.document?.length === 0 && (
+              <p className="text-base text-center font-semibold mx-auto p-4">
+                No recent transactions found
+              </p>
+            )}
+
+          {(searchTransactions
+            ? recentTransactions?.document?.filter((user) =>
+                user?.fullName
+                  ?.toLowerCase()
+                  .includes(searchTransactions.toLowerCase())
+              )
+            : recentTransactions?.document
+          )?.map((user, i) => (
             <div
               key={i}
               onClick={() => {
-                setRecipient(user);
+                setRecipient({
+                  username: user.username,
+                  name: user.fullName,
+                  id: user.id,
+                });
                 setSendTo("streple-user");
               }}
-              className="px-6 flex items-center gap-3"
+              className="px-6 flex items-center gap-3 cursor-pointer"
             >
-              <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">{`${user.name
-                .split(" ")[0]
-                .charAt(0)}${user.name.split(" ")[1].charAt(0)}`}</div>
+              <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">
+                {(() => {
+                  const names = user.fullName.trim().split(" ");
+                  const firstInitial = names[0]?.charAt(0) || "";
+                  const secondInitial = names[1]?.charAt(0) || "";
+                  return `${firstInitial}${secondInitial}`;
+                })()}
+              </div>{" "}
               <div className="space-y-2">
-                <p className="text-sm font-semibold">{user.name}</p>
+                <p className="text-sm font-semibold">{user.fullName}</p>
                 <p className="text-xs text-white/60">@{user.username}</p>
               </div>
             </div>

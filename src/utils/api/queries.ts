@@ -63,6 +63,47 @@ export const getUserGameProgress = async (): Promise<{
   }
 };
 
+export const getUserAssetBalances = async (): Promise<{
+  success: boolean;
+  message: string;
+  assets: Wallets | null;
+}> => {
+  try {
+    const res = await api.get("/user-balance");
+
+    return {
+      success: true,
+      message: "",
+      assets: res.data,
+    };
+  } catch (error: any) {
+    let errorMessage = "request failed. Please try again later.";
+    if (error?.response?.data?.message) {
+      if (Array.isArray(error.response.data.message))
+        errorMessage = error.response.data.message.join(", ");
+      else errorMessage = error.response.data.message;
+    } else if (error?.userMessage) errorMessage = error.userMessage;
+    else if (error?.message) errorMessage = error.message;
+    return { success: false, message: errorMessage, assets: null };
+  }
+};
+
+export const searchUsers = async (query: string) => {
+  const res = await api.get(`users/get-users?search=${query}`);
+
+  return res.data;
+};
+
+export const getRecentTransactions = async (): Promise<{
+  document: UserData[] | null;
+  error: string | null;
+}> => withServerActionAuth(async () => await api.get("/recent-transactions"));
+
+export const getBeneficiaries = async (): Promise<{
+  document: { data: UserData[] } | null;
+  error: string | null;
+}> => withServerActionAuth(async () => await api.get("/beneficiaries"));
+
 export const getProTraders = async (
   params?: Record<string, string | number>
 ): Promise<{

@@ -8,3 +8,9 @@ export const live_url =
   process.env.APP_VERCEL_URL || process.env.NEXT_PUBLIC_APP_VERCEL_URL;
 
 export const RE_DIGIT = new RegExp(/^\d+$/);
+
+export const signs = {
+  ngn: "₦",
+  usdc: "$",
+  strp: "S",
+};

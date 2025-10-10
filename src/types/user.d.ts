@@ -1,7 +1,22 @@
+type UserType = "Internal" | "External";
+
+type Gender = "MALE" | "FEMALE" | "OTHER";
+
+type UserStatus = "ACTIVE" | "INACTIVE" | "SUSPENDED";
+
+type UserRole = "FOLLOWER" | "LEADER" | "ADMIN";
+
+type SubscriptionPlan = "basic" | "premium" | "enterprise";
+
+type SubscriptionStatus = "active" | "inactive" | "canceled" | "expired";
+
+type Currency = "NGN" | "USDC" | "STP";
+
 interface UserData {
   id: string;
   email: string;
   fullName: string;
+  username: string;
   avatarUrl: string | null;
   isVerified: boolean;
   otpVerified: boolean;
@@ -16,6 +31,7 @@ interface UserData {
   demoFundingBalance: string;
   hasAnswer: boolean;
   refercode: null | string;
+  hasTransactionPin: boolean;
 }
 
 interface GamificationData {
@@ -23,4 +39,15 @@ interface GamificationData {
   level: number;
   totalScore: number;
   hasAnswer: boolean;
+}
+
+interface Wallets {
+  totalUsd: number;
+  wallets: Record<
+    Currency,
+    {
+      balance: number;
+      usdValue: number;
+    }
+  >;
 }

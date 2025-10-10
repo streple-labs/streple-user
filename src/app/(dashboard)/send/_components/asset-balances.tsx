@@ -12,7 +12,7 @@ export default function AssetBalances({
   setSendingAsset: Dispatch<SetStateAction<"strp" | "usdc" | "ngn">>;
 }) {
   const {
-    user: { game_data },
+    user: { assets },
   } = useAuth();
 
   return (
@@ -43,7 +43,7 @@ export default function AssetBalances({
               />
             </div>
             <p className="text-sm font-semibold leading-[22px] text-white/80">
-              STRP {game_data.totalScore}
+              STRP {assets.wallets["STP"].balance}
             </p>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function AssetBalances({
               </svg>
             </div>
             <p className="text-sm font-semibold leading-[22px] text-white/80">
-              USDC {game_data.totalScore}
+              USDC {assets.wallets["USDC"].balance}
             </p>
           </div>
         </div>
@@ -124,7 +124,7 @@ export default function AssetBalances({
               </svg>
             </div>
             <p className="text-sm font-semibold leading-[22px] text-white/80">
-              NGN {game_data.totalScore}
+              NGN {assets.wallets["NGN"].balance}
             </p>
           </div>
         </div>
