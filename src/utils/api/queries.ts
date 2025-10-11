@@ -95,12 +95,12 @@ export const searchUsers = async (query: string) => {
 };
 
 export const getRecentTransactions = async (): Promise<{
-  document: UserData[] | null;
+  document: { recipient: UserData }[] | null;
   error: string | null;
 }> => withServerActionAuth(async () => await api.get("/recent-transactions"));
 
 export const getBeneficiaries = async (): Promise<{
-  document: { data: UserData[] } | null;
+  document: { data: { recipient: UserData }[] } | null;
   error: string | null;
 }> => withServerActionAuth(async () => await api.get("/beneficiaries"));
 

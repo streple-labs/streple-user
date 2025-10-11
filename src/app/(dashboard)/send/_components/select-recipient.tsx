@@ -234,35 +234,35 @@ export default function SelectRecipient({
 
           {recipientType === "recent" &&
             (searchTransactions
-              ? recentTransactions?.document?.filter((user) =>
-                  user?.fullName
+              ? recentTransactions?.document?.filter(({ recipient }) =>
+                  recipient?.fullName
                     ?.toLowerCase()
                     .includes(searchTransactions.toLowerCase())
                 )
               : recentTransactions?.document
-            )?.map((user, i) => (
+            )?.map(({ recipient }, i) => (
               <div
                 key={i}
                 onClick={() => {
                   setRecipient({
-                    username: user.username,
-                    name: user.fullName,
-                    id: user.id,
+                    username: recipient.username,
+                    name: recipient.fullName,
+                    id: recipient.id,
                   });
                 }}
                 className="px-6 flex items-center gap-3 cursor-pointer"
               >
                 <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">
                   {(() => {
-                    const names = user.fullName.trim().split(" ");
+                    const names = recipient.fullName.trim().split(" ");
                     const firstInitial = names[0]?.charAt(0) || "";
                     const secondInitial = names[1]?.charAt(0) || "";
                     return `${firstInitial}${secondInitial}`;
                   })()}
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm font-semibold">{user.fullName}</p>
-                  <p className="text-xs text-white/60">@{user.username}</p>
+                  <p className="text-sm font-semibold">{recipient.fullName}</p>
+                  <p className="text-xs text-white/60">@{recipient.username}</p>
                 </div>
               </div>
             ))}
@@ -270,29 +270,34 @@ export default function SelectRecipient({
           {recipientType === "saved" &&
             (searchTransactions
               ? savedBeneficiaries?.document?.data.filter((user) =>
-                  user?.fullName
+                  user?.recipient?.fullName
                     ?.toLowerCase()
                     .includes(searchTransactions.toLowerCase())
                 )
               : savedBeneficiaries?.document?.data
-            )?.map((user: UserData, i: number) => (
+            )?.map(({ recipient }, i) => (
               <div
                 key={i}
                 onClick={() => {
                   setRecipient({
-                    username: user.username,
-                    name: user.fullName,
-                    id: user.id,
+                    username: recipient.username,
+                    name: recipient.fullName,
+                    id: recipient.id,
                   });
                 }}
                 className="px-6 flex items-center gap-3 cursor-pointer"
               >
-                <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">{`${user.fullName
-                  .split(" ")[0]
-                  .charAt(0)}${user.fullName.split(" ")[1].charAt(0)}`}</div>
+                <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">
+                  {(() => {
+                    const names = recipient.fullName.trim().split(" ");
+                    const firstInitial = names[0]?.charAt(0) || "";
+                    const secondInitial = names[1]?.charAt(0) || "";
+                    return `${firstInitial}${secondInitial}`;
+                  })()}
+                </div>
                 <div className="space-y-2">
-                  <p className="text-sm font-semibold">{user.fullName}</p>
-                  <p className="text-xs text-white/60">@{user.username}</p>
+                  <p className="text-sm font-semibold">{recipient.fullName}</p>
+                  <p className="text-xs text-white/60">@{recipient.username}</p>
                 </div>
               </div>
             ))}

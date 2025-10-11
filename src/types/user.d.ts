@@ -12,6 +12,11 @@ type SubscriptionStatus = "active" | "inactive" | "canceled" | "expired";
 
 type Currency = "NGN" | "USDC" | "STP";
 
+type Balance = {
+  balance: number;
+  usdValue: number;
+};
+
 interface UserData {
   id: string;
   email: string;
@@ -43,11 +48,5 @@ interface GamificationData {
 
 interface Wallets {
   totalUsd: number;
-  wallets: Record<
-    Currency,
-    {
-      balance: number;
-      usdValue: number;
-    }
-  >;
+  wallets: Record<Currency, Balance>;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/auth-context";
 import { performTransaction } from "@/utils/api/action";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
@@ -16,6 +17,8 @@ import SetOtp from "./_components/set-otp";
 import TransactionSuccessful from "./_components/transaction-successful";
 
 export default function Page() {
+  const { setUser, user } = useAuth();
+
   const [sendTo, setSendTo] = useState<
     null | "streple-user" | "bank" | "wallet" | "scan-code"
   >(null);
@@ -41,6 +44,8 @@ export default function Page() {
   const [transactionPin, setTransactionPin] = useState("");
   const [saveAsBeneficiary, setSaveAsBeneficiary] = useState(false);
 
+  const [transactionReference, setTransactionReference] = useState("");
+
   const { mutate: handleMakeTransaction, isPending } = useMutation({
     mutationKey: ["transaction"],
     mutationFn: async () =>
@@ -56,7 +61,21 @@ export default function Page() {
     onSuccess: (res) => {
       if (res.success) {
         setTransactionSuccessful(true);
-        console.log(res.receipt);
+        setTransactionReference(res.receipt.transaction.reference);
+        setUser({
+          ...user,
+          assets: {
+            ...user.assets,
+            wallets: {
+              ...user.assets.wallets,
+              [sendingAsset]: {
+                ...user.assets.wallets[sendingAsset],
+                balance:
+                  user.assets.wallets[sendingAsset].balance - Number(amount),
+              },
+            },
+          },
+        });
         toast.success(res.message);
       } else toast.error(res.message);
     },
@@ -84,6 +103,7 @@ export default function Page() {
           receivingAsset={receivingAsset}
           recipient={recipient!}
           sendingAsset={sendingAsset}
+          transactionReference={transactionReference}
         />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">

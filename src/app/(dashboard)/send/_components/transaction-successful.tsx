@@ -14,6 +14,7 @@ export default function TransactionSuccessful({
   amount,
   receivingAsset,
   sendingAsset,
+  transactionReference,
 }: {
   recipient: {
     name: string;
@@ -23,6 +24,7 @@ export default function TransactionSuccessful({
   amount: string;
   receivingAsset: Currency;
   sendingAsset: Currency;
+  transactionReference: string;
 }) {
   const {
     user: { user_data },
@@ -100,7 +102,7 @@ export default function TransactionSuccessful({
       pdf.save(
         `${user_data?.fullName}-${
           recipient.name
-        }-${new Date().getUTCDate()}.pdf`
+        }-${new Date().toLocaleString()}-${transactionReference}.pdf`
       );
     } catch (err) {
       console.error("Failed to generate PDF", err);
@@ -130,58 +132,64 @@ export default function TransactionSuccessful({
         <div
           ref={printRef}
           style={{ transformOrigin: "top left" }}
-          className="flex flex-col items-center gap-6 w-full"
+          className="flex flex-col items-center gap-6 w-full bg-[#FFFFFF08] px-4 py-5 rounded-[20px]"
         >
           <h4 className="font-bold text-[#F4E90EB2] text-base/6 md:text-[21px]/8 tracking-[1px]">
-            {signs[receivingAsset]}
+            {signs[sendingAsset]}
             {amount}
           </h4>
 
           <div className="w-full space-y-4">
             <div className="flex items-center justify-between gap-4">
-              <p className="text-white/40 text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
                 Recipient tag
               </p>
-              <p className="text-white/80 text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
                 @{recipient?.username}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-white/40 text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
                 Sent amount
               </p>
-              <p className="text-white/80 text-base/6 tracking-[1px] uppercase">
+              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px] uppercase">
                 {signs[sendingAsset]}
                 {amount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-white/40 text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
                 Received amount
               </p>
-              <p className="text-white/80 text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
                 {signs[sendingAsset]}
                 {amount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-white/40 text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
                 Total amount sent:
               </p>
-              <p className="text-white/80 text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
                 {signs[receivingAsset]}
                 {amount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-white/40 text-base/6 tracking-[1px]">Date</p>
-              <p className="text-white/80 text-base/6 tracking-[1px]">{}</p>
+              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
+                Date
+              </p>
+              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
+                {new Date().toLocaleString()}
+              </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-white/40 text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
                 Transaction ID
               </p>
-              <p className="text-white/80 text-base/6 tracking-[1px]">{}</p>
+              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
+                {transactionReference}
+              </p>
             </div>
           </div>
         </div>

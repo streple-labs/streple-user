@@ -31,6 +31,8 @@ export default function SendTo({
       queryFn: async () => await getRecentTransactions(),
     });
 
+  console.log(recentTransactions?.document);
+
   return (
     <div className="p-8 rounded-[20px] bg-[#211F22] flex flex-col gap-8">
       <div className="space-y-6 w-full">
@@ -183,36 +185,35 @@ export default function SendTo({
             )}
 
           {(searchTransactions
-            ? recentTransactions?.document?.filter((user) =>
-                user?.fullName
+            ? recentTransactions?.document?.filter(({ recipient }) =>
+                recipient?.fullName
                   ?.toLowerCase()
                   .includes(searchTransactions.toLowerCase())
               )
             : recentTransactions?.document
-          )?.map((user, i) => (
+          )?.map(({ recipient }, i) => (
             <div
               key={i}
               onClick={() => {
                 setRecipient({
-                  username: user.username,
-                  name: user.fullName,
-                  id: user.id,
+                  username: recipient.username,
+                  name: recipient.fullName,
+                  id: recipient.id,
                 });
-                setSendTo("streple-user");
               }}
               className="px-6 flex items-center gap-3 cursor-pointer"
             >
               <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">
                 {(() => {
-                  const names = user.fullName.trim().split(" ");
+                  const names = recipient.fullName.trim().split(" ");
                   const firstInitial = names[0]?.charAt(0) || "";
                   const secondInitial = names[1]?.charAt(0) || "";
                   return `${firstInitial}${secondInitial}`;
                 })()}
-              </div>{" "}
+              </div>
               <div className="space-y-2">
-                <p className="text-sm font-semibold">{user.fullName}</p>
-                <p className="text-xs text-white/60">@{user.username}</p>
+                <p className="text-sm font-semibold">{recipient.fullName}</p>
+                <p className="text-xs text-white/60">@{recipient.username}</p>
               </div>
             </div>
           ))}
