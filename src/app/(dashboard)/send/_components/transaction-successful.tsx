@@ -1,13 +1,13 @@
 import { anton } from "@/app/fonts";
 import Rectangle44 from "@/component/icons/rectangle-44";
 import SuccessCheckmark from "@/component/icons/success-checkmark";
+import { useAuth } from "@/context/auth-context";
 import { signs } from "@/utils/constants";
-import Link from "next/link";
-import { useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import Link from "next/link";
+import { useRef } from "react";
 import { toast } from "sonner";
-import { useAuth } from "@/context/auth-context";
 
 export default function TransactionSuccessful({
   recipient,
@@ -106,7 +106,7 @@ export default function TransactionSuccessful({
       );
     } catch (err) {
       console.error("Failed to generate PDF", err);
-      toast.error("Failed to generate PDF. See console for details.");
+      toast.error("Failed to generate PDF.");
     }
   };
 
@@ -131,8 +131,9 @@ export default function TransactionSuccessful({
 
         <div
           ref={printRef}
+          id="reciept"
           style={{ transformOrigin: "top left" }}
-          className="flex flex-col items-center gap-6 w-full bg-[#FFFFFF08] px-4 py-5 rounded-[20px]"
+          className="flex flex-col items-center bg-[#FFFFFF08] gap-6 w-full px-4 py-5 rounded-[20px]"
         >
           <h4 className="font-bold text-[#F4E90EB2] text-base/6 md:text-[21px]/8 tracking-[1px]">
             {signs[sendingAsset]}
@@ -193,6 +194,69 @@ export default function TransactionSuccessful({
             </div>
           </div>
         </div>
+
+        {/* <div
+          ref={printRef}
+          id="reciept"
+          className="flex flex-col items-center bg-white gap-6 w-full px-4 py-5 rounded-[20px]"
+        >
+          <h4 className="font-bold text-[#F4E90EB2] text-base/6 md:text-[21px]/8 tracking-[1px]">
+            {signs[sendingAsset]}
+            {amount}
+          </h4>
+
+          <div className="w-full space-y-4">
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-black text-base/6 tracking-[1px]">
+                Recipient tag
+              </p>
+              <p className="text-[#2C2C26] text-base/6 tracking-[1px]">
+                @{recipient?.username}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-black text-base/6 tracking-[1px]">
+                Sent amount
+              </p>
+              <p className="text-[#2C2C26] text-base/6 tracking-[1px] uppercase">
+                {signs[sendingAsset]}
+                {amount}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-black text-base/6 tracking-[1px]">
+                Received amount
+              </p>
+              <p className="text-[#2C2C26] text-base/6 tracking-[1px]">
+                {signs[sendingAsset]}
+                {amount}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-black text-base/6 tracking-[1px]">
+                Total amount sent:
+              </p>
+              <p className="text-[#2C2C26] text-base/6 tracking-[1px]">
+                {signs[receivingAsset]}
+                {amount}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-black text-base/6 tracking-[1px]">Date</p>
+              <p className="text-[#2C2C26] text-base/6 tracking-[1px]">
+                {new Date().toLocaleString()}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-black text-base/6 tracking-[1px]">
+                Transaction ID
+              </p>
+              <p className="text-[#2C2C26] text-base/6 tracking-[1px]">
+                {transactionReference}
+              </p>
+            </div>
+          </div>
+        </div> */}
       </div>
       <div className="flex items-center justify-center gap-8 relative w-full">
         <button
