@@ -332,3 +332,35 @@ export const performTransaction = async (payload: TransactionPayload) => {
     return { success: false, message: errorMessage, receipt: null };
   }
 };
+
+export const convertCurrency = async ({
+  from,
+  to,
+  amount,
+}: {
+  from: Currency;
+  to: Currency;
+  amount: number;
+}) => {
+  try {
+    const res = await api.post("/convert", { from, to, amount });
+
+    return {
+      success: true,
+      message: "Conversion successful",
+      amount: res.data.converted,
+    };
+  } catch (error: any) {
+    let errorMessage =
+      "Error following making transaction, Please try again later.";
+
+    if (error?.response?.data?.message) {
+      if (Array.isArray(error.response.data.message))
+        errorMessage = error.response.data.message.join(", ");
+      else errorMessage = error.response.data.message;
+    } else if (error?.userMessage) errorMessage = error.userMessage;
+    else if (error?.message) errorMessage = error.message;
+
+    return { success: false, message: errorMessage, amount: null };
+  }
+};

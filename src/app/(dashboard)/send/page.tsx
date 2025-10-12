@@ -1,8 +1,8 @@
 "use client";
 
 import { useAuth } from "@/context/auth-context";
-import { performTransaction } from "@/utils/api/action";
-import { useMutation } from "@tanstack/react-query";
+import { convertCurrency, performTransaction } from "@/utils/api/action";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -30,7 +30,7 @@ export default function Page() {
     id: string;
   }>();
 
-  const [amount, setAmount] = useState("");
+  const [sendingAmount, setSendingAmount] = useState("");
 
   const [transactionSuccessful, setTransactionSuccessful] = useState(false);
 
@@ -46,11 +46,22 @@ export default function Page() {
 
   const [transactionReference, setTransactionReference] = useState("");
 
+  const { data: receivingAmount } = useQuery({
+    queryKey: ["convert", sendingAsset, receivingAsset, sendingAmount],
+    queryFn: async () =>
+      await convertCurrency({
+        from: sendingAsset,
+        to: receivingAsset,
+        amount: Number(sendingAmount),
+      }),
+    enabled: Boolean(receivingAsset && sendingAsset && sendingAmount),
+  });
+
   const { mutate: handleMakeTransaction, isPending } = useMutation({
     mutationKey: ["transaction"],
     mutationFn: async () =>
       await performTransaction({
-        amount: Number(amount),
+        amount: Number(sendingAmount),
         beneficiary: saveAsBeneficiary,
         idempotency: recipient!.id,
         recipientCurrency: receivingAsset.toUpperCase() as Currency,
@@ -71,7 +82,8 @@ export default function Page() {
               [sendingAsset]: {
                 ...user.assets.wallets[sendingAsset],
                 balance:
-                  user.assets.wallets[sendingAsset].balance - Number(amount),
+                  user.assets.wallets[sendingAsset].balance -
+                  Number(sendingAmount),
               },
             },
           },
@@ -99,7 +111,8 @@ export default function Page() {
 
       {transactionSuccessful ? (
         <TransactionSuccessful
-          amount={amount}
+          sendingAmount={sendingAmount}
+          receivingAmount={receivingAmount?.amount}
           receivingAsset={receivingAsset}
           recipient={recipient!}
           sendingAsset={sendingAsset}
@@ -123,8 +136,9 @@ export default function Page() {
                 setSendingAsset={setSendingAsset}
                 receivingAsset={receivingAsset}
                 setReceivingAsset={setReceivingAsset}
-                amount={amount}
-                setAmount={setAmount}
+                sendingAmount={sendingAmount}
+                receivingAmount={receivingAmount?.amount}
+                setSendingAmount={setSendingAmount}
                 showCompleteTransactionModal={showCompleteTransactionModal}
                 setShowCompleteTransactionModal={
                   setShowCompleteTransactionModal
@@ -135,7 +149,8 @@ export default function Page() {
                   setRecipient={setRecipient}
                 />
                 <CompleteTransactionModal
-                  amount={amount}
+                  sendingAmount={sendingAmount}
+                  receivingAmount={receivingAmount?.amount}
                   closeModal={() => {
                     setShowCompleteTransactionModal(false);
                   }}

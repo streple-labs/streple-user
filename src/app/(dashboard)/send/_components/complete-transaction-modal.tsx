@@ -9,7 +9,8 @@ export default function CompleteTransactionModal({
   closeModal,
   sendingAsset,
   receivingAsset,
-  amount,
+  sendingAmount,
+  receivingAmount,
   recipient,
   transactionStage,
   setTransactionStage,
@@ -20,7 +21,8 @@ export default function CompleteTransactionModal({
   closeModal: () => void;
   sendingAsset: Currency;
   receivingAsset: Currency;
-  amount: string;
+  sendingAmount: string;
+  receivingAmount: number;
   recipient: { name: string; username: string };
   transactionStage: "review" | "set-otp" | "otp";
   setTransactionStage: Dispatch<SetStateAction<"review" | "set-otp" | "otp">>;
@@ -59,7 +61,7 @@ export default function CompleteTransactionModal({
           </div>
           <h6 className="text-[21px]/8 font-semibold tracking-[1px] text-white/70">
             {signs[sendingAsset]}
-            {amount}
+            {sendingAmount}
           </h6>
 
           <div className="w-full space-y-4">
@@ -85,7 +87,7 @@ export default function CompleteTransactionModal({
               </p>
               <p className="text-white/80 text-base/6 tracking-[1px]">
                 {signs[sendingAsset]}
-                {amount}
+                {sendingAmount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
@@ -94,7 +96,7 @@ export default function CompleteTransactionModal({
               </p>
               <p className="text-white/80 text-base/6 tracking-[1px]">
                 {signs[receivingAsset]}
-                {amount}
+                {receivingAmount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
@@ -110,7 +112,7 @@ export default function CompleteTransactionModal({
                 Total amount:
               </p>
               <p className="text-white/80 text-base/6 tracking-[1px]">
-                {amount}
+                {sendingAmount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">

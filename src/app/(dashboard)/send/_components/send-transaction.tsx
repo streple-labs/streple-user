@@ -11,8 +11,9 @@ export default function SendTransaction({
   receivingAsset,
   sendingAsset,
   setSendingAsset,
-  amount,
-  setAmount,
+  sendingAmount,
+  receivingAmount,
+  setSendingAmount,
   showCompleteTransactionModal,
   setShowCompleteTransactionModal,
 }: {
@@ -32,8 +33,9 @@ export default function SendTransaction({
   setSendingAsset: Dispatch<SetStateAction<Currency>>;
   receivingAsset: Currency;
   setReceivingAsset: Dispatch<SetStateAction<Currency>>;
-  amount: string;
-  setAmount: Dispatch<SetStateAction<string>>;
+  sendingAmount: string;
+  receivingAmount: number;
+  setSendingAmount: Dispatch<SetStateAction<string>>;
   showCompleteTransactionModal: boolean;
   setShowCompleteTransactionModal: Dispatch<SetStateAction<boolean>>;
 }) {
@@ -92,9 +94,9 @@ export default function SendTransaction({
                     {signs[sendingAsset]}
                   </p>
                   <input
-                    value={amount}
+                    value={sendingAmount}
                     onChange={(e) => {
-                      setAmount(e.target.value.replace(/[^0-9.]/g, ""));
+                      setSendingAmount(e.target.value.replace(/[^0-9.]/g, ""));
                     }}
                     name="send"
                     required
@@ -163,7 +165,7 @@ export default function SendTransaction({
                 <p
                   className="rounded-[20px] p-2 border border-white/10 text-xs text-white/80"
                   onClick={() => {
-                    setAmount("1000.00");
+                    setSendingAmount("1000.00");
                   }}
                 >
                   1000.00
@@ -171,7 +173,7 @@ export default function SendTransaction({
                 <p
                   className="rounded-[20px] p-2 border border-white/10 text-xs text-white/80"
                   onClick={() => {
-                    setAmount("2000.00");
+                    setSendingAmount("2000.00");
                   }}
                 >
                   2000.00
@@ -179,7 +181,7 @@ export default function SendTransaction({
                 <p
                   className="rounded-[20px] p-2 border border-white/10 text-xs text-white/80"
                   onClick={() => {
-                    setAmount("5000.00");
+                    setSendingAmount("5000.00");
                   }}
                 >
                   5000.00
@@ -187,7 +189,7 @@ export default function SendTransaction({
                 <p
                   className="rounded-[20px] p-2 border border-white/10 text-xs text-white/80"
                   onClick={() => {
-                    setAmount("10000.00");
+                    setSendingAmount("10000.00");
                   }}
                 >
                   10,000.00
@@ -195,7 +197,7 @@ export default function SendTransaction({
                 <p
                   className="rounded-[20px] p-2 border border-white/10 text-xs text-white/80"
                   onClick={() => {
-                    setAmount("20000.00");
+                    setSendingAmount("20000.00");
                   }}
                 >
                   20,000.00
@@ -203,7 +205,7 @@ export default function SendTransaction({
                 <p
                   className="rounded-[20px] p-2 border border-white/10 text-xs text-white/80"
                   onClick={() => {
-                    setAmount("50000.00");
+                    setSendingAmount("50000.00");
                   }}
                 >
                   50,000.00
@@ -211,7 +213,7 @@ export default function SendTransaction({
                 <p
                   className="rounded-[20px] p-2 border border-white/10 text-xs text-white/80"
                   onClick={() => {
-                    setAmount("100000.00");
+                    setSendingAmount("100000.00");
                   }}
                 >
                   100,000.00
@@ -229,9 +231,9 @@ export default function SendTransaction({
                     {signs[receivingAsset]}
                   </p>
                   <input
-                    value={amount}
+                    value={receivingAmount || sendingAmount}
                     // onChange={(e) => {
-                    //   setAmount(e.target.value.replace(/[^0-9.]/g, ""));
+                    //   setSendingAmount(e.target.value.replace(/[^0-9.]/g, ""));
                     // }}
                     readOnly
                     name="receive"
@@ -299,7 +301,7 @@ export default function SendTransaction({
             </div>
           </div>
           <button
-            disabled={!amount}
+            disabled={!sendingAmount}
             onClick={() => {
               setShowCompleteTransactionModal(true);
             }}

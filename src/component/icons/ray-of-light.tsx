@@ -47,8 +47,8 @@ export default function RayOfLight(props: React.SVGProps<SVGSVGElement>) {
           y2="273.161"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F4E90E" />
-          <stop offset="1" stop-color="#8E8808" stop-opacity="0" />
+          <stop stopColor="#F4E90E" />
+          <stop offset="1" stopColor="#8E8808" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_3804_10521"
@@ -58,8 +58,8 @@ export default function RayOfLight(props: React.SVGProps<SVGSVGElement>) {
           y2="-45.2634"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F4E90E" />
-          <stop offset="1" stop-color="#8E8808" stop-opacity="0" />
+          <stop stopColor="#F4E90E" />
+          <stop offset="1" stopColor="#8E8808" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_3804_10521"
@@ -69,8 +69,8 @@ export default function RayOfLight(props: React.SVGProps<SVGSVGElement>) {
           y2="78.6066"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F4E90E" />
-          <stop offset="1" stop-color="#8E8808" stop-opacity="0" />
+          <stop stopColor="#F4E90E" />
+          <stop offset="1" stopColor="#8E8808" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_3804_10521"
@@ -80,8 +80,8 @@ export default function RayOfLight(props: React.SVGProps<SVGSVGElement>) {
           y2="370.473"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F4E90E" />
-          <stop offset="1" stop-color="#8E8808" stop-opacity="0" />
+          <stop stopColor="#F4E90E" />
+          <stop offset="1" stopColor="#8E8808" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_3804_10521"
@@ -91,8 +91,8 @@ export default function RayOfLight(props: React.SVGProps<SVGSVGElement>) {
           y2="544.051"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F4E90E" />
-          <stop offset="1" stop-color="#8E8808" stop-opacity="0" />
+          <stop stopColor="#F4E90E" />
+          <stop offset="1" stopColor="#8E8808" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_3804_10521"
@@ -102,8 +102,8 @@ export default function RayOfLight(props: React.SVGProps<SVGSVGElement>) {
           y2="476.264"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F4E90E" />
-          <stop offset="1" stop-color="#8E8808" stop-opacity="0" />
+          <stop stopColor="#F4E90E" />
+          <stop offset="1" stopColor="#8E8808" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>

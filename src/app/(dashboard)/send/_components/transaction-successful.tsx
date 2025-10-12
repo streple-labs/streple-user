@@ -11,7 +11,8 @@ import { toast } from "sonner";
 
 export default function TransactionSuccessful({
   recipient,
-  amount,
+  sendingAmount,
+  receivingAmount,
   receivingAsset,
   sendingAsset,
   transactionReference,
@@ -21,7 +22,8 @@ export default function TransactionSuccessful({
     username: string;
     id: string;
   };
-  amount: string;
+  sendingAmount: string;
+  receivingAmount: number;
   receivingAsset: Currency;
   sendingAsset: Currency;
   transactionReference: string;
@@ -137,7 +139,7 @@ export default function TransactionSuccessful({
         >
           <h4 className="font-bold text-[#F4E90EB2] text-base/6 md:text-[21px]/8 tracking-[1px]">
             {signs[sendingAsset]}
-            {amount}
+            {sendingAmount}
           </h4>
 
           <div className="w-full space-y-4">
@@ -155,7 +157,7 @@ export default function TransactionSuccessful({
               </p>
               <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px] uppercase">
                 {signs[sendingAsset]}
-                {amount}
+                {sendingAmount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
@@ -164,7 +166,7 @@ export default function TransactionSuccessful({
               </p>
               <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
                 {signs[sendingAsset]}
-                {amount}
+                {receivingAmount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
@@ -173,7 +175,7 @@ export default function TransactionSuccessful({
               </p>
               <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
                 {signs[receivingAsset]}
-                {amount}
+                {sendingAmount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">

@@ -25,9 +25,9 @@ export default function Rectangle44() {
           width="1298"
           height="329"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -47,8 +47,8 @@ export default function Rectangle44() {
           y2="226.133"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#A082F9" stop-opacity="0.2" />
-          <stop offset="1" stop-color="#5E4D93" stop-opacity="0" />
+          <stop stopColor="#A082F9" stopOpacity="0.2" />
+          <stop offset="1" stopColor="#5E4D93" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>
