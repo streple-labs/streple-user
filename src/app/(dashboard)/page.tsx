@@ -1,19 +1,22 @@
 "use client";
 
-import { GoArrowUp, GoArrowUpRight } from "react-icons/go";
-import { IoWifi } from "react-icons/io5";
-import { LuArrowRightLeft, LuEyeClosed } from "react-icons/lu";
-import { RiLightbulbFlashLine } from "react-icons/ri";
-import { anton } from "../fonts";
 import DoughnutChart from "@/component/layout/dougnut-chart";
 import { useAuth } from "@/context/auth-context";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { GoArrowUp, GoArrowUpRight } from "react-icons/go";
+import { IoWifi } from "react-icons/io5";
+import { LuArrowRightLeft, LuEye, LuEyeClosed } from "react-icons/lu";
+import { RiLightbulbFlashLine } from "react-icons/ri";
+import { anton } from "../fonts";
 
 export default function Home() {
   const {
-    user: { user_data, game_data },
+    user: { user_data, assets },
   } = useAuth();
+
+  const [viewBalance, setViewBalance] = useState(false);
 
   return (
     <div className="flex flex-col gap-6 md:gap-10 w-full hide-scrollbar lg:overflow-y-auto">
@@ -40,15 +43,25 @@ export default function Home() {
                   </svg>
                 </p>
 
-                <LuEyeClosed
-                  width={8}
-                  className="text-white/60 cursor-pointer"
-                />
+                <span
+                  onClick={() => {
+                    setViewBalance((prev) => !prev);
+                  }}
+                >
+                  {viewBalance ? (
+                    <LuEye width={8} className="text-white/60 cursor-pointer" />
+                  ) : (
+                    <LuEyeClosed
+                      width={8}
+                      className="text-white/60 cursor-pointer"
+                    />
+                  )}
+                </span>
               </div>
               <h2
                 className={`text-[21px] sm:text-2xl md:text-3xl lg:text-4xl ${anton.className} leading-[100%] tracking-[3%] text-white/90`}
               >
-                50,000
+                {viewBalance ? assets.wallets.NGN.balance : "******"}
               </h2>
             </div>
             <div className="flex items-center justify-end gap-3">
@@ -89,7 +102,7 @@ export default function Home() {
                   STRP
                 </p>
                 <p className="text-sm font-semibold leading-[22px] text-white/80">
-                  STRP {game_data.totalScore}
+                  STRP {assets.wallets.STP.balance}
                 </p>
               </div>
               <div className="h-[175px] bg-gradient-to-t flex flex-col items-center justify-center rounded-[15px] gap-3 px-6 py-4 bg-[#211F22]">
@@ -125,10 +138,10 @@ export default function Home() {
                   </svg>
                 </div>
                 <p className="text-xs font-normal leading-[22px] text-white/60">
-                  USDT
+                  USDC
                 </p>
                 <p className="text-sm font-semibold leading-[22px] text-white/80">
-                  USDT 50
+                  USDC {assets.wallets.USDC.balance}
                 </p>
               </div>
               <div className="h-[175px] bg-gradient-to-t flex flex-col items-center justify-center rounded-[15px] gap-3 px-6 py-4 bg-[#211F22]">
@@ -154,7 +167,7 @@ export default function Home() {
                   NGN
                 </p>
                 <p className="text-sm font-semibold leading-[22px] text-white/80">
-                  NGN 1,200
+                  NGN {assets.wallets.NGN.balance}
                 </p>
               </div>
             </div>
@@ -305,22 +318,38 @@ export default function Home() {
                 </svg>
               </p>
 
-              <LuEyeClosed width={8} className="text-white/60 cursor-pointer" />
+              <span
+                onClick={() => {
+                  setViewBalance((prev) => !prev);
+                }}
+              >
+                {viewBalance ? (
+                  <LuEye width={8} className="text-white/60 cursor-pointer" />
+                ) : (
+                  <LuEyeClosed
+                    width={8}
+                    className="text-white/60 cursor-pointer"
+                  />
+                )}
+              </span>
             </div>
             <h2
               className={`text-[21px] sm:text-2xl md:text-3xl lg:text-4xl ${anton.className} leading-[100%] tracking-[3%] text-white/90`}
             >
-              50,000
+              {viewBalance ? assets.wallets.NGN.balance : "******"}
             </h2>
           </div>
           <div className="flex items-center gap-4">
             <button className="h-[51px] w-full max-w-[145px] flex items-center justify-center gap-2.5 py-2 px-4 bg-[#A082F9] text-[#1A1A1C] rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px]">
               <GoArrowUp width={12} color="#1A1A1C" /> Deposit
             </button>
-            <button className="h-[51px] w-full max-w-[145px] flex items-center justify-center gap-2.5 py-2 px-4 rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px] text-[#2C2C26] bg-[#EAE4FD] border border-black">
+            <Link
+              href={"/send"}
+              className="h-[51px] w-full max-w-[145px] flex items-center justify-center gap-2.5 py-2 px-4 rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px] text-[#2C2C26] bg-[#EAE4FD] border border-black"
+            >
               <GoArrowUpRight width={12} color="#2C2C26" />
               Send
-            </button>
+            </Link>
           </div>
         </div>
         <div className="flex justify-between py-4 px-6 rounded-[20px] bg-[#211F22]">
@@ -382,44 +411,75 @@ export default function Home() {
               View all
             </p>
           </div>
-          <div className="w-full grid grid-cols-2 gap-3 md:gap-4">
+          <div className="w-full grid xs:grid-cols-3 gap-4">
             <div className="h-[175px] bg-gradient-to-t flex flex-col items-center justify-center rounded-[15px] gap-3 px-6 py-4 bg-[#211F22]">
               <div className="size-10 rounded-[7px] flex items-center justify-center bg-[rgba(255,255,255,0.08)]">
-                <svg
-                  width="13"
-                  height="22"
-                  viewBox="0 0 13 22"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3.76608 3.69005V1.49707M7.42105 3.69005V1.49707M3.76608 20.5029V17.886M7.42105 20.5029V17.886M7.71345 10.1959H1.5M7.65497 10.1959C8.48085 10.1485 9.2578 9.78884 9.82843 9.18991C10.399 8.59099 10.7207 7.79754 10.7281 6.97034C10.7355 6.14313 10.4282 5.34403 9.86847 4.73495C9.30871 4.12586 8.53834 3.75234 7.71345 3.69005H2.68421C2.37014 3.69005 2.06893 3.81482 1.84685 4.0369C1.62476 4.25898 1.5 4.56019 1.5 4.87426V16.7017C1.5 17.0158 1.62476 17.317 1.84685 17.5391C2.06893 17.7612 2.37014 17.886 2.68421 17.886H7.65497C8.67474 17.886 9.65273 17.4809 10.3738 16.7598C11.0949 16.0387 11.5 15.0607 11.5 14.0409C11.5 13.0212 11.0949 12.0432 10.3738 11.3221C9.65273 10.601 8.67474 10.1959 7.65497 10.1959Z"
-                    stroke="white"
-                    strokeOpacity="0.7"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <Image
+                  src={"/streple-s.png"}
+                  alt="streple strp"
+                  aria-label="streple strp"
+                  width={14}
+                  height={14}
+                  quality={100}
+                />
               </div>
               <p className="text-xs font-normal leading-[22px] text-white/60">
-                Bitcoin
+                STRP
               </p>
               <p className="text-sm font-semibold leading-[22px] text-white/80">
-                0.0483BTC
+                STRP {assets.wallets.STP.balance}
               </p>
             </div>
             <div className="h-[175px] bg-gradient-to-t flex flex-col items-center justify-center rounded-[15px] gap-3 px-6 py-4 bg-[#211F22]">
               <div className="size-10 rounded-[7px] flex items-center justify-center bg-[rgba(255,255,255,0.08)]">
                 <svg
-                  width="17"
-                  height="16"
-                  viewBox="0 0 17 16"
+                  width="15"
+                  height="17"
+                  viewBox="0 0 15 17"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M2.375 1H14.625M8.5 1V6.25M8.5 15V9.75M5 5.375C3.66551 5.63503 2.62254 6.03641 2.03285 6.51689C1.44315 6.99737 1.3397 7.5301 1.73852 8.03244C2.13735 8.53479 3.01616 8.97868 4.23867 9.29528C5.46118 9.61188 6.95906 9.78348 8.5 9.78348C10.0409 9.78348 11.5388 9.61188 12.7613 9.29528C13.9838 8.97868 14.8627 8.53479 15.2615 8.03244C15.6603 7.5301 15.5568 6.99737 14.9672 6.51689C14.3775 6.03641 13.3345 5.63503 12 5.375"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M6.29152 14.348C6.29152 14.538 6.14152 14.638 5.96152 14.588C4.75122 14.2009 3.69524 13.4392 2.94599 12.4129C2.19673 11.3866 1.79297 10.1487 1.79297 8.87803C1.79297 7.60732 2.19673 6.36948 2.94599 5.34317C3.69524 4.31686 4.75122 3.55516 5.96152 3.16803C6.14152 3.10803 6.29152 3.21803 6.29152 3.40803V3.86803C6.29152 3.99803 6.19152 4.13803 6.07152 4.17803C4.16152 4.87803 2.79152 6.71803 2.79152 8.86803C2.79152 11.018 4.16152 12.858 6.07152 13.558C6.19152 13.598 6.29152 13.748 6.29152 13.868V14.338V14.348Z"
+                    fill="white"
+                    fillOpacity="0.7"
+                  />
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M8.29417 12.6279C8.29417 12.7679 8.18417 12.8779 8.04417 12.8779H7.54417C7.40417 12.8779 7.29417 12.7679 7.29417 12.6279V11.8379C6.20417 11.6879 5.67417 11.0779 5.52417 10.2479C5.49417 10.1079 5.61417 9.97792 5.75417 9.97792H6.32417C6.44417 9.97792 6.54417 10.0579 6.56417 10.1779C6.67417 10.6779 6.95417 11.0479 7.83417 11.0479C8.48417 11.0479 8.93417 10.6879 8.93417 10.1479C8.93417 9.60792 8.66417 9.40792 7.71417 9.24792C6.31417 9.05792 5.65417 8.63792 5.65417 7.53792C5.65417 6.68792 6.29417 6.03792 7.28417 5.88792V5.11792C7.28417 4.97792 7.39417 4.86792 7.53417 4.86792H8.03417C8.17417 4.86792 8.28417 4.97792 8.28417 5.11792V5.91792C9.09417 6.05792 9.60417 6.51792 9.76417 7.27792C9.79417 7.41792 9.68417 7.55792 9.53417 7.55792H9.00417C8.89417 7.55792 8.79417 7.47792 8.76417 7.37792C8.62417 6.89792 8.27417 6.68792 7.68417 6.68792C7.02417 6.68792 6.68417 7.00792 6.68417 7.45792C6.68417 7.92792 6.87417 8.16792 7.89417 8.31792C9.26417 8.50792 9.97417 8.89792 9.97417 10.0679C9.97417 10.9579 9.31417 11.6779 8.28417 11.8379V12.6279H8.29417Z"
+                    fill="white"
+                    fillOpacity="0.7"
+                  />
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M9.62297 14.588C9.44297 14.648 9.29297 14.538 9.29297 14.348V13.888C9.29297 13.748 9.37297 13.618 9.51297 13.578C11.423 12.878 12.793 11.038 12.793 8.88805C12.793 6.73805 11.423 4.89805 9.51297 4.19805C9.45103 4.17205 9.3976 4.12923 9.35872 4.07445C9.31984 4.01967 9.29706 3.9551 9.29297 3.88805V3.42805C9.29297 3.23805 9.44297 3.12805 9.62297 3.18805C12.043 3.95805 13.793 6.22805 13.793 8.89805C13.793 11.568 12.043 13.828 9.62297 14.608V14.588Z"
+                    fill="white"
+                    fillOpacity="0.7"
+                  />
+                </svg>
+              </div>
+              <p className="text-xs font-normal leading-[22px] text-white/60">
+                USDC
+              </p>
+              <p className="text-sm font-semibold leading-[22px] text-white/80">
+                USDC {assets.wallets.USDC.balance}
+              </p>
+            </div>
+            <div className="h-[175px] bg-gradient-to-t flex flex-col items-center justify-center rounded-[15px] gap-3 px-6 py-4 bg-[#211F22]">
+              <div className="size-10 rounded-[7px] flex items-center justify-center bg-[rgba(255,255,255,0.08)]">
+                <svg
+                  width="16"
+                  height="14"
+                  viewBox="0 0 16 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.16797 13V2.052C3.1679 1.81932 3.24511 1.59322 3.38749 1.40919C3.52986 1.22515 3.72933 1.09363 3.95457 1.03526C4.1798 0.976888 4.41804 0.994986 4.63188 1.08671C4.84571 1.17843 5.02303 1.33858 5.13597 1.542L11.2 12.458C11.3129 12.6614 11.4902 12.8216 11.7041 12.9133C11.9179 13.005 12.1561 13.0231 12.3814 12.9647C12.6066 12.9064 12.8061 12.7748 12.9485 12.5908C13.0908 12.4068 13.168 12.1807 13.168 11.948V1M1.16797 5H15.168M1.16797 9H15.168"
                     stroke="white"
                     strokeOpacity="0.7"
                     strokeWidth="1.5"
@@ -429,61 +489,12 @@ export default function Home() {
                 </svg>
               </div>
               <p className="text-xs font-normal leading-[22px] text-white/60">
-                USDT
+                NGN
               </p>
               <p className="text-sm font-semibold leading-[22px] text-white/80">
-                0.0483USDT
+                NGN {assets.wallets.NGN.balance}
               </p>
             </div>
-            {/* <div className="h-[175px] bg-gradient-to-t flex flex-col items-center justify-center rounded-[15px] gap-3 px-6 py-4 bg-[#211F22]">
-                <div className="size-10 rounded-[7px] flex items-center justify-center bg-[rgba(255,255,255,0.08)]">
-                  <svg
-                    width="15"
-                    height="22"
-                    viewBox="0 0 15 22"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M4.46241 13.891L7.83203 18.525L11.2017 13.891L7.83203 15.9648L4.46241 13.891ZM12.3269 11.1435L7.83203 3.839L3.33716 11.1435L7.83203 13.9102L12.3269 11.1435ZM0.832031 11.875L7.83203 0.5L14.832 11.875L7.83203 21.5L0.832031 11.875Z"
-                      fill="white"
-                      fillOpacity="0.7"
-                    />
-                  </svg>
-                </div>
-                <p className="text-xs font-normal leading-[22px] text-white/60">
-                  ETH
-                </p>
-                <p className="text-sm font-semibold leading-[22px] text-white/80">
-                  0.0483ETH
-                </p>
-              </div>
-              <div className="h-[175px] bg-gradient-to-t flex flex-col items-center justify-center rounded-[15px] gap-3 px-6 py-4 bg-[#211F22]">
-                <div className="size-10 rounded-[7px] flex items-center justify-center bg-[rgba(255,255,255,0.08)]">
-                  <svg
-                    width="16"
-                    height="14"
-                    viewBox="0 0 16 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3.16797 13V2.052C3.1679 1.81932 3.24511 1.59322 3.38749 1.40919C3.52986 1.22515 3.72933 1.09363 3.95457 1.03526C4.1798 0.976888 4.41804 0.994986 4.63188 1.08671C4.84571 1.17843 5.02303 1.33858 5.13597 1.542L11.2 12.458C11.3129 12.6614 11.4902 12.8216 11.7041 12.9133C11.9179 13.005 12.1561 13.0231 12.3814 12.9647C12.6066 12.9064 12.8061 12.7748 12.9485 12.5908C13.0908 12.4068 13.168 12.1807 13.168 11.948V1M1.16797 5H15.168M1.16797 9H15.168"
-                      stroke="white"
-                      strokeOpacity="0.7"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <p className="text-xs font-normal leading-[22px] text-white/60">
-                  Digital Naira
-                </p>
-                <p className="text-sm font-semibold leading-[22px] text-white/80">
-                  NGN1,200
-                </p>
-              </div> */}
           </div>
         </div>
         <div className="space-y-3">

@@ -51,7 +51,7 @@ export default function SendTransaction({
     <>
       {showCompleteTransactionModal && allChildren[1]}
 
-      <div className="p-8 rounded-[20px] bg-[#211F22] flex flex-col gap-8">
+      <div className="px-4 py-6 md:px-8 md:py-8 rounded-[20px] bg-[#211F22] flex flex-col gap-8">
         <h2
           className={`${anton.className} test-base md:text-xl leading-[150%] tracking-[2px]`}
         >
@@ -64,9 +64,14 @@ export default function SendTransaction({
               <p className="text-base/6 tracking-[1px]">To</p>
               <div className="py-5 px-4 rounded-[15px] bg-[#FFFFFF05] flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3 cursor-pointer">
-                  <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">{`${recipient.name
-                    .split(" ")[0]
-                    .charAt(0)}${recipient.name.split(" ")[1].charAt(0)}`}</div>
+                  <div className="size-10 shrink-0 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">
+                    {(() => {
+                      const names = recipient.name.trim().split(" ");
+                      const firstInitial = names[0]?.charAt(0) || "";
+                      const secondInitial = names[1]?.charAt(0) || "";
+                      return `${firstInitial}${secondInitial}`;
+                    })()}
+                  </div>
                   <div className="space-y-2">
                     <p className="text-sm font-semibold">{recipient.name}</p>
                     <p className="text-xs text-white/60">
@@ -103,7 +108,7 @@ export default function SendTransaction({
                     id="send"
                     type="text"
                     placeholder="0.00"
-                    className="text-white/50 border-0 outline-0 ring-0 bg-transparent caret-[#B39FF0] text-2xl/normal"
+                    className="text-white/50 w-30 border-0 outline-0 ring-0 bg-transparent caret-[#B39FF0] text-2xl/normal"
                   />
                 </label>
 
@@ -240,7 +245,7 @@ export default function SendTransaction({
                     id="receive"
                     type="text"
                     placeholder="0.00"
-                    className="text-white/50 border-0 outline-0 ring-0 bg-transparent caret-[#B39FF0] text-2xl/normal"
+                    className="text-white/50 border-0 w-30 outline-0 ring-0 bg-transparent caret-[#B39FF0] text-2xl/normal"
                   />
                 </label>
 

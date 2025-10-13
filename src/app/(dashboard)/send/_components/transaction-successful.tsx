@@ -122,12 +122,12 @@ export default function TransactionSuccessful({
         <SuccessCheckmark />
 
         <h2
-          className={`${anton.className} text-[21px] md:text-[27px] leading-[150%] tracking-[2px]`}
+          className={`${anton.className} text-base md:text-[27px] leading-[150%] tracking-[2px]`}
         >
           Transaction successful!
         </h2>
 
-        <p className="text-base/6 tracking-[1px] text-white/80 text-center">
+        <p className="text-sm md:text-base leading-6 tracking-[1px] text-white/80 text-center">
           Your funds are already moving. {recipient?.name} will get it shortly.
         </p>
 
@@ -137,60 +137,60 @@ export default function TransactionSuccessful({
           style={{ transformOrigin: "top left" }}
           className="flex flex-col items-center bg-[#FFFFFF08] gap-6 w-full px-4 py-5 rounded-[20px]"
         >
-          <h4 className="font-bold text-[#F4E90EB2] text-base/6 md:text-[21px]/8 tracking-[1px]">
+          <h4 className="font-bold text-[#F4E90EB2] md:text-[21px]/8 tracking-[1px]">
             {signs[sendingAsset]}
             {sendingAmount}
           </h4>
 
           <div className="w-full space-y-4">
             <div className="flex items-center justify-between gap-4">
-              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-sm/6 md:text-base/6 tracking-[1px]">
                 Recipient tag
               </p>
-              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFFCC] text-sm/6 md:text-base/6 tracking-[1px]">
                 @{recipient?.username}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-sm/6 md:text-base/6 tracking-[1px]">
                 Sent amount
               </p>
-              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px] uppercase">
+              <p className="text-[#FFFFFFCC] text-sm/6 md:text-base/6 tracking-[1px] uppercase">
                 {signs[sendingAsset]}
                 {sendingAmount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-sm/6 md:text-base/6 tracking-[1px]">
                 Received amount
               </p>
-              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFFCC] text-sm/6 md:text-base/6 tracking-[1px]">
                 {signs[sendingAsset]}
                 {receivingAmount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-sm/6 md:text-base/6 tracking-[1px]">
                 Total amount sent:
               </p>
-              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFFCC] text-sm/6 md:text-base/6 tracking-[1px]">
                 {signs[receivingAsset]}
                 {sendingAmount}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-sm/6 md:text-base/6 tracking-[1px]">
                 Date
               </p>
-              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFFCC] text-sm/6 md:text-base/6 tracking-[1px]">
                 {new Date().toLocaleString()}
               </p>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <p className="text-[#FFFFFF66] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFF66] text-sm/6 md:text-base/6 tracking-[1px]">
                 Transaction ID
               </p>
-              <p className="text-[#FFFFFFCC] text-base/6 tracking-[1px]">
+              <p className="text-[#FFFFFFCC] text-sm/6 md:text-base/6 tracking-[1px]">
                 {transactionReference}
               </p>
             </div>
@@ -260,7 +260,7 @@ export default function TransactionSuccessful({
           </div>
         </div> */}
       </div>
-      <div className="flex items-center justify-center gap-8 relative w-full">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 relative w-full">
         <button
           onClick={handleDownload}
           className="h-[50px] w-full max-w-[301px] py-3 px-4 rounded-[20px] bg-[#B39FF0] bg-blend-luminosity text-sm/[150%] font-bold tracking-[2px] text-[#2C2C26]"

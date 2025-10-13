@@ -81,7 +81,7 @@ export default function SelectRecipient({
               />
             </div>
             {search && (
-              <div className="absolute z-10 left-0 top-24 max-h-[400px] w-full overflow-y-auto bg-[#211F22] border border-white/20 rounded-[20px] p-3 flex flex-col gap-4">
+              <div className="absolute z-10 left-0 top-24 max-h-[400px] hide-scrollbar w-full overflow-y-auto bg-[#211F22] border border-white/20 rounded-[20px] p-3 flex flex-col gap-4">
                 {isSearchUsersPending && (
                   <div className="p-8 flex items-center justify-center">
                     <Loader />
@@ -250,7 +250,7 @@ export default function SelectRecipient({
                     id: recipient.id,
                   });
                 }}
-                className="px-6 flex items-center gap-3 cursor-pointer"
+                className="lg:px-6 flex items-center gap-3 cursor-pointer"
               >
                 <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">
                   {(() => {
@@ -285,7 +285,7 @@ export default function SelectRecipient({
                     id: recipient.id,
                   });
                 }}
-                className="px-6 flex items-center gap-3 cursor-pointer"
+                className="lg:px-6 flex items-center gap-3 cursor-pointer"
               >
                 <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">
                   {(() => {

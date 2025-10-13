@@ -3,8 +3,7 @@ import React from "react";
 export default function SuccessCheckmark() {
   return (
     <svg
-      width="100"
-      height="100"
+      className="size-[60px] md:size-[100px]"
       viewBox="0 0 100 100"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

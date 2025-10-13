@@ -144,7 +144,7 @@ export default function SetOtp({
 
   if (stage === "success")
     return (
-      <div className="relative flex flex-col items-center gap-8 rounded-[20px] p-8 bg-[#232324] w-full max-w-[564px]">
+      <div className="relative flex flex-col items-center gap-8 rounded-[20px] py-6 px-4 md:py-8 md:px-8 bg-[#232324] w-full max-w-[564px]">
         <div className="flex items-center justify-between gap-4 w-full">
           <FaArrowLeft
             width={14}
@@ -177,7 +177,7 @@ export default function SetOtp({
 
   if (stage === "confirm-otp")
     return (
-      <div className="relative flex flex-col items-center gap-8 rounded-[20px] p-8 bg-[#232324] w-full max-w-[564px]">
+      <div className="relative flex flex-col items-center gap-8 rounded-[20px] py-6 px-4 md:py-8 md:px-8 bg-[#232324] w-full max-w-[564px]">
         <div className="flex items-center justify-between gap-4 w-full">
           <FaArrowLeft
             width={14}
@@ -264,7 +264,7 @@ export default function SetOtp({
     );
 
   return (
-    <div className="relative flex flex-col items-center gap-8 rounded-[20px] p-8 bg-[#232324] w-full max-w-[564px]">
+    <div className="relative flex flex-col items-center gap-8 rounded-[20px] py-6 px-4 md:py-8 md:px-8 bg-[#232324] w-full max-w-[564px]">
       <div className="flex items-center justify-between gap-4 w-full">
         <FaArrowLeft
           width={14}

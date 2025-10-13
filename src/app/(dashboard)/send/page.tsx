@@ -119,8 +119,8 @@ export default function Page() {
           transactionReference={transactionReference}
         />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
-          <div className="lg:order-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 max-lg:pb-20">
+          <div className="hidden lg:block lg:order-2">
             <AssetBalances
               sendTo={sendTo}
               sendingAsset={sendingAsset}

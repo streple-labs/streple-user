@@ -32,25 +32,24 @@ export default function SendTo({
     });
 
   return (
-    <div className="p-8 rounded-[20px] bg-[#211F22] flex flex-col gap-8">
+    <div className="py-6 px-4 md:px-8 md:py-8 rounded-[20px] bg-[#211F22] flex flex-col gap-8">
       <div className="space-y-6 w-full">
         <h2
           className={`${anton.className} test-base md:text-xl leading-[150%] tracking-[2px]`}
         >
           Send to
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 justify-between [&>div]:cursor-pointer">
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-10 justify-between [&>div>span]:shrink-0 [&>div]:cursor-pointer [&>div]:lg:items-center">
           <div
-            className="flex flex-col items-center gap-5"
+            className="flex lg:flex-col max-lg:items-center gap-2 md:gap-5"
             onClick={() => {
               setSendTo("streple-user");
             }}
           >
-            <span className="size-12 rounded-full bg-[#B39FF0] flex items-center justify-center">
+            <span className="size-8 md:size-12 rounded-full bg-[#B39FF0] flex items-center justify-center">
               <svg
-                width="24"
-                height="24"
                 viewBox="0 0 24 24"
+                className="size-4 md:size-6"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -64,12 +63,11 @@ export default function SendTo({
               Streple user
             </p>
           </div>
-          <div className="flex flex-col items-center gap-5">
-            <span className="size-12 rounded-full bg-[#B39FF0] flex items-center justify-center">
+          <div className="flex lg:flex-col max-lg:items-center gap-2 md:gap-5">
+            <span className="size-8 md:size-12 rounded-full bg-[#B39FF0] flex items-center justify-center">
               <svg
-                width="20"
-                height="20"
                 viewBox="0 0 20 20"
+                className="size-4 md:size-5"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -91,12 +89,11 @@ export default function SendTo({
             </span>
             <p className="text-xs/4 text-white/80 tracking-[1px]">Bank</p>
           </div>
-          <div className="flex flex-col items-center gap-5">
-            <span className="size-12 rounded-full bg-[#B39FF0] flex items-center justify-center">
+          <div className="flex lg:flex-col max-lg:items-center gap-2 md:gap-5">
+            <span className="size-8 md:size-12 rounded-full bg-[#B39FF0] flex items-center justify-center">
               <svg
-                width="24"
-                height="24"
                 viewBox="0 0 24 24"
+                className="size-4 md:size-6"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -114,11 +111,10 @@ export default function SendTo({
             </span>
             <p className="text-xs/4 text-white/80 tracking-[1px]">Wallet</p>
           </div>
-          <div className="flex flex-col items-center gap-5">
-            <span className="size-12 rounded-full bg-[#B39FF0] flex items-center justify-center">
+          <div className="flex lg:flex-col max-lg:items-center gap-2 md:gap-5">
+            <span className="size-8 md:size-12 rounded-full bg-[#B39FF0] flex items-center justify-center">
               <svg
-                width="24"
-                height="24"
+                className="size-4 md:size-6"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +196,7 @@ export default function SendTo({
                 });
                 setSendTo("streple-user");
               }}
-              className="px-6 flex items-center gap-3 cursor-pointer"
+              className="lg:px-6 flex items-center gap-3 cursor-pointer"
             >
               <div className="size-10 rounded-full flex items-center justify-center bg-[#D9D9D9] text-[#000000CC] text-lg font-semibold">
                 {(() => {

@@ -36,7 +36,7 @@ export default function CompleteTransactionModal({
   } = useAuth();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center size-full">
+    <div className="fixed inset-0 z-50 flex items-center justify-center size-full p-4">
       <div className="absolute inset-0 bg-[#FFFFFF0D]" onClick={closeModal} />
 
       {transactionStage === "set-otp" ? (
@@ -44,7 +44,7 @@ export default function CompleteTransactionModal({
       ) : transactionStage === "otp" ? (
         allChildren[1]
       ) : (
-        <div className="relative flex flex-col items-center gap-8 rounded-[20px] p-8 bg-[#232324] w-full max-w-[564px]">
+        <div className="relative flex flex-col items-center gap-8 rounded-[20px] py-6 px-4 md:py-8 md:px-8 bg-[#232324] w-full max-w-[564px]">
           <div className="flex items-center justify-between gap-4 w-full">
             <FaArrowLeft
               width={14}
@@ -140,7 +140,7 @@ export default function CompleteTransactionModal({
             }}
             className="h-[50px] max-w-[367px] w-full py-3 px-4 rounded-[20px] bg-[#B39FF0] bg-blend-luminosity text-base/[150%] font-bold tracking-[2px] text-[#2C2C26]"
           >
-            Continue to send
+            Next
           </button>
         </div>
       )}
