@@ -411,7 +411,7 @@ export default function Home() {
               View all
             </p>
           </div>
-          <div className="w-full grid xs:grid-cols-3 gap-4">
+          <div className="max-sm:flex max-sm:overflow-x-auto max-sm:[&>div]:w-1/2 max-sm:[&>div]:flex-none hide-scrollbar sm:grid sm:grid-cols-3 gap-4">
             <div className="h-[175px] bg-gradient-to-t flex flex-col items-center justify-center rounded-[15px] gap-3 px-6 py-4 bg-[#211F22]">
               <div className="size-10 rounded-[7px] flex items-center justify-center bg-[rgba(255,255,255,0.08)]">
                 <Image
