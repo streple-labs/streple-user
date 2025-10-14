@@ -11,7 +11,15 @@ import CheckmarkPurpleLarge from "@/component/icons/checkmark-purple-bg-large";
 
 const phase = 1;
 
-export default function IntroToCrypto({ close }: { close: () => void }) {
+export default function IntroToCrypto({
+  close,
+  showLearningChapters,
+  closeLearningChaptersModal,
+}: {
+  close: () => void;
+  showLearningChapters: boolean;
+  closeLearningChaptersModal: () => void;
+}) {
   const {
     user: { game_data, user_data, assets },
     setUser,
@@ -22,7 +30,7 @@ export default function IntroToCrypto({ close }: { close: () => void }) {
   const [showSuccessScreen, setShowSuccessScreen] = useState(false);
 
   useEffect(() => {
-    setLevel(game_data.phase === phase ? game_data.level : 3);
+    setLevel(game_data.phase === phase ? game_data.level : 1);
   }, [game_data.level, game_data.phase]);
 
   const [stpCollected, setStpCollected] = useState(10);
@@ -79,8 +87,10 @@ export default function IntroToCrypto({ close }: { close: () => void }) {
             <CheckmarkPurpleLarge />
             <div className="flex flex-col gap-[60px] items-center justify-center w-full">
               <div className="w-full text-center space-y-3">
-                <h4 className="text-2xl font-extrabold">Course completed</h4>
-                <p className="text-xl font-semibold">
+                <h4 className="text-xl md:text-2xl font-extrabold">
+                  Course completed
+                </h4>
+                <p className="text-base md:text-xl font-semibold">
                   Well done, you a great job
                 </p>
               </div>
@@ -122,16 +132,16 @@ export default function IntroToCrypto({ close }: { close: () => void }) {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between gap-3 w-full">
+          <div className="flex items-center justify-between flex-col md:flex-row gap-6 md:gap-3 w-full">
             <button
               onClick={() => {}}
-              className="h-[60px] w-[260px] flex items-center justify-center gap-2.5 py-5 px-8 rounded-[20px] font-bold text-base text-[#1E1C25] bg-[#E2DBF6] border border-[#ACA40F80]"
+              className="h-[60px] w-full md:w-[260px] max-w-[318px] flex items-center justify-center gap-2.5 py-5 px-8 rounded-[20px] font-bold text-base text-[#1E1C25] bg-[#E2DBF6] border border-[#ACA40F80]"
             >
               Share
             </button>
             <button
               onClick={close}
-              className="h-[60px] w-[260px] flex items-center justify-center gap-2.5 py-5 px-8 rounded-[20px] font-bold text-base bg-[#A082F9] text-[#1E1C25] border border-[#ACA40F80]"
+              className="h-[60px] w-full md:w-[260px] max-w-[318px] flex items-center justify-center gap-2.5 py-5 px-8 rounded-[20px] font-bold text-base bg-[#A082F9] text-[#1E1C25] border border-[#ACA40F80]"
             >
               Done
             </button>
@@ -141,8 +151,178 @@ export default function IntroToCrypto({ close }: { close: () => void }) {
     );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      <div className="lg:order-2 bg-[#211F22] p-4 rounded-[20px] h-fit space-y-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 relative">
+      {showLearningChapters && (
+        <div className="lg:hidden fixed inset-0 z-[1000] px-4 py-10">
+          <div
+            className="absolute inset-0 bg-[#000000B2] cursor-pointer"
+            onClick={closeLearningChaptersModal}
+          />
+
+          <div className="bg-[#211F22] p-4 rounded-[20px] max-w-[330px] h-fit space-y-6 relative">
+            <div className="p-4 border-white/5 border flex flex-col gap-4 md:gap-6 rounded-[20px]">
+              <h6 className="font-semibold text-base/[22px] tracking-[3%]">
+                Learning chapters
+              </h6>
+
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Fragment key={i}>
+                  <div
+                    onClick={() => {
+                      if (game_data.phase === phase && game_data.level < i + 1)
+                        toast.error(
+                          "Chapter is locked. Complete the previous chapter to unlock"
+                        );
+                      else {
+                        setLevel(i + 1);
+                        setStage("course");
+                      }
+                      closeLearningChaptersModal();
+                    }}
+                    className={`${
+                      level === i + 1 &&
+                      stage === "course" &&
+                      "border border-[#F4E90E80] bg-[#F4E90E0D]"
+                    } py-4 px-2 rounded-[15px] flex items-center justify-between cursor-pointer`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={`size-6 border border-white/20 flex items-center justify-center rounded-full text-sm/[22px] tracking-[3%] ${
+                          game_data.phase === phase && game_data.level < i + 1
+                            ? "text-white/30"
+                            : "text-white/80"
+                        }`}
+                      >
+                        {i * 2 + 1}
+                      </span>
+
+                      <p
+                        className={`${
+                          (game_data.phase !== phase ||
+                            game_data.level > i + 1) &&
+                          "line-through"
+                        }
+                    ${
+                      game_data.phase === phase && game_data.level < i + 1
+                        ? "text-white/30"
+                        : "text-white/80"
+                    }
+                     text-xs md:text-sm leading-[22px] max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap`}
+                      >
+                        {course_data[phase][i].title}
+                      </p>
+                    </div>
+                    <p
+                      className={`${
+                        (game_data.phase !== phase ||
+                          game_data.level > i + 1) &&
+                        "line-through"
+                      }
+                  ${
+                    game_data.phase === phase && game_data.level < i + 1
+                      ? "text-white/30"
+                      : "text-white/40"
+                  }
+                   text-xs/[22px] tracking-[3%]`}
+                    >
+                      2 mins
+                    </p>
+                  </div>
+                  <div
+                    onClick={() => {
+                      if (game_data.phase === phase && game_data.level < i + 1)
+                        toast.error(
+                          "Chapter is locked. Complete the previous chapter to unlock"
+                        );
+                      else {
+                        setLevel(i + 1);
+                        setStage("quiz");
+                      }
+                      closeLearningChaptersModal();
+                    }}
+                    className={`${
+                      level === i + 1 &&
+                      stage === "quiz" &&
+                      "border border-[#F4E90E80] bg-[#F4E90E0D]"
+                    } py-4 px-2 rounded-[15px] flex items-center justify-between cursor-pointer`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={`size-6 border border-white/20 flex items-center justify-center rounded-full text-sm/[22px] tracking-[3%] ${
+                          game_data.phase === phase && game_data.level < i + 1
+                            ? "text-white/30"
+                            : "text-white/80"
+                        }`}
+                      >
+                        {i * 2 + 2}
+                      </span>
+
+                      <p
+                        className={`${
+                          (game_data.phase !== phase ||
+                            game_data.level > i + 1) &&
+                          "line-through"
+                        }
+                    ${
+                      game_data.phase === phase && game_data.level < i + 1
+                        ? "text-white/30"
+                        : "text-white/80"
+                    }
+                     text-xs md:text-sm leading-[22px] max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap`}
+                      >
+                        Quiz
+                      </p>
+                    </div>
+                    <p
+                      className={`${
+                        (game_data.phase !== phase ||
+                          game_data.level > i + 1) &&
+                        "line-through"
+                      }
+                  ${
+                    game_data.phase === phase && game_data.level < i + 1
+                      ? "text-white/30"
+                      : "text-white/40"
+                  }
+                   text-xs/[22px] tracking-[3%]`}
+                    >
+                      5 mins
+                    </p>
+                  </div>
+                </Fragment>
+              ))}
+            </div>
+            <div className="p-4 border-white/5 border flex flex-col gap-3 md:gap-6 rounded-[20px]">
+              <h6 className="font-semibold text-base/[22px] tracking-[3%]">
+                Rewards
+              </h6>
+
+              <div className="flex items-center gap-2.5 rounded-[21px] px-6 bg-white/[3%] h-20">
+                <Image
+                  src="/stp-coin.png"
+                  alt="stp"
+                  width={24}
+                  height={24}
+                  quality={100}
+                  className="size-6"
+                />
+                <p className="font-bold text-xl/10 tracking-[3%] text-white/60">
+                  {game_data.phase === phase
+                    ? 10 * (game_data.level - 1) + 5 * (game_data.level - 1)
+                    : 100}{" "}
+                  / 100 STRP
+                </p>
+              </div>
+
+              <p className="text-xs/[22px] tracking-[3%] text-white/40">
+                Total STRPs will be rewarded on completion
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="lg:order-2 max-lg:hidden bg-[#211F22] p-4 rounded-[20px] h-fit space-y-6">
         <div className="p-4 border-white/5 border flex flex-col gap-6 rounded-[20px]">
           <h6 className="font-semibold text-base/[22px] tracking-[3%]">
             Learning chapters
@@ -312,9 +492,32 @@ export default function IntroToCrypto({ close }: { close: () => void }) {
         </div>
       </div>
       <div className="lg:order-1 xl:col-span-2 flex flex-col gap-5">
-        <h5 className="text-xl font-bold md:text-2xl">
-          Introduction to Crypto: Your first steps
-        </h5>
+        <div className="flex flex-col gap-2">
+          <h5 className="text-base text-white/70 font-bold lg:text-2xl lg:text-white/80">
+            Introduction to Crypto: Your first steps
+          </h5>
+
+          <div className="lg:hidden w-full h-2.5 bg-[#282629] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#A082F9] rounded-full transition-all duration-300"
+              style={{
+                width: `${
+                  game_data.phase === phase
+                    ? ((game_data.level - 1) * 100) / 6
+                    : 100
+                }%`,
+              }}
+              aria-valuenow={
+                game_data.phase === phase
+                  ? ((game_data.level - 1) * 100) / 6
+                  : 100
+              }
+              aria-valuemin={0}
+              aria-valuemax={100}
+              role="progressbar"
+            />
+          </div>
+        </div>
 
         {stage === "course" && <Course level={level} phase={phase} />}
         {stage === "quiz" && (

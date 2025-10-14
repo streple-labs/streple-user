@@ -40,7 +40,7 @@ export default function ReferralCode() {
                   rx="142.784"
                   ry="90.4124"
                   fill="#A082F9"
-                  fill-opacity="0.4"
+                  fillOpacity="0.4"
                 />
               </g>
               <defs>

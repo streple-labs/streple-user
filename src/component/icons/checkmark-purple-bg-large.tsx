@@ -1,9 +1,8 @@
 export default function CheckmarkPurpleLarge() {
   return (
     <svg
-      width="258"
-      height="251"
       viewBox="0 0 258 251"
+      className="w-[150px] h-[146px]  md:h-[250px] md:w-[256px]"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

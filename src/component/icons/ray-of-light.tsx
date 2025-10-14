@@ -11,32 +11,32 @@ export default function RayOfLight(props: React.SVGProps<SVGSVGElement>) {
       <path
         d="M182.531 187.66L173.399 228.261L456.805 315.857L476.009 230.466L182.531 187.66Z"
         fill="url(#paint0_linear_3804_10521)"
-        fill-opacity="0.1"
+        fillOpacity="0.1"
       />
       <path
         d="M199.862 212.935L237.47 230.752L385.116 -26.5271L306.019 -63.9996L199.862 212.935Z"
         fill="url(#paint1_linear_3804_10521)"
-        fill-opacity="0.1"
+        fillOpacity="0.1"
       />
       <path
         d="M238.352 277.414L263.987 244.632L45.3736 44.1332L-8.54093 113.08L238.352 277.414Z"
         fill="url(#paint2_linear_3804_10521)"
-        fill-opacity="0.1"
+        fillOpacity="0.1"
       />
       <path
         d="M194.764 218.834L170.984 184.682L-85.0008 334.559L-34.9878 406.387L194.764 218.834Z"
         fill="url(#paint3_linear_3804_10521)"
-        fill-opacity="0.1"
+        fillOpacity="0.1"
       />
       <path
         d="M220.368 263.024L180.076 252.612L83.5518 533.102L168.292 555L220.368 263.024Z"
         fill="url(#paint4_linear_3804_10521)"
-        fill-opacity="0.1"
+        fillOpacity="0.1"
       />
       <path
         d="M191.755 259.28L224.156 233.165L427.853 448.802L359.708 503.726L191.755 259.28Z"
         fill="url(#paint5_linear_3804_10521)"
-        fill-opacity="0.1"
+        fillOpacity="0.1"
       />
       <defs>
         <linearGradient

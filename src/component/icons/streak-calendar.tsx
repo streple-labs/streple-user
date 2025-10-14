@@ -1,6 +1,7 @@
-export default function StreakCalendar() {
+export default function StreakCalendar(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      {...props}
       width="17"
       height="16"
       viewBox="0 0 17 16"
