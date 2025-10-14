@@ -58,16 +58,16 @@ export default function SelectRecipient({
     });
 
   return (
-    <div className="p-8 rounded-[20px] bg-[#211F22] flex flex-col gap-8">
+    <div className="py-6 px-4 md:py-8 md:px-8 rounded-[20px] bg-[#211F22] flex flex-col gap-8">
       <div className="flex flex-col items-center gap-10">
-        <div className="space-y-8 w-full">
+        <div className="space-y-6 md:space-y-8 w-full">
           <h2
             className={`${anton.className} test-base md:text-xl leading-[150%] tracking-[2px]`}
           >
             Select recipient
           </h2>
           <label htmlFor="recipient" className="space-y-3 w-full relative">
-            <p className="text-base/6">Recipient tag</p>
+            <p className="text-sm/[150%] md:text-base/6">Recipient tag</p>
             <div className="border border-white/10 py-5 px-4 h-[62px] w-full rounded-[15px] flex items-center">
               <p className="text-base text-white/50">@</p>
               <input
@@ -139,7 +139,7 @@ export default function SelectRecipient({
       </div>
 
       <div className="w-full space-y-6">
-        <div className="flex items-baseline gap-8">
+        <div className="flex items-baseline gap-4 md:gap-8">
           <div className="flex items-center flex-col gap-1 justify-center cursor-pointer">
             <h6
               onClick={() => {
@@ -147,7 +147,7 @@ export default function SelectRecipient({
               }}
               className={`${
                 recipientType === "recent" && "text-[#9274F2]"
-              } font-semibold text-base/8 tracking-[1px]`}
+              } font-semibold text-xs xs:text-sm md:text-base leading-8 tracking-[1px]`}
             >
               Recent recipients
             </h6>
@@ -163,7 +163,7 @@ export default function SelectRecipient({
               }}
               className={`${
                 recipientType === "saved" && "text-[#9274F2]"
-              } font-semibold text-base/8 tracking-[1px]`}
+              } font-semibold text-xs xs:text-sm md:text-base leading-8 tracking-[1px]`}
             >
               Saved beneficiaries
             </h6>
