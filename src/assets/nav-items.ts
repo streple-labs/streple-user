@@ -10,7 +10,7 @@ export const nav_items = [
     icon: OverviewIcon,
     href: "/",
   },
-  { name: "Trades", icon: Candlestick, href: "#" },
+  { name: "Trades", icon: Candlestick, href: "/trades" },
   {
     name: "Learn to Earn",
     icon: BulbIcon,
@@ -24,7 +24,7 @@ export const nav_items = [
   {
     name: "Community",
     icon: Users,
-    href: "#",
+    href: "/community",
   },
   // {
   //   name: "Watchlist",
@@ -39,6 +39,6 @@ export const nav_items = [
   {
     name: "Settings",
     icon: SettingsIcon,
-    href: "#",
+    href: "/settings",
   },
 ];
