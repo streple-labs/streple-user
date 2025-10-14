@@ -1,10 +1,10 @@
 import { anton } from "@/app/fonts";
-import { base_url } from "@/utils/constants";
+// import { base_url } from "@/utils/constants";
 import { passwordValidation } from "@/utils/utils";
 import Link from "next/link";
 import { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import GoogleIcon from "../icons/google-icon";
+// import GoogleIcon from "../icons/google-icon";
 import Loader from "../ui/loader";
 
 export default function SignupForm({
@@ -39,7 +39,7 @@ export default function SignupForm({
           Sign up to get started
         </h4>
         <div className="w-full flex flex-col gap-4 md:gap-6">
-          <div
+          {/* <div
             className="h-[55px] md:h-[82px] cursor-pointer w-full text-base px-6 py-5 rounded-[10px] md:rounded-[20px] gap-4 bg-[#242324] flex items-center justify-center"
             onClick={() => (window.location.href = `${base_url}/auth/google`)}
           >
@@ -53,7 +53,7 @@ export default function SignupForm({
             <span className="h-[1px] bg-[#FFFFFF33] rounded-full w-full" />
             Or
             <span className="h-[1px] bg-[#FFFFFF33] rounded-full w-full" />
-          </span>
+          </span> */}
 
           <label className="space-y-1.5 md:space-y-3">
             <p className="font-normal text-sm md:text-base leading-6 tracking-[1px]">
