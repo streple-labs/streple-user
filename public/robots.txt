@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /*?s=
+
+# Host
+Host: https://app.streple.com
+
+# Sitemaps
+Sitemap: https://app.streple.com/sitemap.xml
