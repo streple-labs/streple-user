@@ -121,9 +121,12 @@ export default function Home() {
                 </h2>
               </div>
               <div className="flex items-center justify-end gap-3">
-                <button className="h-[41px] w-[137px] flex items-center justify-center gap-2.5 py-2 px-4 bg-[#A082F9] text-[#1A1A1C] rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px]">
-                  <GoArrowUp width={12} color="#1A1A1C" /> Deposit
-                </button>
+                <Link
+                  href="/receive"
+                  className="h-[41px] w-[137px] flex items-center justify-center gap-2.5 py-2 px-4 bg-[#A082F9] text-[#1A1A1C] rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px]"
+                >
+                  <GoArrowUp width={12} color="#1A1A1C" /> Receive
+                </Link>
                 <Link
                   href="/send"
                   className="h-[41px] w-[137px] flex items-center justify-center gap-2.5 py-2 px-4 rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px] text-[#2C2C26] bg-[#EAE4FD] border border-black"
@@ -399,9 +402,12 @@ export default function Home() {
               </h2>
             </div>
             <div className="flex items-center gap-4">
-              <button className="h-[51px] w-full max-w-[145px] flex items-center justify-center gap-2.5 py-2 px-4 bg-[#A082F9] text-[#1A1A1C] rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px]">
-                <GoArrowUp width={12} color="#1A1A1C" /> Deposit
-              </button>
+              <Link
+                href="/receive"
+                className="h-[51px] w-full max-w-[145px] flex items-center justify-center gap-2.5 py-2 px-4 bg-[#A082F9] text-[#1A1A1C] rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px]"
+              >
+                <GoArrowUp width={12} color="#1A1A1C" /> Receive
+              </Link>
               <Link
                 href={"/send"}
                 className="h-[51px] w-full max-w-[145px] flex items-center justify-center gap-2.5 py-2 px-4 rounded-[10px] font-semibold text-xs leading-[150%] tracking-[2px] text-[#2C2C26] bg-[#EAE4FD] border border-black"

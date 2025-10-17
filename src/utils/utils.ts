@@ -170,3 +170,35 @@ export function getRandomQuestions(
     ...questions[key],
   }));
 }
+
+export function splitString(str: string) {
+  if (str.length > 13) return `${str.slice(0, 6)}...${str.slice(-4)}`;
+  return str;
+}
+
+export async function copyString(str: string) {
+  if (typeof navigator !== "undefined" && navigator.clipboard)
+    return await navigator.clipboard.writeText(str);
+  else
+    return Promise.reject(
+      new Error("Clipboard API is not available in this environment")
+    );
+}
+
+export async function share({
+  title = "",
+  text = "",
+  url = "",
+}: {
+  title?: string;
+  text?: string;
+  url?: string;
+}) {
+  if (typeof navigator !== "undefined" && navigator.share)
+    await navigator.share({
+      title,
+      text,
+      url,
+    });
+  else throw new Error("Web Share API is not available in this environment");
+}
